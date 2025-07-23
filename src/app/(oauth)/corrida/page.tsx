@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import * as Tone from 'tone';
-import type { voltas, StatusPiloto, Piloto, PilotoDB } from '@/lib/type';
+import type { voltas, StatusPiloto, Piloto } from '@/lib/type';
 import { PilotDataTable } from '@/componets/corrida/TableDataPiloto';
 import { getPilotColor, formatMilliseconds } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
@@ -34,6 +34,7 @@ export default function corrida(){
     const { toast } = useToast();
     const [idPiloto, setIdPiloto]= useState<string>('');
     const[pilotos, setPilotos] = useState<Piloto[]>([]);
+    const[bateria, setBaterias] = useState<number>(0);
     const synthRef = useRef<Tone.Synth | null>(null);
 
      useEffect(() => {
@@ -48,7 +49,7 @@ export default function corrida(){
         if (!response.ok) {
           throw new Error('Failed to fetch pilots');
         }
-        const data: PilotoDB[] = await response.json();
+        const data: Piloto[] = await response.json();
         const formattedPilots = data.map((p, index) => ({
           id_piloto: String(p.id_piloto),
           nome: p.nome,
