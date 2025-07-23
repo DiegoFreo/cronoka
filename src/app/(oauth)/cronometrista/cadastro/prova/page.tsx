@@ -10,3 +10,4 @@ const ProvaCad= () => {
     </div>
   );
 }
+export default ProvaCad;
