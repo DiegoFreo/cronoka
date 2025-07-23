@@ -7,15 +7,10 @@ export interface voltas{
 
 export type StatusPiloto = "NORMAL" | "PASSOU" | "ALERTA" | "SAIU" | "BURLOU";
 
-export interface PilotoDB{
-    id_piloto: number;
+export interface Bateria{
+    id_bateria: string;
     nome: string;
-    numero_piloto: string;
-    cpf: string;
-    tag_rfid_1: string;
-    tag_rfid_2?: string;
-    tag_rfid_3?: string;
-    tag_rfid_4?: string;
+    pilotos: Piloto[];
 };
 
 export interface Piloto{

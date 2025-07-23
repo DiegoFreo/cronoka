@@ -11,6 +11,7 @@ import {Header} from "@/componets/Header";
 import Button from "@/componets/ui/Buttom";
 import {PlayCircle, RotateCcwIcon, PauseCircle} from "lucide-react";
 import "../../../componets/stylescorrida.css";
+import { Select, SelectItem } from '@/componets/ui/select';
 
 
 
@@ -136,7 +137,7 @@ export default function corrida(){
       setRaceTime(0);
       raceTimeRef.current = 0;
      loadPiloto(); // Reload pilots from server
-     
+
      /* const initialPilots = pilots.map((p, index) => ({
           id_piloto: String(p.id_piloto),
           nome: p.nome,
@@ -265,6 +266,14 @@ export default function corrida(){
         
         <Button className="btn-corrida bg-cronometro gap-4" onClick={toggleRace}>{isRaceRunning ? <PauseCircle className="mr-2 h-5 w-5"/> :<PlayCircle className="mr-2 h-5 w-5"/> } {isRaceRunning ? 'Pausa': 'Início'}</Button>
         <Button className="btn-corrida-reset gap-4" onClick={resetRaceState}><RotateCcwIcon /> Resete</Button>
+        <Select className="select-corrida w-100" >
+          <SelectItem value="">Simular Volta</SelectItem>
+          {pilots.map((pilot) => (
+            <SelectItem key={pilot.id_piloto} value={pilot.id_piloto}>
+              {pilot.nome} 
+            </SelectItem>
+          ))}
+        </Select>
        
         <div className="flex justify-center items-center space-x-4 w-100 aling-height border border-border bg-cronometro rounded-md">
             <p className="size-cronometro color-cronometro">{formatMilliseconds(raceTime)}</p>
