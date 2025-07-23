@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 200 16% 18%; /* Dark Gray */
+    --foreground: 0 0% 90%; /* Light Gray for text */
+
+    --card: 200 16% 22%; /* Slightly lighter than background for cards */
+    --card-foreground: 0 0% 90%;
+
+    --popover: 200 16% 15%; /* Darker for popovers */
+    --popover-foreground: 0 0% 90%;
+
+    --primary: 231 48% 48%; /* Deep Blue */
+    --primary-foreground: 0 0% 98%; /* White/very light text on primary */
+
+    --secondary: 231 48% 38%; /* A slightly darker/muted blue for secondary elements */
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 200 16% 30%; /* Muted elements, slightly lighter than bg */
+    --muted-foreground: 0 0% 60%; /* Muted text */
+
+    --accent: 77 100% 46%; /* Electric Lime */
+    --accent-foreground: 200 16% 10%; /* Dark text for high contrast on lime */
+
+    --destructive: 0 70% 50%; /* A standard red for destructive actions */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 200 16% 25%; /* Border color, subtle on dark bg */
+    --input: 200 16% 25%; /* Input background */
+    --ring: 77 100% 50%; /* Electric Lime for focus rings */
+
+    --chart-1: 231 48% 58%;
+    --chart-2: 77 100% 56%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar variables can mirror the main theme for a cohesive dark look */
+    --sidebar-background: 200 16% 15%; /* Even darker for sidebar */
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 77 100% 46%; /* Accent for sidebar primary actions */
+    --sidebar-primary-foreground: 200 16% 10%;
+    --sidebar-accent: 231 48% 48%; /* Primary as sidebar accent */
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 200 16% 20%;
+    --sidebar-ring: 77 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

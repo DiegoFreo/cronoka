@@ -1,0 +1,80 @@
+'use client';
+import React, {useEffect, useState } from 'react';
+import { createContext } from "react";
+import {setCookie, parseCookies, destroyCookie}from 'nookies'
+import { useRouter } from 'next/navigation';
+
+interface AuthContextType {
+  isAuthenticated: boolean;
+  users: UserType | null;
+  signIn: (credentials: SignInCredentials) => Promise<void>;
+}
+interface SignInCredentials {
+    emailUser: string;
+    passworUser: string;
+}
+interface UserType {
+    idUser: number,
+    nameUser: string,
+    emailUser: string,
+    nivelUser: string,
+    avatarUser: Blob | null,
+    // Adicione outros campos conforme necessário
+}
+export const AuthContext = createContext({} as AuthContextType);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  
+  const [users, setUser] = useState<UserType| null>(null);
+  const isAuthenticated = !!users; // Verifica se o usuário está autenticado
+  const router = useRouter();
+  
+  useEffect(() => {
+      const {'cronometro-token': token} = parseCookies();
+      if (!token) {
+        router.push('/'); // Redireciona para a página de login se não houver token
+      }
+  }, []);
+
+
+  async function signIn({emailUser, passworUser}: SignInCredentials) {
+    try {
+    // Aqui você implementaria a lógica de autenticação, como uma chamada à API
+    // Por exemplo:
+    const {token, user}= await fetch( "http://localhost:3030/login", {
+      method: 'POST',
+      body: JSON.stringify({emailUser, passworUser}),
+      headers: {'Content-Type': 'application/json'} ,   
+    }).then((response) => {
+      if (!response.ok) {
+        alert('Erro ao fazer login, verifique os dados informados');
+        throw new Error('Erro ao fazer login');
+      }
+      return response.json();
+      
+    });
+    setCookie(null, 'cronometro-token', token, {
+      maxAge: 60 * 60 * 1, // 1h
+      path: './',      
+    });
+    
+    setUser(user);  
+    console.log('Usuário autenticado:', user);
+    
+      // Redireciona para a página de dashboard ou outra página após o login
+      router.push ('/cronometrista');       
+    }
+    catch(error) {
+      alert('Erro ao redirecionar após o login');
+      console.error('Erro ao redirecionar após o login:', error);
+      // Aqui você pode lidar com o erro de redirecionamento, se necessário
+    }
+  }
+  
+       
+  return (
+    <AuthContext.Provider value={{users, isAuthenticated, signIn}}>
+      {children}
+    </AuthContext.Provider>
+  );
+}

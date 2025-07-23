@@ -1,0 +1,92 @@
+.continer-corrida{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(29, 34, 27);
+    color: rgb(208, 212, 206);
+}
+.bg-card, .bg-footer{
+    background-color: rgb(50, 54, 48);
+    color: rgb(208, 212, 206);
+}
+.bg-cronometro{
+    background-color: rgb(29, 34, 27);
+    color: rgb(208, 212, 206);
+}
+.card{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(50, 54, 48);
+    padding: 10px;
+    border-radius: 10px;
+}
+.aling-center{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    gap:20;
+}
+.aling-heigth{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+    gap:20;
+}
+.table-auto:hover{
+    background-color:  rgb(29, 34, 27);
+}
+.size-cronometro{
+    font-size: 2rem;
+    font-weight: bold;
+    background-attachment: fixed;
+}
+.btn-corrida{
+    color: rgb(208, 212, 206);
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.btn-corrida-reset, .bg-cronometro-pouse:hover{
+    background-color: rgb(255, 0, 0);
+    color: rgb(208, 212, 206);
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.btn-corrida-reset:hover{
+    background-color: rgba(255, 0, 0, 0.8);
+    color: rgb(208, 212, 206);
+}
+.btn-corrida:hover{
+    background-color: rgb(85, 255, 0);
+    color: rgb(29, 34, 27);
+}
+.color-cronometro{
+    color:rgb(85, 255, 0);
+}
+.color-cronometro-pause{
+    color:rgb(0, 209, 129);
+}
+.bg-cronometro-pouse{
+    background-color: rgb(0, 209, 129);
+    color: rgb(29, 34, 27);
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}

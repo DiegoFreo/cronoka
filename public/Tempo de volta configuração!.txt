@@ -1,0 +1,12 @@
+bateria - categoria muitas para muitas
+
+piloto - categoria um pilo para muitas categorias
+
+Montar o evento para os dias antecipadamente.
+
+por melhor volta - clacificação para a largada.
+
+prova -  volta e menor tempo
+
+deixar alterar o tempo de volta no corrida
+
