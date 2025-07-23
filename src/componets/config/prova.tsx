@@ -29,7 +29,7 @@ const GerenciamentoProva=()=>{
                 <div className="gerenciamnto-box-bottom">
                     <h5>NOVO EVENTO</h5>
                     <p>cria um novo evento</p>
-                    <Button text="Novo evento" className="gerenciamento-buttom" />
+                    <Button className="gerenciamento-buttom" >Novo Evento</Button>
                 </div>
             </div>
             </div>
