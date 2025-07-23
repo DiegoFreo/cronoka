@@ -36,10 +36,11 @@ export default function corrida(){
     const synthRef = useRef<Tone.Synth | null>(null);
 
      useEffect(() => {
-      // Load pilots from the server when the component mounts
+      // Carregar pilotos do servidor quando o componente for montado
       loadPiloto();
     }, []);
 
+    // carrega os pilotos do servidor
     async function loadPiloto(){
       try {
         const response = await fetch("http://localhost:3030/piloto");
@@ -48,7 +49,7 @@ export default function corrida(){
         }
         const data: PilotoDB[] = await response.json();
         const formattedPilots = data.map((p, index) => ({
-          id: String(p.id_piloto),
+          id_piloto: String(p.id_piloto),
           nome: p.nome,
           numero_piloto: p.numero_piloto,
           status: "NORMAL" as StatusPiloto,
@@ -71,8 +72,8 @@ export default function corrida(){
    
 
     useEffect(() => {
-    // Initialize Tone.Synth on component mount after a user interaction (simulated by a timeout here for auto-start)
-    // In a real app, you might gate this behind a "Start Audio" button
+    // Inicialize Tone.Synth ao montar o componente após uma interação do usuário (simulada por um timeout aqui para auto-início) 
+    // Em um aplicativo real, você pode colocar isso atrás de um botão "Iniciar Áudio".
       const initAudio = async () => {
         await Tone.start();
         synthRef.current = new Tone.Synth().toDestination();
@@ -134,24 +135,24 @@ export default function corrida(){
       setIsRaceRunning(false);
       setRaceTime(0);
       raceTimeRef.current = 0;
-      
-      const initialPilots = pilotos.map((p, index) => ({
-        id: String(p.id +1),
-        nome: p.nome,
-        numero_piloto: p.numero_piloto,
-        status: "NORMAL" as StatusPiloto,
-        voltas: [],
-        steutusUltamaVolta: Date.now(),
-        melhorVolta:  null, 
-        ultimaVolta: null, 
-        tempoTotal: 0, 
-        ultimaVoltaCompleta:null,
-        posicao: 0, 
-        cor: getPilotColor(index),
+     loadPiloto(); // Reload pilots from server
+     
+     /* const initialPilots = pilots.map((p, index) => ({
+          id_piloto: String(p.id_piloto),
+          nome: p.nome,
+          numero_piloto: p.numero_piloto,
+          status: "NORMAL" as StatusPiloto,
+          voltas: [],
+          steutusUltamaVolta: Date.now(),
+          melhorVolta: null,
+          ultimaVolta: null,
+          tempoTotal: 0,
+          ultimaVoltaCompleta: null,
+          posicao: 0,
+          cor: getPilotColor(index),
     }));
-    console.log("Resetando corrida, pilotos iniciais:", initialPilots);
-    setPilots(initialPilots);
     setPilots(sortPiloto(initialPilots));
+    */
     toast({ title: "Reseta Corrida", description: "Todos os dados do piloto e temporizadores foram reiniciados." });
   }, [toast]);
 
@@ -183,7 +184,7 @@ export default function corrida(){
     
     setPilots(prevPilots => {
       const targetPilotIndex = pilotIdToSimulate 
-        ? prevPilots.findIndex(p => p.id === pilotIdToSimulate)
+        ? prevPilots.findIndex(p => p.id_piloto === pilotIdToSimulate)
         : Math.floor(Math.random() * prevPilots.length);
       
       if (targetPilotIndex === -1) return prevPilots;
@@ -259,8 +260,6 @@ export default function corrida(){
                     </CardContent>'
                 </Card>
             </div>
-           
-            
         </main>
       <footer className="text-center py-4 text-sm text-muted-foreground border-t bg-footer border-border aling-center">
         

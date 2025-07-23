@@ -19,7 +19,7 @@ export interface PilotoDB{
 };
 
 export interface Piloto{
-    id: string;
+    id_piloto: string;
     nome: string;
     numero_piloto: string;
     status: StatusPiloto;
