@@ -1,0 +1,111 @@
+:root {
+  --background: 200 16% 18%; /* Dark Gray */
+  --foreground: 0 0% 90%; /* Light Gray for text */
+}
+.continerdashboard {
+    min-height: 100vh;
+    background-color: rgb(29, 34, 27);
+    color: rgb(216, 221, 214);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: start;
+}   
+.continerdashboard-logo{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    color: rgb(216, 221, 214);
+    border-bottom: 1px solid rgb(141, 141, 141);
+    min-height: 20%;
+    background-color: rgb(50, 54, 48);
+    padding: 10px;
+    border-radius: 10px;
+
+}
+.continerdashboard-left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    width: 20%;
+    font-size: small;
+    border-right: 1px solid rgb(141, 141, 141);
+    min-height: 100%;
+    padding: 10px;
+}
+.continerdashboard-right{
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    min-height: 100%;
+    padding: 10px;
+    background-color: rgb(29, 34, 27);
+    gap: 20;
+}
+.continerdashboard-logout{    
+    width: 20%;
+    background-color: rgb(50, 54, 48);
+    padding: 10px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 0;
+}
+.continerdashboard-logout-perfill{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+.continerdashboard-logout-perfill img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: rgb(50, 54, 48)  ;
+}
+
+.continerdashboard-menu{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 100%;
+    background-color: rgb(50, 54, 48);
+    padding: 10px;
+    border-radius: 10px;
+    border-bottom: 1px solid rgb(141, 141, 141);
+    
+}
+.continerdashboard-menu ul{
+    gap: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: left;
+    text-align: left;
+    list-style: none;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(29, 34, 27);
+    width: 90%;
+    border-right: 1px solid rgb(141, 141, 141);
+}
+.continerdashboard-menu ul li{
+    margin: 5px 0;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.continerdashboard-menu ul li:hover {
+    color: rgb(216, 221, 214);
+    transition: background-color 0.3s ease;
+    background-color: rgb(50, 54, 48);
+}
