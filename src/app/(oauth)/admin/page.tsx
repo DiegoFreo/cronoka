@@ -1,4 +1,4 @@
-'use client';
+
 import React, {useRef}  from "react";
 import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
