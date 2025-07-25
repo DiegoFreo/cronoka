@@ -263,10 +263,10 @@ export default function corrida(){
                 </Card>
             </div>
         </main>
-      <footer className="text-center py-4 text-sm text-muted-foreground border-t bg-footer flex flex-row border-border aling-center">
+      <footer className="text-center gap-4 py-4 text-sm text-muted-foreground border-t bg-footer flex flex-row border-border aling-center">
         
-        <Button className="btn-corrida bg-cronometro gap-4" onClick={toggleRace}>{isRaceRunning ? <PauseCircle className="mr-2 h-5 w-5"/> :<PlayCircle className="mr-2 h-5 w-5"/> } {isRaceRunning ? 'Pausa': 'Início'}</Button>
-        <Button className="btn-corrida-reset gap-4" onClick={resetRaceState}><RotateCcwIcon /> Resete</Button>
+        <Button className="btn-corrida bg-cronometro " onClick={toggleRace}>{isRaceRunning ? <PauseCircle className="mr-2 h-5 w-5"/> :<PlayCircle className="mr-2 h-5 w-5"/> } {isRaceRunning ? 'Pausa': 'Início'}</Button>
+        <Button className="btn-corrida-reset " onClick={resetRaceState}><RotateCcwIcon /> Resete</Button>
         <Select className="select-corrida w-100" >
           <SelectItem value="">Selecione a Categoria</SelectItem>
           {pilots.map((pilot) => (
