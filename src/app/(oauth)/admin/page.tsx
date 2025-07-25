@@ -109,35 +109,35 @@ export default function AdminPage() {
           </div>
         </div>
         <div className="continerdashboard-right">
-          <Card className="w-40 h-full">
+          <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
               <h2 className="text-2xl font-bold mb-4">Usuário</h2>
               <UserPen className="w-20 h-20 mb-2 color-cronometro-pause" />
               <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/admin/usuario')}} >Incluir</Button>
             </CardContent>
           </Card>
-          <Card className="w-40 h-full">
+          <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
               <h2 className="text-2xl font-bold mb-4">Competidor</h2>
               <User className="w-20 h-20 mb-2 color-cronometro-pause" />
               <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/cronometrista/cadatro/piloto')}} >Incluir</Button>
             </CardContent>
           </Card>
-          <Card className="w-40 h-full">
+          <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
               <h2 className="text-2xl font-bold mb-4">Eventos</h2>
               <Trophy className="w-20 h-20 mb-2 color-cronometro-pause" />
               <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/cronometrista/cadatro/prova')}} >Incluir</Button>
             </CardContent>
           </Card>
-           <Card className="w-40 h-full">
+           <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
               <h2 className="text-2xl font-bold mb-4">Categoria</h2>
               <FolderTree className="w-20 h-20 mb-2 color-cronometro-pause" />
               <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/cronometrista/cadatro/categoria')}} >Incluir</Button>
             </CardContent>
           </Card>
-          <Card className="w-40 h-full">
+          <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
               <h2 className="text-2xl font-bold mb-4">Bateria</h2>
               <MapPin className="w-20 h-20 mb-2 color-cronometro-pause" />
