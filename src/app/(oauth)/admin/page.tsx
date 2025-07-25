@@ -13,6 +13,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartData,
 } from 'chart.js';
 
 import {Bar}from "react-chartjs-2";
@@ -30,7 +31,7 @@ ChartJS.register(
 
 const labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril'];
 
-export const dados = {
+const dados = {
   labels,
   datasets: [
     {
@@ -39,7 +40,6 @@ export const dados = {
       backgroundColor: 'rgba(248, 11, 11, 0.61)',
       borderColor: 'rgba(255, 255, 255, 1)',
       borderWidth: 1,
-      color: 'rgb(255, 255, 255)',
     },
     {
       label: 'Competidores',
@@ -47,8 +47,6 @@ export const dados = {
       backgroundColor: 'rgba(102, 255, 161, 0.6)',
       borderColor: 'rgba(255, 255, 255, 1)',
       borderWidth: 1,
-      color: 'rgb(255, 255, 255)',
-
     },
   ],
 };
