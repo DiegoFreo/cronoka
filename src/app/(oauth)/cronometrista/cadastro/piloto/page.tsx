@@ -2,6 +2,8 @@
 import React,{use, useState, useEffect} from "react";
 import { useForm} from "react-hook-form"; 
 import { FaEdit, FaTrash } from "react-icons/fa";
+import "@/componets/styles.css";
+import "@/componets/stylescorrida.css";
 
 interface Piloto {
     id_piloto: number;
@@ -165,10 +167,10 @@ const CadPiloto = () => {
        
     }
     return (
-        <div className="contenter-form">
+        <div className="contenter-form bg-footer">
             <h1>Cadastro de Piloto</h1>
-            <div className="is-flex">
-                <div className="content-form-form w-50">
+            <div className="is-flex ">
+                <div className="content-form-form  w-50">
                  <form  className="w-100" onSubmit={handleSubmit(onSubmit)} >
                     <div className="w-100 is-flex fix">
                         <div className="w-100 ">
@@ -206,8 +208,10 @@ const CadPiloto = () => {
                             <input {...register('tag_rfid_4')} className="ka-input w-100" value={tag4Piloto} onChange={handleChangeTag4Piloto} type="text" id="tag_rfid_4" placeholder="tag_rfid_4" name="tag_rfid_4" />
                         </div>
                      </div>
-                    <button className="component-button-black" type="submit" onClick={handleSubmit(onSubmit)}>Salvar</button>
-                    <button className="component-button-black" type="reset" onClick={limparCanpos}>Limpar</button>
+                     <div className="text-center py-4 text-sm text-muted-foreground border-t bg-footer border-border aling-center">
+                        <button className="btn-corrida bg-cronometro" type="submit" onClick={handleSubmit(onSubmit)}>Salvar</button>
+                        <button className="btn-corrida bg-cronometro" type="reset" onClick={limparCanpos}>Limpar</button>
+                    </div>
                  </form>
                  </div>
                 <div className="p-10 w-50">   

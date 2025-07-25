@@ -62,7 +62,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('Usuário autenticado:', user);
     
       // Redireciona para a página de dashboard ou outra página após o login
-      router.push ('/cronometrista');       
+      if(user.nivelUser === 'A')  {
+        router.push('/admin'); // Redireciona para a página de admin
+      }else if(user.nivelUser === 'C') {
+      router.push ('/cronometrista');   
+      }else if(user.nivelUser === 'S') {
+        router.push('/secretaria'); 
+      }else{
+        alert('Nível de usuário não reconhecido');
+        return;
+      }
     }
     catch(error) {
       alert('Erro ao redirecionar após o login');
