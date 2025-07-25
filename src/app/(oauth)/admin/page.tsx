@@ -144,7 +144,7 @@ export default function AdminPage() {
               <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/cronometrista/cadatro/bateria')}} >Incluir</Button>
             </CardContent>
           </Card>
-          <Card className="w-full h-full mt-2">
+          <Card className="w-full h-full mt-4">
             <CardContent className="flex flex-col items-center justify-center">
               <div className="w-250 h-100 alas-center justify-center flex text-white">
                 <Bar data={dados} options={options}/>
