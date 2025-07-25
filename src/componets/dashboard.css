@@ -105,7 +105,6 @@
     cursor: pointer;
 }
 .continerdashboard-menu ul li:hover {
-    color: rgb(216, 221, 214);
-    transition: background-color 0.3s ease;
     background-color: rgb(50, 54, 48);
+    color: rgb(208, 212, 206);
 }
