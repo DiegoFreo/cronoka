@@ -1,5 +1,5 @@
 
-import React, {useRef}  from "react";
+import React from "react";
 import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
 import {UserPen, User, Trophy, FolderTree, MapPin} from "lucide-react";
