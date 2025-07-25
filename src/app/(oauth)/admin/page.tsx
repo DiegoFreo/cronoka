@@ -30,7 +30,7 @@ ChartJS.register(
 
 const labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril'];
 
-export const data = {
+export const dados = {
   labels,
   datasets: [
     {
@@ -149,7 +149,7 @@ export default function AdminPage() {
           <Card className="w-full h-full">
             <CardContent className="flex flex-col items-center justify-center">
               <div className="w-250 h-100 alas-center justify-center flex text-white">
-                <Bar data={data} options={options}/>
+                <Bar data={dados} options={options}/>
               </div>
             </CardContent>
           </Card>
