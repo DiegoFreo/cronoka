@@ -146,7 +146,7 @@ export default function AdminPage() {
           </Card>
           <Card className="w-100 h-60 mt-4">
             <CardContent className="flex flex-col items-center justify-center">
-              <div className="w-100 h-100 alas-center justify-center flex text-white">
+              <div className="w-100 h-60 alas-center justify-center flex text-white">
                 <Bar data={dados} options={options}/>
               </div>
             </CardContent>
