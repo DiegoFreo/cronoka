@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
     });
     setCookie(null, 'cronometro-token', token, {
-      maxAge: 60 * 60 * 1, // 1h
+      maxAge: 60 * 60 * 6, // 1h
       path: './',      
     });
     

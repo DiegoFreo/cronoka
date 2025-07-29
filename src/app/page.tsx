@@ -34,11 +34,11 @@ export default function Home() {
         <div className="sm:mx-auto sm:w-full flex-col flex sm:max-w-sm img-center">
           <img
             alt="logo"
-            src="./logoka.svg"
+            src="./Logo-FPMX.png"
             className="mx-auto h-30 w-auto"
           />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
-            Entre na sua conta
+            Entre com seu usuário
           </h2>
         </div>
 

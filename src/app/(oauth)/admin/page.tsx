@@ -78,12 +78,9 @@ export default function AdminPage() {
           <div className="continerdashboard-logo pb-4">
             <img
               alt="logo"
-              src="./logoka.svg"
+              src="./Logo-FPMX.png"
               className="mx-auto h-15 w-auto"
             />
-            <h2 >
-              CRONOKA
-            </h2>
           </div>
           <div className="continerdashboard-menu pt-2">
             <ul>
@@ -112,53 +109,58 @@ export default function AdminPage() {
         </div>
         
         <div className="continerdashboard-right">
-          <Card className="w-45 h-full p-4 mt-4">
+          <Card className="w-45 h-full p-4 mt-4 continerdashboard-border continerdashboard-title">
+            <CardContent className="flex flex-col p-4 items-center justify-center">  
+              <h2 className="text-2xl  font-bold mb-4">Administrador</h2>
+            </CardContent>
+          </Card>
+          <Card className="w-45 h-full p-4 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">              
               <UserPen className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Usuário</h2>
-              <p className="color-cronometro-pause">Total - 0</p>
+              <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-4 mt-4">
+          <Card className="w-45 h-full p-4 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">
               <User className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Competidor</h2>
-               <p className="color-cronometro-pause">Total - 0</p>
+               <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-4 mt-4">
+          <Card className="w-45 h-full p-4 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">             
               <Trophy className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Eventos</h2>
-              <p className="color-cronometro-pause">Total - 0</p>
+              <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
-           <Card className="w-45 h-full p-4 mt-4">
+           <Card className="w-45 h-full p-4 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">
               <FolderTree className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold  mb-4">Categoria</h2>            
-              <p className="color-cronometro-pause">Total - 0</p>
+              <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-4 mt-4">
+          <Card className="w-45 h-full p-4 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">
               <Flag className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold  mb-4">Bateria</h2>              
-              <p className="color-cronometro-pause">Total - 0</p>
+              <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-4 mt-4">
+          <Card className="w-45 h-full p-4 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">
               <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold  mb-4">Licenças</h2>              
-              <p className="color-cronometro-pause">Total - 0</p>
+              <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-4 mt-4">
+          <Card className="w-45 h-full p-4 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">
               <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold  mb-4">Evento</h2>              
-              <p className="color-cronometro-pause">Total - 0</p>
+              <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
         </div>
