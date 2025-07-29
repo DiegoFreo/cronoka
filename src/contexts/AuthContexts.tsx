@@ -35,9 +35,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (!token ) {
         router.push('/'); // Redireciona para a página de login se não houver token
-      }else {
-          
-          alert('Usuário já autenticado' + token);
       }
   }, []);
 
