@@ -4,6 +4,8 @@ import { useForm} from "react-hook-form";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "@/componets/styles.css";
 import "@/componets/stylescorrida.css";
+import Button from "@/componets/ui/Buttom";
+import { useRouter } from "next/navigation";
 
 interface Piloto {
     id_piloto: number;
@@ -26,6 +28,7 @@ const CadPiloto = () => {
     const[tag2Piloto, setTag2Piloto] = useState('');
     const[tag3Piloto, setTag3Piloto] = useState('');
     const[tag4Piloto, setTag4Piloto] = useState('');    
+    const router = useRouter();
 
     useEffect(()=>{
         buscatPiloto();
@@ -168,7 +171,10 @@ const CadPiloto = () => {
     }
     return (
         <div className="contenter-form bg-footer">
-            <h1>Cadastro de Piloto</h1>
+            <div className="flex justify-between items-center p-4 bg-header contenter-form-h1">
+              <h1>Competidor</h1>
+              <Button className="bg-cronometro btn-corrida w-10" onClick={()=>{router.push('../')}}>X</Button>              
+            </div>
             <div className="is-flex ">
                 <div className="content-form-form  w-50">
                  <form  className="w-100" onSubmit={handleSubmit(onSubmit)} >

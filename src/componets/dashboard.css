@@ -80,13 +80,11 @@
     width: 90%;
     height: 100%;
     background-color: rgb(50, 54, 48);
-    padding: 10px;
     border-radius: 10px;
     border-bottom: 1px solid rgb(141, 141, 141);
     
 }
 .continerdashboard-menu ul{
-    gap: 10;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -99,8 +97,7 @@
     width: 90%;
     border-right: 1px solid rgb(141, 141, 141);
 }
-.continerdashboard-menu ul li{
-    margin: 5px 0;
+.continerdashboard-menu ul li{   
     padding: 10px;
     width: 100%;
     border-radius: 5px;

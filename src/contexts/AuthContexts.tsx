@@ -25,14 +25,19 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   
-  const [users, setUser] = useState<UserType| null>(null);
+  const [users, setUser] = useState<UserType | null>(null);
   const isAuthenticated = !!users; // Verifica se o usuário está autenticado
   const router = useRouter();
   
   useEffect(() => {
       const {'cronometro-token': token} = parseCookies();
-      if (!token) {
+      console.log("Usuario: "+token);
+
+      if (!token ) {
         router.push('/'); // Redireciona para a página de login se não houver token
+      }else {
+          
+          alert('Usuário já autenticado' + token);
       }
   }, []);
 
@@ -62,16 +67,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('Usuário autenticado:', user);
     
       // Redireciona para a página de dashboard ou outra página após o login
-      if(user.nivelUser === 'A')  {
-        router.push('/admin'); // Redireciona para a página de admin
-      }else if(user.nivelUser === 'C') {
-      router.push ('/cronometrista');   
-      }else if(user.nivelUser === 'S') {
-        router.push('/secretaria'); 
-      }else{
-        alert('Nível de usuário não reconhecido');
-        return;
-      }
+      if(user?.nivelUser === 'A')  {
+          router.push('/admin'); // Redireciona para a página de admin
+        }else if(user?.nivelUser === 'C') {
+        router.push ('/cronometrista');   
+        }else if(user?.nivelUser === 'S') {
+          router.push('/secretaria'); 
+        }else{
+          alert('Nível de usuário não reconhecido'+ user?.nivelUser);
+          return;
+        } 
     }
     catch(error) {
       alert('Erro ao redirecionar após o login');

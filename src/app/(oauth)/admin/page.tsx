@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
-import {UserPen, User, Trophy, FolderTree, MapPin} from "lucide-react";
+import {UserPen, User, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal, Flag, BadgeDollarSign} from "lucide-react";
 import '../../../componets/dashboard.css';
 
 import {
@@ -17,7 +17,6 @@ import {
 } from 'chart.js';
 
 import {Bar}from "react-chartjs-2";
-import { color } from "chart.js/helpers";
 import { useRouter } from "next/navigation";
 
 ChartJS.register(
@@ -86,14 +85,17 @@ export default function AdminPage() {
               CRONOKA
             </h2>
           </div>
-          <div className="continerdashboard-menu pt-4">
-            <h2>MENU</h2>
+          <div className="continerdashboard-menu pt-2">
             <ul>
-              <li>Competidores</li>
-              <li>Usuário</li>
-              <li>Categoria</li>
-              <li>Prova</li>
-              <li>Eventos</li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><User  className="pr-2"/>Competidores</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><UserPen  className="pr-2"/>Usuário</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><Tag className="pr-2"/>Categoria</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><SquareCheckBig className="pr-2" />Prova</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><ChartSpline className="pr-2" />Eventos</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><ClipboardList className="pr-2" />Licenças</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><Settings className="pr-2" />Configurações</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><Medal className="pr-2" />Modalidade</Button></li>
             </ul>
 
           </div>
@@ -110,47 +112,49 @@ export default function AdminPage() {
         </div>
         <div className="continerdashboard-right">
           <Card className="w-45 h-full">
-            <CardContent className="flex flex-col items-center justify-center">
+            <CardContent className="flex flex-col items-center justify-center">              
+              <UserPen className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Usuário</h2>
-              <UserPen className="w-20 h-20 mb-2 color-cronometro-pause" />
-              <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/admin/usuario')}} >Incluir</Button>
+              <p className="color-cronometro-pause">Total - 0</p>
             </CardContent>
           </Card>
           <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
+              <User className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Competidor</h2>
-              <User className="w-20 h-20 mb-2 color-cronometro-pause" />
-              <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/cronometrista/cadastro/piloto')}} >Incluir</Button>
+               <p className="color-cronometro-pause">Total - 0</p>
             </CardContent>
           </Card>
           <Card className="w-45 h-full">
-            <CardContent className="flex flex-col items-center justify-center">
+            <CardContent className="flex flex-col items-center justify-center">             
+              <Trophy className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Eventos</h2>
-              <Trophy className="w-20 h-20 mb-2 color-cronometro-pause" />
-              <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/cronometrista/cadastro/prova')}} >Incluir</Button>
+              <p className="color-cronometro-pause">Total - 0</p>
             </CardContent>
           </Card>
            <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
-              <h2 className="text-2xl font-bold mb-4">Categoria</h2>
-              <FolderTree className="w-20 h-20 mb-2 color-cronometro-pause" />
-              <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/cronometrista/cadastro/categoria')}} >Incluir</Button>
+              <FolderTree className="w-20 h-20 mb-2 mt-2 font-bold" />
+              <h2 className="text-2xl font-bold  mb-4">Categoria</h2>            
+              <p className="color-cronometro-pause">Total - 0</p>
             </CardContent>
           </Card>
           <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
-              <h2 className="text-2xl font-bold mb-4">Bateria</h2>
-              <MapPin className="w-20 h-20 mb-2 color-cronometro-pause" />
-              <Button className="btn-corrida bg-cronometro" onClick={()=>{router.push('/cronometrista/cadastro/bateria')}} >Incluir</Button>
+              <Flag className="w-20 h-20 mb-2 mt-2 font-bold" />
+              <h2 className="text-2xl font-bold  mb-4">Bateria</h2>              
+              <p className="color-cronometro-pause">Total - 0</p>
             </CardContent>
           </Card>
-          <Card className="w-100 h-60 mt-4">
+          <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">
-              <div className="w-100 h-60 alas-center justify-center flex text-white">
-                <Bar data={dados} options={options}/>
-              </div>
+              <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
+              <h2 className="text-2xl font-bold  mb-4">Licenças</h2>              
+              <p className="color-cronometro-pause">Total - 0</p>
             </CardContent>
           </Card>
+          
+          
 
         </div>
       </div>
