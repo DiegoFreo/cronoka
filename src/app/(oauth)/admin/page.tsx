@@ -84,7 +84,7 @@ export default function AdminPage() {
           </div>
           <div className="continerdashboard-menu pt-2">
             <ul>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><User  className="pr-2"/>Competidores</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center pointer "><User  className="pr-2"/>Competidores</Button></li>
               <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><UserPen  className="pr-2"/>Usuário</Button></li>
               <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><Tag className="pr-2"/>Categoria</Button></li>
               <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><SquareCheckBig className="pr-2" />Prova</Button></li>

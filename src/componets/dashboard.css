@@ -57,6 +57,10 @@
     width: 80%;
     min-height: 100%;
     padding: 10px;
+    background-image: url('../../public/Logo-FPMX.png');
+    background-size: calc(40% - 10px) calc(40% - 10px);
+    background-repeat: no-repeat;
+    background-position: bottom;
     background-color: rgb(3, 3, 3);
     gap: 20;
 }
