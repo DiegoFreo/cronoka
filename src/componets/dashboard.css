@@ -4,7 +4,7 @@
 }
 .continerdashboard {
     min-height: 100vh;
-    background-color: rgb(29, 34, 27);
+    background-color: rgb(3, 3, 3);
     color: rgb(216, 221, 214);
     display: flex;
     flex-direction: row;
@@ -46,7 +46,7 @@
     width: 80%;
     min-height: 100%;
     padding: 10px;
-    background-color: rgb(29, 34, 27);
+    background-color: rgb(3, 3, 3);
     gap: 20;
 }
 .continerdashboard-logout{    
@@ -93,7 +93,7 @@
     list-style: none;
     padding: 10px;
     border-radius: 10px;
-    background-color: rgb(29, 34, 27);
+    background-color: rgb(3, 3, 3);
     width: 90%;
     border-right: 1px solid rgb(141, 141, 141);
 }

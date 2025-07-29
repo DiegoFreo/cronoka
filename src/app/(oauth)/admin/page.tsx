@@ -110,6 +110,7 @@ export default function AdminPage() {
             </div>
           </div>
         </div>
+        
         <div className="continerdashboard-right">
           <Card className="w-45 h-full">
             <CardContent className="flex flex-col items-center justify-center">              
@@ -153,9 +154,13 @@ export default function AdminPage() {
               <p className="color-cronometro-pause">Total - 0</p>
             </CardContent>
           </Card>
-          
-          
-
+          <Card className="w-45 h-full">
+            <CardContent className="flex flex-col items-center justify-center">
+              <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
+              <h2 className="text-2xl font-bold  mb-4">Evento</h2>              
+              <p className="color-cronometro-pause">Total - 0</p>
+            </CardContent>
+          </Card>
         </div>
       </div>
   );
