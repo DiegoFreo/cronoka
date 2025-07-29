@@ -21,7 +21,7 @@
     color: rgb(216, 221, 214);
     border-bottom: 1px solid rgb(141, 141, 141);
     min-height: 20%;
-    background-color: rgb(50, 54, 48);
+    background-color: rgb(25, 27, 24);
     padding: 10px;
     border-radius: 10px;
 
@@ -51,7 +51,7 @@
 }
 .continerdashboard-logout{    
     width: 20%;
-    background-color: rgb(50, 54, 48);
+    background-color: rgb(25, 27, 24);
     padding: 10px;
     border-radius: 10px;
     position: absolute;
@@ -68,7 +68,7 @@
     height: 50px;
     border-radius: 50%;
     margin-right: 10px;
-    background-color: rgb(50, 54, 48)  ;
+    background-color: rgb(25, 27, 24);
 }
 
 .continerdashboard-menu{
@@ -79,7 +79,7 @@
     justify-content: center;
     width: 90%;
     height: 100%;
-    background-color: rgb(50, 54, 48);
+    background-color: rgb(25, 27, 24);
     border-radius: 10px;
     border-bottom: 1px solid rgb(141, 141, 141);
     
@@ -102,6 +102,6 @@
     cursor: pointer;
 }
 .continerdashboard-menu ul li:hover {
-    background-color: rgb(50, 54, 48);
+    background-color: rgb(25, 27, 24);
     color: rgb(208, 212, 206);
 }
