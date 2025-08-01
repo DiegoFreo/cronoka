@@ -4,6 +4,8 @@ import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
 import {UserPen, User, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal, Flag, BadgeDollarSign} from "lucide-react";
 import '../../../componets/dashboard.css';
+import '../../../componets/styles.css';
+
 
 import {
   Chart as ChartJS,
@@ -75,7 +77,7 @@ export default function AdminPage() {
   return (
       <div className="continerdashboard">
         <div className="continerdashboard-left">
-          <div className="continerdashboard-logo pb-4">
+          <div className="continerdashboard-logo">
             <img
               alt="logo"
               src="./Logo-FPMX.png"
@@ -84,15 +86,15 @@ export default function AdminPage() {
           </div>
           <div className="continerdashboard-menu pt-2">
             <ul>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center pointer "><User  className="pr-2"/>Competidores</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><UserPen  className="pr-2"/>Usuário</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><Tag className="pr-2"/>Categoria</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><SquareCheckBig className="pr-2" />Prova</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><ChartSpline className="pr-2" />Eventos</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><ClipboardList className="pr-2" />Licenças</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><Settings className="pr-2" />Configurações</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center "><Medal className="pr-2" />Modalidade</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Prova</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</Button></li>
+              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><Medal className="pr-2" />Modalidade</Button></li>
             </ul>
 
           </div>
@@ -109,8 +111,8 @@ export default function AdminPage() {
         </div>
         
         <div className="continerdashboard-right">
-          <Card className="w-45 h-full p-4 mt-4 continerdashboard-border continerdashboard-title">
-            <CardContent className="flex flex-col p-4 items-center justify-center">  
+          <Card className="w-45 h-full continerdashboard-border continerdashboard-title">
+            <CardContent className="flex flex-col items-center justify-center">  
               <h2 className="text-2xl  font-bold mb-4">Administrador</h2>
             </CardContent>
           </Card>

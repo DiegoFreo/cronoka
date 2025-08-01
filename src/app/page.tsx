@@ -28,7 +28,7 @@ export default function Home() {
 
   return (
     <>
-     <div className="content-center  content-gap-20 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+     <div className="content-center content-gap-20 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="box-sign-in p-20 ">
           
         <div className="sm:mx-auto sm:w-full flex-col flex sm:max-w-sm img-center">
