@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useState} from "react";
-import ModalCadastro from "@/componets/ModalCadastro";
+import ModalCadastro from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
 import GerenciamentoProva from "@/componets/config/prova";
 

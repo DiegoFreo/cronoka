@@ -394,17 +394,16 @@
 /* modal */
 .ka-modal{
     width: 90%;
-    top: 60px;
+    top: 10%;
     left: 50px;
     right: -50px;
-    height: 90%;
-    background-color: rgba(48, 47, 47, 0.8);
+    background-color: rgba(57, 50, 50, 0.9);
     background-image: none;
     z-index: 1;
-    position: fixed;
+    position: absolute;
     color: #fff;
     padding: 10px;
-    border: 2px solid #fff;
+    border: 2px solid rgb(255, 0, 0);
     border-radius: 20px 20px 0 0 ;
 }
 .ka-modal-header {
@@ -412,7 +411,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid rgb(255, 0, 0);
     padding-bottom: 10px;
     
 }
@@ -424,8 +423,19 @@
 .ka-modal-content {
     background-image: none;
     padding-top: 10px;
-    gap: 20;
-    
+    gap: 20;    
+}
+.ka-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 10px;
+    position: relative;
+    bottom: 0;
+    margin-top: 20px;
+    gap: 20px;
+    width: 100%;
+    border-top: 2px solid rgb(255, 0, 0);
 }
 /* Fim modal */
 /* ka-input */

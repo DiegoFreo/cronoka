@@ -1,4 +1,5 @@
 import React from "react"; 
+
 import * as icons from "react-bootstrap-icons"
 
 interface iconPros extends icons.IconProps {
@@ -9,14 +10,14 @@ export const Icon = ({ iconName, ...props }: iconPros) => {
     const IconComponent = icons[iconName];
     return <IconComponent {...props} />;
 }
-interface ModalCadastroProps {
+interface ModalProps {
     isOpen: boolean;   
     Titulo: string;
     setOpenModal: () => void;
     children: React.ReactNode;
 }
 
-export default function ModalCadastro({isOpen, Titulo, setOpenModal, children}:ModalCadastroProps) {
+export default function Modal({isOpen, Titulo, setOpenModal, children}:ModalProps) {
     if(isOpen){
         return(
             <div className="ka-modal">
@@ -30,6 +31,7 @@ export default function ModalCadastro({isOpen, Titulo, setOpenModal, children}:M
                 
             </div>
         )
+    }else{
+        return null
     }
-    return null
 }

@@ -51,6 +51,11 @@ const Piloto = () => {
                         <input className="ka-input w-100" type="text" id="tag4" placeholder="Tag 3" name="tag4" required />
                     </div>
                 </div>
+                <div className=" ka-modal-footer">
+                    <Button className="btn btn-green" onClick={()=>{}}>Salvar</Button>
+                    <Button className="btn btn-corrida-reset " onClick={()=>{}}>Cancelar</Button>                       
+                 
+                </div>
             </form>           
         </div>
     );

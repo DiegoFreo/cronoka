@@ -52,9 +52,25 @@
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
+.btn-green{
+    background-color: rgb(85, 255, 0);
+    color: rgb(3, 3, 3);
+     padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.btn-green:hover{
+    background-color: rgba(85, 255, 0, 0.8);
+    color: rgb(3, 3, 3);
+}
 .btn-corrida-reset, .bg-cronometro-pouse:hover{
     background-color: rgb(255, 0, 0);
-    color: rgb(208, 212, 206);
+    color: rgb(3, 3, 3);
     padding: 10px 20px;
     border-radius: 10px;
     display: flex;
@@ -66,7 +82,7 @@
 }
 .btn-corrida-reset:hover{
     background-color: rgba(255, 0, 0, 0.8);
-    color: rgb(208, 212, 206);
+    color: rgbrgb(3, 3, 3);
 }
 .btn-corrida:hover{
     background-color: rgb(85, 255, 0);
