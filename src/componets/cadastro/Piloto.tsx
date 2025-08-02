@@ -53,8 +53,7 @@ const Piloto = () => {
                 </div>
                 <div className=" ka-modal-footer">
                     <Button className="btn btn-green" onClick={()=>{}}>Salvar</Button>
-                    <Button className="btn btn-corrida-reset " onClick={()=>{}}>Cancelar</Button>                       
-                 
+                    <Button className="btn btn-corrida-reset " onClick={()=>{}}>Cancelar</Button>  
                 </div>
             </form>           
         </div>

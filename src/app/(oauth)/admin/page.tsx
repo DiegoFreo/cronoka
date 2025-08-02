@@ -78,8 +78,8 @@ export default function AdminPage() {
           </div>
         </div>
         
-        <div className="continerdashboard-right">
-          <Card className="w-45 h-full continerdashboard-border continerdashboard-title">
+        <div className="continerdashboard-right gap-4">
+          <Card className="w-45 mt-2 h-full continerdashboard-border continerdashboard-title">
             <CardContent className="flex flex-col items-center justify-center">  
               <h2 className="text-2xl  font-bold mb-4">Administrador</h2>
             </CardContent>
