@@ -128,7 +128,7 @@ export default function AdminPage() {
           </Card>
           <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">
-              <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
+              <MapPin className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold  mb-4">Evento</h2>              
               <p className="font-color-red">Total - 0</p>
             </CardContent>
