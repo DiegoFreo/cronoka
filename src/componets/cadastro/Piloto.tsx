@@ -5,7 +5,7 @@ const Piloto = () => {
     return (
         <div>
             <form >
-                <div className="w-100 is-flex fix">
+                <div className="w-100 is-flex fix gap-2">
                     <div className="w-50 ">
                         <label htmlFor="nome" >Nome:</label>
                         <input className="ka-input w-100" type="text" id="nome" placeholder="Nome" name="nome" required />
@@ -19,7 +19,7 @@ const Piloto = () => {
                         <input className="ka-input w-100" type="text" id="cpf" placeholder="CPF" name="cpf" required />
                     </div>
                 </div>
-                <div className="w-100 is-flex fix">
+                <div className="w-100 is-flex fix gap-2">
                     <div className="w-50 ">
                         <label htmlFor="filiacao" >Filiação:</label>
                         <input className="ka-input w-100" type="text" id="filiacao" placeholder="Filiação" name="filiacao" required />
@@ -33,7 +33,7 @@ const Piloto = () => {
                         <input className="ka-input w-100" type="text" id="equipe" placeholder="Equipe" name="equipe" required />
                     </div>
                 </div>
-                <div className="w-100 is-flex fix">
+                <div className="w-100 is-flex fix gap-2">
                     <div className="w-50 ">
                         <label htmlFor="tag1" >Tag 1:</label>
                         <input className="ka-input w-100" type="text" id="tag1" placeholder="Tag 1" name="tag1" required />
