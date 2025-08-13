@@ -540,19 +540,19 @@
     width: 100%;
     border-collapse: collapse;
     display: table;
-    border: 2px solid #fff;
+    border: 2px solid rgb(255, 0, 0);
     border-radius: 10px;
-    box-shadow: 5px 5px 5px;   
+    box-shadow: 5px 5px 5px rgb(255, 0, 0);   
 }
 .ka-table th, .ka-table  td {
     padding: 8px;
     text-align: center;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid rgb(255, 0, 0);
 }
 .scrollbar{
     height: 70vh;
     overflow: auto;
-    border: 2px solid #fff;
+    border: 2px solid rgb(255, 0, 0);
     border-radius: 10px;
 }
 

@@ -21,7 +21,10 @@ export function formatMilliseconds(totalMilliseconds: number): string {
 export const PILOT_COLORS = [
   '#FF5733', '#33FF57', '#3357FF', '#F0FF33',
   '#FF33A1', '#33FFA1', '#A133FF', '#FF9633',
-  '#8D33FF', '#33FFDA',
+  '#8D33FF', '#33FFDA', '#DA33FF', '#FF3380',
+  '#FF8C33', '#33FF8C', '#8C33FF',  '#FF3333',
+  '#33FF33', '#3333FF', '#FF33FF', '#FF5733',
+  '#33FF57', '#3357FF', '#F0FF33', '#FF33A1',
 ];
 
 export function getPilotColor(index: number): string {

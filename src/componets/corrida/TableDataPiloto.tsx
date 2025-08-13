@@ -15,7 +15,7 @@ export function PilotDataTable({ pilots }: PilotDataTableProps) {
   }
 
   return (
-    <ScrollArea className="h-[calc(100vh-380px)] md:h-[calc(100vh-320px)] rounded-md border shadow-lg">
+    <ScrollArea className="h-[calc(100vh-380px)] md:h-[calc(100vh-320px)] rounded-md border-2 shadow-lg border-red-500">
       <Table>
         <TableCaption className="text-base py-3">Dados piloto em tempo real. A tabela é atualizada automaticamente.</TableCaption>
         <TableHeader className="sticky top-0 bg-card z-10">

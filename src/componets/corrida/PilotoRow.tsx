@@ -45,7 +45,7 @@ export function PilotoRow({ piloto, rank }: PilotRowProps) {
   const displayTotalTime = formatMilliseconds(piloto.tempoTotal);
 
   return (
-    <TableRow className={`transition-colors duration-500 ${rowClass}`} aria-live="polite">
+    <TableRow className={`transition-colors border-red-500 duration-500 ${rowClass}`} aria-live="polite">
       <TableCell className="font-medium text-lg md:text-xl py-3 px-2 md:px-4 text-center">{rank}</TableCell>
       <TableCell className="font-semibold text-lg md:text-xl py-3 px-2 md:px-4 flex items-center">
         <span style={{color: piloto.cor}} className="font-bold mr-2 text-2xl">•</span>

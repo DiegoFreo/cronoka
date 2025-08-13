@@ -1,48 +1,99 @@
 'use client';
-import React from "react";
+import React,{useState, useEffect} from "react";
 import Modal from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
 import Evento from "@/componets/cadastro/evento";
+import Categoria from "@/componets/cadastro/categoria";
+import Bateria from "@/componets/cadastro/Bateria";
 import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
 import {UserPen, User, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal, Flag, BadgeDollarSign, Pi} from "lucide-react";
 import '../../../componets/dashboard.css';
 import '../../../componets/styles.css';
-
 import { useRouter } from "next/navigation";
 
+
+
+
 export default function AdminPage() {
-  const[isOpen, setIsOpen] = React.useState(false);
-  const [formModal, setFormModal] = React.useState('');
-  const [titleModal, setTitleModal] = React.useState('');
-  const router = useRouter();
+  const[isOpen, setIsOpen] = useState(false);
+  const [formModal, setFormModal] = useState('');
+  const [titleModal, setTitleModal] = useState('');
+  const [countCompetidores, setCountCompetidores] = useState(0);
+  const [countEventos, setCountEventos] = useState(0);
+  const [countCategorias, setCountCategorias] = useState(0);
+  const [countBaterias, setCountBaterias] = useState(0);
+  const [countUsuario, setCountUsuario] = useState(0);
+
+  useEffect(() => {
+    buscatPiloto();
+  }, []);
+
+  async function buscatPiloto() {
+        // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
+        // Exemplo de chamada fictícia: 
+        // const response = await api.get('/pilotos');
+        try {
+            const response = await fetch("http://localhost:3030/piloto");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar pilotos');
+            }
+            const data = await response.json();
+            setCountCompetidores(data.length);
+           
+        } catch (erro: any) {
+            console.error("Erro ao buscar pilotos:", erro);
+            alert("Erro ao buscar pilotos: " + erro.message);
+        }
+    }
+
   
-  const heandleOpenModalPiloto = () => {
+  const handleOpenModalPiloto = () => {
     setIsOpen(!isOpen);
     setTitleModal('Cadastro de Piloto');
     setFormModal('piloto');
     console.log(isOpen);
   }
-   const heandleOpenModalEvento = () => {
+   const handleOpenModalEvento = () => {
     setIsOpen(!isOpen);
     setTitleModal('Cadastro de Evento');
     setFormModal('evento');
   }
-
-  const heandleFormModal = () => {
-    if (formModal === 'piloto') {
-      return Piloto();
-    }else if (formModal === 'evento') {
-      return Evento();
-    }
+  const handleOpenModalUsuario = () => {
+    setIsOpen(!isOpen);
+    setTitleModal('Usuario');
+    setFormModal('usuario');
+  }
+  const handleOpenModalCategoria = () => {
+    setIsOpen(!isOpen);
+    setTitleModal('Categoria');
+    setFormModal('categoria');
+  }
+  const handleOpenModalBateria = () => {
+    setIsOpen(!isOpen);
+    setTitleModal('Bateria');
+    setFormModal('bateria');
   }
 
-  
+  const handleFormModal = () => {
+    if (formModal === 'piloto') {
+      return <Piloto />;
+    }else if (formModal === 'evento') {
+      return <Evento />;
+    }else if (formModal === 'usuario') {
+      return <div>Formulário de Usuario</div>;
+    }else if (formModal === 'categoria') {
+      return <Categoria />;
+    }else if (formModal === 'bateria') {
+      return <Bateria />;
+    }
+  }
+  const router = useRouter();
   
   return (
       <div className="continerdashboard">
         <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
-          {heandleFormModal() }
+          {handleFormModal() }
         </Modal>
         <div className="continerdashboard-left">
           <div className="continerdashboard-logo">
@@ -54,17 +105,16 @@ export default function AdminPage() {
           </div>
           <div className="continerdashboard-menu pt-2">
             <ul>
-              <li><Button  onClick={heandleOpenModalPiloto} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Prova</Button></li>
-              <li><Button  onClick={heandleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</Button></li>
-              <li><Button  onClick={()=>{router.push('cronometrista/cadastro/piloto')}} className="flex flex-row items-center btn"><Medal className="pr-2" />Modalidade</Button></li>
+              <li><Button  onClick={handleOpenModalPiloto} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</Button></li>
+              <li><Button  onClick={handleOpenModalUsuario} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</Button></li>
+              <li><Button  onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</Button></li>
+              <li><Button  onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</Button></li>
+              <li><Button  onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</Button></li>
+              <li><Button  onClick={()=>{}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</Button></li>
+              <li><Button  onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</Button></li>
+              <li><Button  onClick={()=>{}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</Button></li>
+              <li><Button  onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</Button></li>
             </ul>
-
           </div>
           <div className="continerdashboard-logout pt-4">
             <div className="continerdashboard-logout-perfill">
@@ -79,44 +129,44 @@ export default function AdminPage() {
         </div>
         
         <div className="continerdashboard-right gap-4">
-          <Card className="w-45 mt-2 h-full p-10 continerdashboard-border continerdashboard-title">
+          <Card className="w-45 mt-2 h-full p-10 continerdashboard-border continerdashboard-title" >
             <CardContent className="flex flex-col items-center justify-center">  
               <h2 className="text-2xl  font-bold mb-4">Administrador</h2>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
-            <CardContent className="flex flex-col items-center justify-center">              
+          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border btn" onClick={handleOpenModalUsuario}>
+            <CardContent className="flex flex-col items-center justify-center" >              
               <UserPen className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Usuário</h2>
-              <p className="font-color-red">Total - 0</p>
+              <p className="font-color-red">Total - {countUsuario}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
+          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border btn" onClick={handleOpenModalPiloto}>
             <CardContent className="flex flex-col items-center justify-center">
               <User className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Competidor</h2>
-               <p className="font-color-red">Total - 0</p>
+               <p className="font-color-red">Total - {countCompetidores}</p>
             </CardContent>
           </Card>
           <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">             
               <Trophy className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold mb-4">Eventos</h2>
-              <p className="font-color-red">Total - 0</p>
+              <p className="font-color-red">Total - {countEventos}</p>
             </CardContent>
           </Card>
            <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">
               <FolderTree className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold  mb-4">Categoria</h2>            
-              <p className="font-color-red">Total - 0</p>
+              <p className="font-color-red">Total - {countCategorias}</p>
             </CardContent>
           </Card>
           <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
             <CardContent className="flex flex-col items-center justify-center">
               <Flag className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold  mb-4">Bateria</h2>              
-              <p className="font-color-red">Total - 0</p>
+              <p className="font-color-red">Total - {countBaterias}</p>
             </CardContent>
           </Card>
           <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
@@ -130,7 +180,7 @@ export default function AdminPage() {
             <CardContent className="flex flex-col items-center justify-center">
               <MapPin className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold  mb-4">Evento</h2>              
-              <p className="font-color-red">Total - 0</p>
+              <p className="font-color-red">Total - {countEventos}</p>
             </CardContent>
           </Card>
         </div>

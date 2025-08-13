@@ -1,7 +1,11 @@
 import React from "react";
+import Button from "../ui/Buttom";
+import { useForm } from "react-hook-form";
 
 
 const Evento = () => {
+  const { register, handleSubmit} = useForm();
+  
   return (
     <div>
       <h2>Cadastro de Evento</h2>

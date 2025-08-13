@@ -171,7 +171,7 @@ export default function corrida(){
 
    const handleSimulateLap = useCallback((pilotIdToSimulate?: string) => {
     if (!isRaceRunning) {
-      toast({ title: "Race Not Started", description: "Start the race to simulate laps.", variant: "destructive" });
+      toast({ title: "Corrida não iniciada", description: "Comece a corrida para simular voltas.", variant: "destructive" });
       return;
     }
     if (pilots.length === 0) return;
@@ -193,14 +193,15 @@ export default function corrida(){
 
       const updatedPilots = prevPilots.map((pilot, index) => {
         if (index === targetPilotIndex) {
-          const rawLapTime = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // 60s to 120s
+          //const rawLapTime = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // 60s to 120s
+          const rawLapTime = Math.floor((raceTime)); // 30s to 90s
           const newLap: voltas = {
             qtVoltas: pilot.voltas.length + 1,
-            tempo: raceTimeRef.current, // Overall race time at lap completion
+            tempo: raceTime, // Overall race time at lap completion
             tempoAtual: rawLapTime, // Actual time for this specific lap
-            VoltaCompleta: Date.now(),
+            VoltaCompleta: Date.now(), // Timestamp of lap completion
           };
-          const newTotalTime = pilot.tempoTotal + rawLapTime;
+          const newTotalTime = raceTime; //pilot.tempoTotal + rawLapTime;
           const newBestLapTime = pilot.melhorVolta === null || rawLapTime < pilot.melhorVolta ? rawLapTime : pilot.melhorVolta;
 
           toast({
@@ -213,7 +214,7 @@ export default function corrida(){
             voltas: [...pilot.voltas, newLap],
             tempoTotal: newTotalTime,
             melhorVolta: newBestLapTime,
-            ultimaVolta: rawLapTime,
+            ultimaVolta: raceTime - raceTimeRef.current, // Time for the last lap
             status: 'PASSOU' as StatusPiloto,
             steutusUltamaVolta: Date.now(),
             ultimaVoltaCompleta: raceTimeRef.current, // Current race time, for next lap prediction
@@ -239,15 +240,15 @@ export default function corrida(){
     if (!isRaceRunning && Tone.context.state !== 'running') {
       Tone.start().then(() => {
          if (synthRef.current && Tone.context.state === 'running') {
-            // synthRef.current.triggerAttackRelease("C5", "8n", Tone.now() + 0.1); // Test sound
+             synthRef.current.triggerAttackRelease("C5", "8n", Tone.now() + 0.1); // Test sound
          }
       });
     }
     setIsRaceRunning(!isRaceRunning);
     if (!isRaceRunning) {
-      toast({ title: "Race Started!", description: "The timer is now running." });
+      toast({ title: "Race Started!", description: "O cronômetro está funcionando agora." });
     } else {
-      toast({ title: "Race Paused", description: "The timer is paused." });
+      toast({ title: "Race Paused", description: "O cronômetro está pausado." });
     }
   };
 
@@ -256,18 +257,18 @@ export default function corrida(){
         <Header />
         <main className="flex-grow container mx-auto px-2 py-4 md:px-4 md:py-6 space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 card">     
-                <Card className='bg-card shadow-lg'>
+                <Card className='bg-card shadow-lg border-red-500 border-2'>
                     <CardContent className='p-4 md:p-6'>
                         <PilotDataTable pilots={pilots}/>
                     </CardContent>'
                 </Card>
             </div>
         </main>
-      <footer className="text-center gap-4 py-4 text-sm text-muted-foreground border-t bg-footer flex flex-row border-border aling-center">
+      <footer className="text-center gap-4 py-4 text-sm text-muted-foreground border-t-2 bg-footer flex flex-row border-red-500 aling-center">
         
         <Button className="btn-corrida bg-cronometro " onClick={toggleRace}>{isRaceRunning ? <PauseCircle className="mr-2 h-5 w-5"/> :<PlayCircle className="mr-2 h-5 w-5"/> } {isRaceRunning ? 'Pausa': 'Início'}</Button>
         <Button className="btn-corrida-reset " onClick={resetRaceState}><RotateCcwIcon /> Resete</Button>
-        <Select className="select-corrida w-100" >
+        <Select className="select-corrida w-100 border-2 border-red-500" >
           <SelectItem value="">Selecione a Categoria</SelectItem>
           {pilots.map((pilot) => (
             <SelectItem key={pilot.id_piloto} value={pilot.id_piloto}>
@@ -275,7 +276,7 @@ export default function corrida(){
             </SelectItem>
           ))}
         </Select>
-        <Select className="select-corrida w-100" >
+        <Select className="select-corrida w-100 border-2 border-red-500" >
           <SelectItem value="">Selecione a Bateria</SelectItem>
           {pilots.map((pilot) => (
             <SelectItem key={pilot.id_piloto} value={pilot.id_piloto}>
@@ -284,10 +285,10 @@ export default function corrida(){
           ))}
         </Select>
        
-        <div className="flex justify-center items-center space-x-4 w-100 aling-height border border-border bg-cronometro rounded-md">
+        <div className="flex justify-center items-center space-x-4 w-100 aling-height border-2 border-red-500 bg-cronometro rounded-md">
             <p className="size-cronometro color-cronometro">{formatMilliseconds(raceTime)}</p>
         </div>
-         <input type="text" className="input-corrida rounded-md p-3 border border-border bg-cronometro text-center" onKeyDown={handleKeyDown} onChange={handlInpuChange} value={idPiloto} placeholder="ID Piloto" />
+         <input type="text" className="input-corrida rounded-md p-3 border-2 border-red-500 bg-cronometro text-center" onKeyDown={handleKeyDown} onChange={handlInpuChange} value={idPiloto} placeholder="ID Piloto" />
       </footer>
     </div>
     )

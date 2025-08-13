@@ -4,12 +4,9 @@ export function Header() {
       <div className="flex items-center gap-3">
        <img
             alt="logo"
-            src="./logoka.svg"
+            src="./Logo-FPMX.png"
             className="mx-auto h-15 w-auto"
-          />
-        <h1 className="text-2xl md:text-3xl font-headline font-semibold text-primary-foreground">
-          KA Informatica
-        </h1>       
+          />       
       </div>
       <div className="flex items-center gap-4">
         <h1 className="text-lg font-semibold text-primary-foreground">CATEGORIA - BATERIA</h1>
