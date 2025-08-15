@@ -1,0 +1,102 @@
+import React,{useEffect, useState} from "react";
+import Button from "../ui/Buttom";
+import { useForm } from "react-hook-form";
+import { FaTrash, FaEdit } from "react-icons/fa";
+
+interface UsuarioProps {
+  idUser: number;
+  nameUser: string;
+  emailUser: string;
+  nivelUser: string;
+}
+
+const Usuario = () => {
+  const { register, handleSubmit, reset } = useForm();
+  const [usuarios, setUsuarios] = useState<UsuarioProps[]>([]);
+
+    useEffect(() => {
+        fetchUsuarios();
+    }, []);
+
+    // Função para buscar usuários
+    const fetchUsuarios = async () => {
+        try {
+            const response = await fetch("http://localhost:3030/user");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar usuários');
+            }
+            const data = await response.json();
+            setUsuarios(data);
+        } catch (error:any) {
+            console.error("Erro ao buscar usuários:", error);
+            alert("Erro ao buscar usuários: " + error.message);
+        }
+    };
+
+    // Função para lidar com o envio do formulário
+    const onSubmit = async (data: any) => {
+        try {
+            const response = await fetch("http://localhost:3030/usuario", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok) {
+                throw new Error('Erro ao cadastrar usuário');
+            }
+            reset(); // Limpa o formulário após o envio
+            fetchUsuarios(); // Atualiza a lista de usuários
+        } catch (error:any) {
+            console.error("Erro ao cadastrar usuário:", error);
+            alert("Erro ao cadastrar usuário: " + error.message);
+        }
+    };
+
+
+  return (
+    <div className="is-flex">
+        <div className="content-form-form w-50">
+            {/* Formulário de cadastro de usuário */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="w-100">
+                <label htmlFor="nome">Nome do Usuário:</label>
+                <input {...register('nome')} type="text" className="ka-input w-100" id="nome" name="nome" required />
+                </div>
+                <div className=" ka-modal-footer">
+                <Button className="btn btn-green" onClick={handleSubmit(onSubmit)}>Salvar</Button>
+                <Button className="btn btn-corrida-reset" onClick={reset}>Limpar</Button>
+                </div>
+            </form>
+        </div>
+        <div className="p-10 w-50">   
+             <div className="scrollbar">                
+                <table border={1} className="ka-table">
+                    <thead>
+                        <tr><th colSpan={4} className="ka-table-title" >Tabela Piloto</th></tr>
+                            <tr>
+                              <th>ID</th>
+                              <th>Nome</th>
+                              <th>Editar</th>
+                              <th>Excluir</th>
+                            </tr>
+                    </thead>
+                    <tbody>
+                        {usuarios.map((usuario, index) => (
+                            <tr key={index}>
+                                <td>{usuario.idUser}</td>
+                                <td>{usuario.nameUser}</td>
+                                <td><Button className="btn btn-edit"><FaEdit /></Button></td>
+                                <td><Button className="btn btn-delete"><FaTrash /> </Button></td>
+                            </tr>
+                        ))}       
+                    </tbody>    
+                </table>
+               </div>
+           </div>
+           
+    </div>
+  );
+}
+export default Usuario;

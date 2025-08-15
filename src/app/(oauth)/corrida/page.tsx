@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/componets/ui/card';
 import {Header} from "@/componets/Header";
 import Button from "@/componets/ui/Buttom";
 import {PlayCircle, RotateCcwIcon, PauseCircle} from "lucide-react";
-import "../../../componets/stylescorrida.css";
+//import "../../../componets/stylescorrida.css";
 import { Select, SelectItem } from '@/componets/ui/select';
 
 

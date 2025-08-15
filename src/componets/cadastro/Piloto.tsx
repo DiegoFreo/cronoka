@@ -224,31 +224,31 @@ const Piloto = () => {
                 </div>
             </form>           
         </div>
-        <div className="p-10 w-50">   
-            <div className="scrollbar">                
-                 <table border={1} className="ka-table">
-                    <thead>
-                         <tr><th colSpan={4} className="ka-table-title" >Tabela Piloto</th></tr>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Número Piloto</th>
-                                <th colSpan={2}>Editar/Excluir</th>
-                            </tr>
-                    </thead>
-                    <tbody>
-                        {piloto.map((piloto, index) => (
-                            <tr key={index}>    
-                            <td>{piloto.nome}</td>
-                            <td>{piloto.numero_piloto}</td>
-                            <td><button className="component-button-black" onClick={()=>carregarDadosPiloto(piloto.id_piloto)}  ><FaEdit /></button></td>
-                            <td><button className="component-button-black" onClick={()=>excluirPiloto(piloto.id_piloto)} ><FaTrash /></button></td>
-                            </tr>
-                        ))}        
-                        
-                    </tbody>    
-                </table>
+            <div className="p-10 w-50">   
+                <div className="scrollbar">                
+                    <table border={1} className="ka-table">
+                        <thead>
+                            <tr><th colSpan={4} className="ka-table-title" >Tabela Piloto</th></tr>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Número Piloto</th>
+                                    <th colSpan={2}>Editar/Excluir</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                            {piloto.map((piloto, index) => (
+                                <tr key={index}>    
+                                <td>{piloto.nome}</td>
+                                <td>{piloto.numero_piloto}</td>
+                                <td><button className="component-button-black" onClick={()=>carregarDadosPiloto(piloto.id_piloto)}  ><FaEdit /></button></td>
+                                <td><button className="component-button-black" onClick={()=>excluirPiloto(piloto.id_piloto)} ><FaTrash /></button></td>
+                                </tr>
+                            ))}        
+                            
+                        </tbody>    
+                    </table>
+                </div>
             </div>
-        </div>
         </div>
     );
 }
