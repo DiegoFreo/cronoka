@@ -29,7 +29,7 @@ export default function AdminPage() {
   useEffect(() => {
     buscaPiloto();
     buscaCategoria();
-    buscaUsuario();
+    //buscaUsuario();
     buscaBateria();
   }, []);
 
@@ -130,7 +130,12 @@ export default function AdminPage() {
     }else if (formModal === 'evento') {
       return <Evento />;
     }else if (formModal === 'usuario') {
+      if(isOpen){
       return <Usuario />;
+      }
+      else{
+        buscaUsuario();
+      }
     }else if (formModal === 'categoria') {
       if(isOpen){
       return <Categoria />;
@@ -139,7 +144,11 @@ export default function AdminPage() {
         buscaCategoria();
       }
     }else if (formModal === 'bateria') {
+      if(isOpen){
       return <Bateria />;
+      }else{
+        buscaBateria();
+      }
     }
   }
   const router = useRouter();
