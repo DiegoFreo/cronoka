@@ -30,6 +30,7 @@ export default function AdminPage() {
     buscaPiloto();
     buscaCategoria();
     buscaUsuario();
+    buscaBateria();
   }, []);
 
   async function buscaPiloto() {
@@ -75,6 +76,19 @@ export default function AdminPage() {
         } catch (error:any) {
             console.error("Erro ao buscar usuários:", error);
             alert("Erro ao buscar usuários: " + error.message);
+        }
+    };
+    const buscaBateria = async () => {
+        try {
+            const response = await fetch("http://localhost:3030/bateria");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar baterias');
+            }
+            const data = await response.json();
+            setCountBaterias(data.length);
+        } catch (error:any) {
+            console.error("Erro ao buscar baterias:", error);
+            alert("Erro ao buscar baterias: " + error.message);
         }
     };
 
