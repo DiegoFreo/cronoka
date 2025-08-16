@@ -35,6 +35,14 @@ const Usuario = () => {
 
     // Função para lidar com o envio do formulário
     const onSubmit = async (data: any) => {
+        // Verifica se as senhas coincidem
+        if (data.senha !== data.confirmarSenha) {   
+            alert("As senhas não coincidem.");
+            return;
+        }
+        // Remove a propriedade de confirmação de senha antes de enviar
+        delete data.confirmarSenha
+
         try {
             const response = await fetch("http://localhost:3030/usuario", {
                 method: "POST",
@@ -60,10 +68,36 @@ const Usuario = () => {
         <div className="content-form-form w-50">
             {/* Formulário de cadastro de usuário */}
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="w-100">
-                <label htmlFor="nome">Nome do Usuário:</label>
-                <input {...register('nome')} type="text" className="ka-input w-100" id="nome" name="nome" required />
+                <div className="w-100 flex is-flex-wrap-wrap">
+                    <div className="w-50">
+                        <label htmlFor="nome">Nome do Usuário:</label>
+                        <input {...register('nome')} type="text" className="ka-input w-100" id="nome" name="nome" required />
+                    </div>
+                    <div className="w-50">
+                        <label htmlFor="email">Email:</label>  
+                        <input {...register('email')} type="email" className="ka-input w-100" id="email" name="email" required />
+                    </div>
                 </div>
+                <div className="w-100">                   
+                        <label htmlFor="nivel">Nível de Acesso:</label>
+                        <select {...register('nivel')} className="ka-input w-100" id="nivel" name="nivel" required>
+                            <option value="">Selecione</option>
+                            <option value="A">Administrador</option>
+                            <option value="S">Secretaria</option>
+                            <option value="C">Cronometrista</option>
+                        </select>
+                </div>
+                <div className="w-100 flex is-flex-wrap-wrap">
+                    <div className="w-50">
+                        <label htmlFor="senha">Senha:</label>
+                        <input {...register('senha')} type="password" className="ka-input w-100" id="senha" name="senha" required />
+                    </div>
+                    <div className="w-50">
+                        <label htmlFor="confirmarSenha">Confirmar Senha:</label>
+                        <input {...register('confirmarSenha')} type="password" className="ka-input w-100" id="confirmarSenha" name="confirmarSenha" required />
+                    </div>
+                </div>
+                
                 <div className=" ka-modal-footer">
                 <Button className="btn btn-green" onClick={handleSubmit(onSubmit)}>Salvar</Button>
                 <Button className="btn btn-corrida-reset" onClick={reset}>Limpar</Button>

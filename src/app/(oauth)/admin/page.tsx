@@ -29,7 +29,7 @@ export default function AdminPage() {
   useEffect(() => {
     buscaPiloto();
     buscaCategoria();
-    //buscaUsuario();
+    buscaUsuario();
     buscaBateria();
   }, []);
 
@@ -162,21 +162,21 @@ export default function AdminPage() {
           <div className="continerdashboard-logo">
             <img
               alt="logo"
-              src="./Logo-FPMX.png"
+              src="./FPMX-logo.png"
               className="mx-auto h-15 w-auto"
             />
           </div>
           <div className="continerdashboard-menu pt-2">
             <ul>
-              <li><Button  onClick={handleOpenModalPiloto} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</Button></li>
-              <li><Button  onClick={handleOpenModalUsuario} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</Button></li>
-              <li><Button  onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</Button></li>
-              <li><Button  onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</Button></li>
-              <li><Button  onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</Button></li>
-              <li><Button  onClick={()=>{}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</Button></li>
-              <li><Button  onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</Button></li>
-              <li><Button  onClick={()=>{}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</Button></li>
-              <li><Button  onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</Button></li>
+              <li onClick={handleOpenModalPiloto} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
+              <li onClick={handleOpenModalUsuario} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
+              <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
+              <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
+              <li onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
+              <li onClick={()=>{}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
+              <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
+              <li onClick={()=>{}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
+              <li onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
             </ul>
           </div>
           <div className="continerdashboard-logout pt-4">

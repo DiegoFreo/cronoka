@@ -4,8 +4,8 @@ export function Header() {
       <div className="flex items-center gap-3">
        <img
             alt="logo"
-            src="./Logo-FPMX.png"
-            className="mx-auto h-15 w-auto"
+            src="./FPMX-logo.png"
+            className="mx-auto h-15 w-40"
           />       
       </div>
       <div className="flex items-center gap-4">
