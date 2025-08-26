@@ -139,7 +139,7 @@ const Evento = () => {
             <label htmlFor="descricao_evento">Descrição:</label>
             <textarea className="ka-input w-100" id="descricao_evento" {...register("descricao_evento")} value={descricaoEvento} onChange={handleChangeDescricaoEvento} required />
           </div>
-          <div className="w-100 flex is-flex-wrap-wrap">
+          <div className="w-100 flex is-flex-wrap-wrap gap-10">
             <div className="w-100">
               <label htmlFor="data_inicio">Data de Início:</label>
               <input type="date" className="ka-input w-100" id="data_inicio" {...register("data_inicio")} value={dataInicio} onChange={handleChangeDataInicio} required />
