@@ -12,7 +12,18 @@ import {UserPen, User, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpl
 import '../../../componets/dashboard.css';
 import '../../../componets/styles.css';
 import { useRouter } from "next/navigation";
+import { set } from "react-hook-form";
+import { count } from "console";
+import { Time } from "tone/build/esm/core/type/Units";
 
+interface EventoProps {
+  nome_evento: string;
+  descricao_evento: string;
+  data_inicio: string;
+  data_fim: Date;
+  local_evento: string;
+  hora_evento: Time;
+}
 
 
 
@@ -25,13 +36,47 @@ export default function AdminPage() {
   const [countCategorias, setCountCategorias] = useState(0);
   const [countBaterias, setCountBaterias] = useState(0);
   const [countUsuario, setCountUsuario] = useState(0);
+  const [countProximosEventos, setCountProximosEventos] = useState(0);
 
   useEffect(() => {
     buscaPiloto();
     buscaCategoria();
     buscaUsuario();
     buscaBateria();
+    buscaEventos();
   }, []);
+
+  async function buscaEventos() {
+        try {
+            const response = await fetch("http://localhost:3030/evento");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar eventos');
+            }
+            const data = await response.json();
+            setCountEventos(data.length);
+            if(data.length > 0){
+                data.forEach((evento: EventoProps) => {
+                   const dataInicio = new Date(evento.data_inicio);
+                   const dataFim = new Date(evento.data_fim);
+                   const hoje = new Date();
+                   if (hoje >= dataInicio && hoje <= dataFim) {
+                    setCountProximosEventos(countProximosEventos + 1);
+                    alert(`Evento em andamento: ${dataInicio}`);      
+                    
+                  }
+                                  
+                });
+            }
+               
+                
+               /*
+                */
+            
+        } catch (error:any) {
+            console.error("Erro ao buscar eventos:", error);
+            alert("Erro ao buscar eventos: " + error.message);
+        }
+    }
 
   async function buscaPiloto() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
@@ -192,58 +237,58 @@ export default function AdminPage() {
         </div>
         
         <div className="continerdashboard-right gap-4">
-          <Card className="w-45 mt-2 h-full p-10 continerdashboard-border continerdashboard-title" >
+          <Card className="w-45 mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
             <CardContent className="flex flex-col items-center justify-center">  
               <h2 className="text-2xl  font-bold mb-4">Administrador</h2>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border btn" onClick={handleOpenModalUsuario}>
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalUsuario}>
             <CardContent className="flex flex-col items-center justify-center" >              
               <UserPen className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold mb-4">Usuário</h2>
+              <h2 className="text-2xl font-bold text-center mb-4">Usuário</h2>
               <p className="font-color-red">Total - {countUsuario}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border btn" onClick={handleOpenModalPiloto}>
+          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalPiloto}>
             <CardContent className="flex flex-col items-center justify-center">
               <User className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold mb-4">Competidor</h2>
+              <h2 className="text-2xl font-bold text-center mb-4">Competidor</h2>
                <p className="font-color-red">Total - {countCompetidores}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
+          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
             <CardContent className="flex flex-col items-center justify-center">             
               <Trophy className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold mb-4">Eventos</h2>
+              <h2 className="text-2xl font-bold text-center mb-4">Eventos</h2>
               <p className="font-color-red">Total - {countEventos}</p>
             </CardContent>
           </Card>
-           <Card className="w-45 h-full p-10 mt-4 continerdashboard-border btn" onClick={handleOpenModalCategoria}>
+           <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalCategoria}>
             <CardContent className="flex flex-col items-center justify-center">
               <FolderTree className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold  mb-4">Categoria</h2>            
+              <h2 className="text-2xl font-bold text-center mb-4">Categoria</h2>            
               <p className="font-color-red">Total - {countCategorias}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border btn" onClick={handleOpenModalBateria}>
+          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalBateria}>
             <CardContent className="flex flex-col items-center justify-center">
               <Flag className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold  mb-4">Bateria</h2>              
+              <h2 className="text-2xl font-bold text-center mb-4">Bateria</h2>              
               <p className="font-color-red">Total - {countBaterias}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
+          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
             <CardContent className="flex flex-col items-center justify-center">
               <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold  mb-4">Licenças</h2>              
+              <h2 className="text-2xl font-bold text-center mb-4">Licenças</h2>              
               <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
-          <Card className="w-45 h-full p-10 mt-4 continerdashboard-border">
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
             <CardContent className="flex flex-col items-center justify-center">
               <MapPin className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold  mb-4">Evento</h2>              
-              <p className="font-color-red">Total - {countEventos}</p>
+              <h2 className="text-2xl font-bold text-center mb-4">Proximo Evento</h2>              
+              <p className="font-color-red">Total - {countProximosEventos}</p>
             </CardContent>
           </Card>
         </div>

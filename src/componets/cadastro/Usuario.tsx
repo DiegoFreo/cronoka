@@ -8,11 +8,13 @@ interface UsuarioProps {
   nameUser: string;
   emailUser: string;
   nivelUser: string;
+  avatarUser?: Blob;
 }
 
 const Usuario = () => {
   const { register, handleSubmit, reset } = useForm();
   const [usuarios, setUsuarios] = useState<UsuarioProps[]>([]);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
     useEffect(() => {
         fetchUsuarios();
@@ -32,11 +34,24 @@ const Usuario = () => {
             alert("Erro ao buscar usuários: " + error.message);
         }
     };
+    const handleChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                // Aqui você pode fazer algo com a imagem, como exibi-la ou enviá-la para o servidor
+                setSelectedImage(file);
+                // Se você quiser enviar a imagem para o servidor, pode fazer isso aqui
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 
     // Função para lidar com o envio do formulário
     const onSubmit = async (data: any) => {
         // Verifica se as senhas coincidem
-        if (data.senha !== data.confirmarSenha) {   
+        if (data.passworUser !== data.confirmarSenha) {   
             alert("As senhas não coincidem.");
             return;
         }
@@ -44,7 +59,7 @@ const Usuario = () => {
         delete data.confirmarSenha
 
         try {
-            const response = await fetch("http://localhost:3030/usuario", {
+            const response = await fetch("http://localhost:3030/user", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,6 +70,7 @@ const Usuario = () => {
                 throw new Error('Erro ao cadastrar usuário');
             }
             reset(); // Limpa o formulário após o envio
+            setSelectedImage(null); // Limpa a imagem selecionada
             fetchUsuarios(); // Atualiza a lista de usuários
         } catch (error:any) {
             console.error("Erro ao cadastrar usuário:", error);
@@ -70,17 +86,17 @@ const Usuario = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="w-100 flex is-flex-wrap-wrap">
                     <div className="w-50">
-                        <label htmlFor="nome">Nome do Usuário:</label>
-                        <input {...register('nome')} type="text" className="ka-input w-100" id="nome" name="nome" required />
+                        <label htmlFor="nameUser">Nome do Usuário:</label>
+                        <input {...register('nameUser')} type="text" className="ka-input w-100" id="nameUser" name="nameUser" required />
                     </div>
                     <div className="w-50">
-                        <label htmlFor="email">Email:</label>  
-                        <input {...register('email')} type="email" className="ka-input w-100" id="email" name="email" required />
+                        <label htmlFor="emailUser">Email:</label>  
+                        <input {...register('emailUser')} type="emailUser" className="ka-input w-100" id="emailUser" name="emailUser" required />
                     </div>
                 </div>
                 <div className="w-100">                   
-                        <label htmlFor="nivel">Nível de Acesso:</label>
-                        <select {...register('nivel')} className="ka-input w-100" id="nivel" name="nivel" required>
+                        <label htmlFor="nivelUser">Nível de Acesso:</label>
+                        <select {...register('nivelUser')} className="ka-input w-100" id="nivelUser" name="nivelUser" required>
                             <option value="">Selecione</option>
                             <option value="A">Administrador</option>
                             <option value="S">Secretaria</option>
@@ -89,13 +105,23 @@ const Usuario = () => {
                 </div>
                 <div className="w-100 flex is-flex-wrap-wrap">
                     <div className="w-50">
-                        <label htmlFor="senha">Senha:</label>
-                        <input {...register('senha')} type="password" className="ka-input w-100" id="senha" name="senha" required />
+                        <label htmlFor="passworUser">Senha:</label>
+                        <input {...register('passworUser')} type="password" className="ka-input w-100" id="passworUser" name="passworUser" required />
                     </div>
                     <div className="w-50">
                         <label htmlFor="confirmarSenha">Confirmar Senha:</label>
                         <input {...register('confirmarSenha')} type="password" className="ka-input w-100" id="confirmarSenha" name="confirmarSenha" required />
                     </div>
+                </div>
+                <div className="w-100 flex is-flex-wrap-wrap">
+                    <label htmlFor="avatarUser">
+                        {selectedImage ? (
+                            <img src={URL.createObjectURL(selectedImage)} alt="Preview" className="img_avatar" />
+                        ) : (
+                            <span className="ka-avatar-placeholder">Selecione uma imagem</span>
+                        )}
+                        <input {...register('avatarUser')} type="file" className="ka-input w-100 input_oculta" id="avatarUser" onChange={handleChangeImage} name="avatarUser" accept="image/*" />
+                    </label>
                 </div>
                 
                 <div className=" ka-modal-footer">

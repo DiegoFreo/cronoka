@@ -29,6 +29,7 @@ const PRE_LAP_WARNING_SECONDS = 15; // 15 seconds before expected lap
 export default function corrida(){
     const [pilots, setPilots] = useState<Piloto[]>([]);
     const [raceTime, setRaceTime] = useState(0);
+    const [ultimaVolta, setUltimaVolta] = useState<number>(0);
     const [isRaceRunning, setIsRaceRunning] = useState(false);
     const raceTimeRef = useRef<number>(0); // Ref to hold current race time for accurate lap capture
     const { toast } = useToast();
@@ -198,23 +199,27 @@ export default function corrida(){
           const newLap: voltas = {
             qtVoltas: pilot.voltas.length + 1,
             tempo: raceTime, // Overall race time at lap completion
-            tempoAtual: rawLapTime, // Actual time for this specific lap
+            tempoAtual: ultimaVolta, //rawLapTime, // Actual time for this specific lap
             VoltaCompleta: Date.now(), // Timestamp of lap completion
           };
           const newTotalTime = raceTime; //pilot.tempoTotal + rawLapTime;
-          const newBestLapTime = pilot.melhorVolta === null || rawLapTime < pilot.melhorVolta ? rawLapTime : pilot.melhorVolta;
+          const UTV = pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : 0;
+          const newBestLapTime = pilot.melhorVolta === null || ultimaVolta < pilot.melhorVolta ? ultimaVolta : pilot.melhorVolta ; // Update best lap time if this lap is better
+          
 
           toast({
             title: `Lap ${newLap.qtVoltas} for ${pilot.nome}!`,
             description: `Time: ${String(Math.floor(rawLapTime % 1000)).padStart(3, '0')}.${Math.floor(rawLapTime / 1000)}s`,
           });
+          setUltimaVolta ( raceTime - UTV); // Calculate last lap time based on current
+          
           
           return {
             ...pilot,
             voltas: [...pilot.voltas, newLap],
             tempoTotal: newTotalTime,
             melhorVolta: newBestLapTime,
-            ultimaVolta: raceTime - raceTimeRef.current, // Time for the last lap
+            ultimaVolta: ultimaVolta,//raceTime - raceTimeRef.current, // Time for the last lap
             status: 'PASSOU' as StatusPiloto,
             steutusUltamaVolta: Date.now(),
             ultimaVoltaCompleta: raceTimeRef.current, // Current race time, for next lap prediction
