@@ -6,6 +6,7 @@ import Evento from "@/componets/cadastro/evento";
 import Categoria from "@/componets/cadastro/categoria";
 import Bateria from "@/componets/cadastro/Bateria";
 import Usuario from "@/componets/cadastro/Usuario";
+import ConfiguracaoEventos from "@/componets/cadastro/ConfiguracaoEventos";
 import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
 import {UserPen, User, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal, Flag, BadgeDollarSign, Pi} from "lucide-react";
@@ -136,6 +137,20 @@ export default function AdminPage() {
             alert("Erro ao buscar baterias: " + error.message);
         }
     };
+    const buscaConfiguracaoEvento = async () => {
+        try {
+            const response = await fetch("http://localhost:3030/configuracao_eventos");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar configurações de eventos');
+            }
+            const data = await response.json();
+            // Aqui você pode fazer algo com os dados buscados, como armazená-los em um estado
+            console.log(data);
+        } catch (error:any) {
+            console.error("Erro ao buscar configurações de eventos:", error);
+            alert("Erro ao buscar configurações de eventos: " + error.message);
+        }
+    };
 
   
   const handleOpenModalPiloto = () => {
@@ -163,6 +178,11 @@ export default function AdminPage() {
     setIsOpen(!isOpen);
     setTitleModal('Bateria');
     setFormModal('bateria');
+  }
+  const handleConfiguracaoEventos = () => {
+    setIsOpen(!isOpen);
+    setTitleModal('Configuração de Eventos');
+    setFormModal('configuracaoeventos');
   }
 
   const handleFormModal = () => {
@@ -194,6 +214,13 @@ export default function AdminPage() {
       }else{
         buscaBateria();
       }
+    }else if (formModal === 'configuracaoeventos') {
+      if(isOpen){
+      return <ConfiguracaoEventos />;
+      }
+      else{
+        buscaConfiguracaoEvento();
+      }
     }
   }
   const router = useRouter();
@@ -220,7 +247,7 @@ export default function AdminPage() {
               <li onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
+              <li onClick={handleConfiguracaoEventos} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
               <li onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
             </ul>
           </div>
@@ -256,7 +283,7 @@ export default function AdminPage() {
                <p className="font-color-red">Total - {countCompetidores}</p>
             </CardContent>
           </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
+          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalEvento}>
             <CardContent className="flex flex-col items-center justify-center">             
               <Trophy className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Eventos</h2>

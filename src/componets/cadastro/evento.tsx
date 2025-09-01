@@ -18,6 +18,7 @@ interface EventoProps {
 const Evento = () => {
   const { register, handleSubmit, reset} = useForm();
   const [eventos, setEventos] = useState<EventoProps[]>([]);
+  const [idEvento, setIdEvento] = useState<number | null >(0);
   const [nomeEvento, setNomeEvento] = useState<string>("");
   const [descricaoEvento, setDescricaoEvento] = useState<string>("");
   const [dataInicio, setDataInicio] = useState<string>("");
@@ -48,11 +49,32 @@ const Evento = () => {
   const handleChangeHoraEvento = (event: React.ChangeEvent<HTMLInputElement>) => {
     setHoraEvento(event.target.value);
   }
+  function clearForm() {
+    setNomeEvento("");
+    setDescricaoEvento("");
+    setDataInicio("");
+    setDataFim("");
+    setLocalEvento("");
+    setHoraEvento("");
+    reset();
+  }
   // Função para lidar com o envio do formulário
     
   const onSubmit = async (data: any) => {
     
     try {
+      if(eventos.map(evento => evento.id_evento === idEvento).includes(true)){
+        const Evt = {
+          nome_evento: nomeEvento,
+          descricao_evento: descricaoEvento,
+          data_inicio: dataInicio,
+          data_fim: dataFim,
+          local_evento: localEvento,
+          hora_evento: horaEvento
+        }
+        
+          updateEvento (idEvento!, Evt );
+      }else{
       const response = await fetch("http://localhost:3030/evento", {
         method: "POST",
         headers: {
@@ -68,7 +90,8 @@ const Evento = () => {
       alert("Evento cadastrado com sucesso!");
       fetchEventos(); // Atualiza a lista de eventos após o cadastro
       reset(); // Limpa o formulário após o envio
-    } catch (error:any) {
+    } 
+  }catch (error:any) {
       console.error("Erro ao cadastrar evento:", error);
       alert("Erro ao cadastrar evento: " + error.message);
     }
@@ -78,6 +101,7 @@ const Evento = () => {
    function carregaDadosEventos(id: number){
     eventos.map((evento) => {
       if(evento.id_evento === id){
+        setIdEvento(evento.id_evento);
         setNomeEvento(evento.nome_evento);
         setDescricaoEvento(evento.descricao_evento);        
         const datiniFormatada = new Date(evento.data_inicio);
@@ -89,6 +113,25 @@ const Evento = () => {
       }
     })
   }
+  //Funcionalidade de Excluir evento
+  const deleteEvento = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:3030/evento/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao excluir evento");
+      }
+
+      alert("Evento excluído com sucesso!");
+      fetchEventos(); // Atualiza a lista de eventos após a exclusão
+    } catch (error:any) {
+      console.error("Erro ao excluir evento:", error);
+      alert("Erro ao excluir evento: " + error.message);
+    }
+  }
+
   // Função para buscar eventos
   const fetchEventos = async () => {
     try {
@@ -120,6 +163,7 @@ const Evento = () => {
 
       alert("Evento atualizado com sucesso!");
       fetchEventos(); // Atualiza a lista de eventos após a atualização
+      clearForm();
     } catch (error:any) {
       console.error("Erro ao atualizar evento:", error);
       alert("Erro ao atualizar evento: " + error.message);
@@ -161,7 +205,7 @@ const Evento = () => {
           
           <div className="ka-modal-footer">
           <Button className="btn btn-green" onClick={handleSubmit(onSubmit)}>Salvar</Button>
-          <Button className="btn btn-corrida-reset" onClick={reset}>Limpar</Button>
+          <Button className="btn btn-corrida-reset" onClick={clearForm}>Limpar</Button>
           </div>
       </form>
       </div>
@@ -188,7 +232,7 @@ const Evento = () => {
                     </Button>
                   </td>
                   <td>
-                    <Button className="btn btn-delete">
+                    <Button className="btn btn-delete" onClick={() => deleteEvento(evento.id_evento)}>
                       <FaTrash />
                     </Button>
                   </td>
