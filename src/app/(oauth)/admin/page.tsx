@@ -1,5 +1,6 @@
 'use client';
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect, useContext} from "react";
+import { AuthContext } from "@/contexts/AuthContexts";
 import Modal from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
 import Evento from "@/componets/cadastro/evento";
@@ -46,6 +47,7 @@ export default function AdminPage() {
     buscaBateria();
     buscaEventos();
   }, []);
+  const {logout} = useContext(AuthContext);
 
   async function buscaEventos() {
         try {
@@ -139,7 +141,7 @@ export default function AdminPage() {
     };
     const buscaConfiguracaoEvento = async () => {
         try {
-            const response = await fetch("http://localhost:3030/configuracao_eventos");
+            const response = await fetch("http://localhost:3030/evento");
             if (!response.ok) {
                 throw new Error('Erro ao buscar configurações de eventos');
             }
@@ -253,7 +255,7 @@ export default function AdminPage() {
           </div>
           <div className="continerdashboard-logout pt-4">
             <div className="continerdashboard-logout-perfill">
-              <Button className="bg-cronometro btn-corrida">Sair</Button>
+              <Button className="bg-cronometro btn-corrida" onClick={logout}>Sair</Button>
               <img
                 alt="perfil"
                 src="https://github.com/jmarioasilva.png"

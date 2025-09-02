@@ -8,6 +8,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   users: UserType | null;
   signIn: (credentials: SignInCredentials) => Promise<void>;
+  logout: () => void;
 }
 interface SignInCredentials {
     emailUser: string;
@@ -23,12 +24,13 @@ interface UserType {
 }
 export const AuthContext = createContext({} as AuthContextType);
 
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   
   const [users, setUser] = useState<UserType | null>(null);
   const isAuthenticated = !!users; // Verifica se o usuário está autenticado
   const router = useRouter();
-  
+
   useEffect(() => {
       const {'cronometro-token': token} = parseCookies();
       console.log("Usuario: "+token);
@@ -82,9 +84,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
   
+ function logout() {
+    destroyCookie(null, 'cronometro-token', { path: './' });
+    setUser(null);
+    router.push('/'); // Redireciona para a página de login após o logout
+  }
        
   return (
-    <AuthContext.Provider value={{users, isAuthenticated, signIn}}>
+    <AuthContext.Provider value={{users, isAuthenticated, signIn, logout}}>
       {children}
     </AuthContext.Provider>
   );

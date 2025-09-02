@@ -12,6 +12,21 @@ export interface Bateria{
     nome: string;
     pilotos: Piloto[];
 };
+export interface Categoria{
+    id_categoria: string;
+    nome: string;
+    baterias: Bateria[];
+};
+export interface Evento{
+    id_evento: string;
+    nome: string;
+    descricao: string;
+    data_inicio: string;
+    data_fim: string;
+    local: string;
+    hora: string;
+    categorias: Categoria[];
+};
 
 export interface Piloto{
     id_piloto: string;
