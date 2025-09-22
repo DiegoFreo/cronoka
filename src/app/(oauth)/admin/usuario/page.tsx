@@ -36,7 +36,7 @@ const UsuarioPage = () => {
         // Exemplo de chamada fictícia: 
         // const response = await api.get('/pilotos');
         try {
-            const response = await fetch("http://localhost:3030/user");
+            const response = await fetch("http://localhost:3030/api/usuario");
             if (!response.ok) {
                 throw new Error('Erro ao buscar pilotos');
             }
@@ -75,7 +75,7 @@ const UsuarioPage = () => {
       console.log("Dados do usuário:", userData);
       // Aqui você pode fazer uma chamada à API para salvar os dados do usuário
       try{
-      const response = fetch("http://localhost:3030/user", {
+      const response = fetch("http://localhost:3030/api/usuario", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -169,7 +169,7 @@ const UsuarioPage = () => {
                       <div className="scrollbar">                
                       <table border={1} className="ka-table">
                           <thead>
-                              <tr><th colSpan={5} className="ka-table-title" >Tabela Piloto</th></tr>
+                              <tr><th colSpan={5} className="ka-table-title" >Tabela Usuários</th></tr>
                               <tr>
                                   <th>Nome</th>
                                   <th>Email</th>

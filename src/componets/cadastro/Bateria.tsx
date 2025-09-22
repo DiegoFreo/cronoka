@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface BateriaProps {
-  id_bateria: number;
+  _id: number;
   nome: string;
 }
 
@@ -17,7 +17,7 @@ const Bateria = () => {
   // Função para buscar baterias
   const fetchBaterias = async () => {
     try {
-      const response = await fetch("http://localhost:3030/bateria");
+      const response = await fetch("http://localhost:3030/api/bateria");
       if (!response.ok) {
         throw new Error('Erro ao buscar baterias');
       }
@@ -31,7 +31,7 @@ const Bateria = () => {
   // Função para lidar com o envio do formulário
   const onSubmit = async (data: any) => {
     try {
-      const response = await fetch("http://localhost:3030/bateria", {
+      const response = await fetch("http://localhost:3030/api/bateria", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +80,7 @@ const Bateria = () => {
                     <tbody>
                         {baterias.map((bateria, index) => (
                             <tr key={index}>
-                                <td>{bateria.id_bateria}</td>
+                                <td>{bateria._id}</td>
                                 <td>{bateria.nome}</td>
                                 <td><Button className="btn btn-edit"><FaEdit/></Button></td>
                                 <td><Button className="btn btn-delete"><FaTrash /></Button></td>

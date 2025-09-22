@@ -5,7 +5,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 
 interface Piloto {
-    id_piloto: number;
+    _id: number;
     nome: string;
     numero_piloto: string;
     cpf: string;
@@ -58,7 +58,7 @@ const Piloto = () => {
         // Exemplo de chamada fictícia: 
         // const response = await api.get('/pilotos');
         try {
-            const response = await fetch("http://localhost:3030/piloto");
+            const response = await fetch("http://localhost:3030/api/piloto");
             if (!response.ok) {
                 throw new Error('Erro ao buscar pilotos');
             }
@@ -72,8 +72,8 @@ const Piloto = () => {
     }
     function carregarDadosPiloto(id: number) {
         piloto.forEach((Piloto) => {
-            if (Piloto.id_piloto === id) {
-                setIdPiloto(Piloto.id_piloto);
+            if (Piloto._id === id) {
+                setIdPiloto(Piloto._id);
                 setNmPiloto(Piloto.nome);
                 setNumeroPiloto(Piloto.numero_piloto);
                 setCPFPiloto(Piloto.cpf);
@@ -100,7 +100,7 @@ const Piloto = () => {
         // Exemplo de chamada fictícia: 
         // await api.delete(`/pilotos/${id}`); 
         try {
-            const response = await fetch(`http://localhost:3030/piloto/${id}`, {
+            const response = await fetch(`http://localhost:3030/api/piloto/${id}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {
@@ -122,7 +122,7 @@ const Piloto = () => {
         // await api.post('/pilotos', { nome, npiloto, cpf });
                 
         try{
-        if(piloto.map(p=> p.id_piloto === idPiloto).includes(true)){
+        if(piloto.map(p=> p._id === idPiloto).includes(true)){
             const nome = nmPiloto;
             const numero_piloto = numeroPiloto;
             const cpf = CPFPiloto;
@@ -131,7 +131,7 @@ const Piloto = () => {
             const tag_rfid_3 = tag3Piloto || null;
             const tag_rfid_4 = tag4Piloto || null;
            
-        const response = await fetch(`http://localhost:3030/piloto/${idPiloto}`, {
+        const response = await fetch(`http://localhost:3030/api/piloto/${idPiloto}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const Piloto = () => {
     } else{
         const { nome, numero_piloto, cpf, tag_rfid_1 } = data;
         
-        const response = await fetch("http://localhost:3030/piloto", {
+        const response = await fetch("http://localhost:3030/api/piloto", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -184,37 +184,37 @@ const Piloto = () => {
                     <div className="w-100 is-flex fix">
                         <div className="w-100 ">
                             <label htmlFor="nome" >Nome:</label>
-                            <input {...register('nome')} className="ka-input w-100" value={nmPiloto} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required />
+                            <input {...register('nome')} className="ka-input w-100" value={nmPiloto ?? ''} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required />
                         </div>                        
                     </div>
                     <div className="w-100 is-flex fix">
                         <div className="w-100 ">
                             <label htmlFor="numero_piloto">Número Piloto:</label>
-                            <input {...register('numero_piloto')} className="ka-input w-100" value={numeroPiloto} onChange={handleChangeNumeroPiloto} type="text" id="numero_piloto" placeholder="Numero do piloto" name="numero_piloto" required />
+                            <input {...register('numero_piloto')} className="ka-input w-100" value={numeroPiloto ?? ''} onChange={handleChangeNumeroPiloto} type="text" id="numero_piloto" placeholder="Numero do piloto" name="numero_piloto" required />
                         </div>
                         <div className="w-100 ">
                             <label htmlFor="cpf">CPF:</label>
-                            <input {...register('cpf')} className="ka-input w-100"  type="text" value={CPFPiloto} onChange={handleChangeCPFPiloto} id="cpf" placeholder="CPF" name="cpf" required />
+                            <input {...register('cpf')} className="ka-input w-100"  type="text" value={CPFPiloto ?? ''} onChange={handleChangeCPFPiloto} id="cpf" placeholder="CPF" name="cpf" required />
                         </div>
                     </div>
                      <div className="w-100 is-flex fix">
                         <div className="w-100 ">
                             <label htmlFor="tag_rfid_1">TAG 1:</label>
-                            <input {...register('tag_rfid_1')} className="ka-input w-100"  type="text" value={tag1Piloto} onChange={handleChangeTag1Piloto} id="tag_rfid_1" placeholder="tag_rfid_1" name="tag_rfid_1" required />
+                            <input {...register('tag_rfid_1')} className="ka-input w-100"  type="text" value={tag1Piloto ?? ''} onChange={handleChangeTag1Piloto} id="tag_rfid_1" placeholder="tag_rfid_1" name="tag_rfid_1" required />
                         </div>
                         <div className="w-100 ">
                             <label htmlFor="tag_rfid_2">TAG 2:</label>
-                            <input {...register('tag_rfid_2')} className="ka-input w-100"  type="text" value={tag2Piloto} onChange={handleChangeTag2Piloto} id="tag_rfid_2" placeholder="tag_rfid_2" name="tag_rfid_2" />
+                            <input {...register('tag_rfid_2')} className="ka-input w-100"  type="text" value={tag2Piloto ?? ''} onChange={handleChangeTag2Piloto} id="tag_rfid_2" placeholder="tag_rfid_2" name="tag_rfid_2" />
                         </div>
                      </div>
                      <div className="w-100 is-flex fix">
                         <div className="w-100 ">
                             <label htmlFor="tag_rfid_3">TAG 3:</label>
-                            <input {...register('tag_rfid_3')} className="ka-input w-100"  type="text"value={tag3Piloto} onChange={handleChangeTag3Piloto} id="tag_rfid_3" placeholder="tag_rfid_3" name="tag_rfid_3" />
+                            <input {...register('tag_rfid_3')} className="ka-input w-100"  type="text"value={tag3Piloto ?? ''} onChange={handleChangeTag3Piloto} id="tag_rfid_3" placeholder="tag_rfid_3" name="tag_rfid_3" />
                         </div>
                         <div className="w-100 ">
                             <label htmlFor="tag_rfid_4">TAG 4:</label>
-                            <input {...register('tag_rfid_4')} className="ka-input w-100"  type="text" value={tag4Piloto} onChange={handleChangeTag4Piloto} id="tag_rfid_4" placeholder="tag_rfid_4" name="tag_rfid_4" />
+                            <input {...register('tag_rfid_4')} className="ka-input w-100"  type="text" value={tag4Piloto ?? ''} onChange={handleChangeTag4Piloto} id="tag_rfid_4" placeholder="tag_rfid_4" name="tag_rfid_4" />
                         </div>
                      </div>
                 <div className=" ka-modal-footer">
@@ -240,8 +240,8 @@ const Piloto = () => {
                                 <tr key={index}>    
                                 <td>{piloto.nome}</td>
                                 <td>{piloto.numero_piloto}</td>
-                                <td><button className="component-button-black" onClick={()=>carregarDadosPiloto(piloto.id_piloto)}  ><FaEdit /></button></td>
-                                <td><button className="component-button-black" onClick={()=>excluirPiloto(piloto.id_piloto)} ><FaTrash /></button></td>
+                                <td><button className="component-button-black" onClick={()=>carregarDadosPiloto(piloto._id)}  ><FaEdit /></button></td>
+                                <td><button className="component-button-black" onClick={()=>excluirPiloto(piloto._id)} ><FaTrash /></button></td>
                                 </tr>
                             ))}        
                             

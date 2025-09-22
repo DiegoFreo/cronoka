@@ -75,7 +75,7 @@ const Evento = () => {
         
           updateEvento (idEvento!, Evt );
       }else{
-      const response = await fetch("http://localhost:3030/evento", {
+      const response = await fetch("http://localhost:3030/api/evento", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -116,7 +116,7 @@ const Evento = () => {
   //Funcionalidade de Excluir evento
   const deleteEvento = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:3030/evento/${id}`, {
+      const response = await fetch(`http://localhost:3030/api/evento/${id}`, {
         method: "DELETE",
       });
 
@@ -135,7 +135,7 @@ const Evento = () => {
   // Função para buscar eventos
   const fetchEventos = async () => {
     try {
-      const response = await fetch("http://localhost:3030/evento");
+      const response = await fetch("http://localhost:3030/api/evento");
       if (!response.ok) {
         throw new Error('Erro ao buscar eventos');
       }
@@ -149,7 +149,7 @@ const Evento = () => {
   //funcção assíncrona para atualizar evento
   const updateEvento = async (id: number, updatedData: Partial<EventoProps>) => {
     try {
-      const response = await fetch(`http://localhost:3030/evento/${id}`, {
+      const response = await fetch(`http://localhost:3030/api/evento/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

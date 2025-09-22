@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
     // Aqui você implementaria a lógica de autenticação, como uma chamada à API
     // Por exemplo:
-    const {token, user}= await fetch( "http://localhost:3030/login", {
+    const {token, usuario}= await fetch( "http://localhost:3030/api/usuario/login", {
       method: 'POST',
       body: JSON.stringify({emailUser, passworUser}),
       headers: {'Content-Type': 'application/json'} ,   
@@ -62,18 +62,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       path: './',      
     });
     
-    setUser(user);  
-    console.log('Usuário autenticado:', user);
+    setUser(usuario);  
+    console.log('Usuário autenticado:', usuario);
     
       // Redireciona para a página de dashboard ou outra página após o login
-      if(user?.nivelUser === 'A')  {
+      if(usuario?.nivelUser === 'A')  {
           router.push('/admin'); // Redireciona para a página de admin
-        }else if(user?.nivelUser === 'C') {
+        }else if(usuario?.nivelUser === 'C') {
         router.push ('/cronometrista');   
-        }else if(user?.nivelUser === 'S') {
+        }else if(usuario?.nivelUser === 'S') {
           router.push('/secretaria'); 
         }else{
-          alert('Nível de usuário não reconhecido'+ user?.nivelUser);
+          alert('Nível de usuário não reconhecido'+ usuario?.nivelUser);
           return;
         } 
     }

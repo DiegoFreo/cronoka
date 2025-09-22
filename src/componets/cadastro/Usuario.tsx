@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
 interface UsuarioProps {
-  idUser: number;
+  _id: number;
   nameUser: string;
   emailUser: string;
   nivelUser: string;
-  avatarUser?: Blob;
+  avatarUser?: string;
 }
 
 const Usuario = () => {
@@ -23,7 +23,13 @@ const Usuario = () => {
     // Função para buscar usuários
     const fetchUsuarios = async () => {
         try {
-            const response = await fetch("http://localhost:3030/user");
+            const response = await fetch("http://localhost:3030/api/usuario",{
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
             if (!response.ok) {
                 throw new Error('Erro ao buscar usuários');
             }
@@ -42,7 +48,7 @@ const Usuario = () => {
             reader.onloadend = () => {
                 // Aqui você pode fazer algo com a imagem, como exibi-la ou enviá-la para o servidor
                 setSelectedImage(file);
-                // Se você quiser enviar a imagem para o servidor, pode fazer isso aqui
+                register('avatarUser', { value: URL.createObjectURL(file) });
             };
             reader.readAsDataURL(file);
         }
@@ -57,9 +63,10 @@ const Usuario = () => {
         }
         // Remove a propriedade de confirmação de senha antes de enviar
         delete data.confirmarSenha
+        console.log("Dados do usuário para envio:", data);
 
         try {
-            const response = await fetch("http://localhost:3030/user", {
+            const response = await fetch("http://localhost:3030/api/usuario", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -120,7 +127,7 @@ const Usuario = () => {
                         ) : (
                             <span className="ka-avatar-placeholder">Selecione uma imagem</span>
                         )}
-                        <input {...register('avatarUser')} type="file" className="ka-input w-100 input_oculta" id="avatarUser" onChange={handleChangeImage} name="avatarUser" accept="image/*" />
+                        <input  type="text" className="ka-input w-100 input_oculta" id="avatarUser" onChange={handleChangeImage} name="avatarUser" accept="image/*" />
                     </label>
                 </div>
                 
@@ -134,7 +141,7 @@ const Usuario = () => {
              <div className="scrollbar">                
                 <table border={1} className="ka-table">
                     <thead>
-                        <tr><th colSpan={4} className="ka-table-title" >Tabela Piloto</th></tr>
+                        <tr><th colSpan={4} className="ka-table-title" >Tabela Usuários</th></tr>
                             <tr>
                               <th>ID</th>
                               <th>Nome</th>
@@ -145,7 +152,7 @@ const Usuario = () => {
                     <tbody>
                         {usuarios.map((usuario, index) => (
                             <tr key={index}>
-                                <td>{usuario.idUser}</td>
+                                <td>{usuario._id}</td>
                                 <td>{usuario.nameUser}</td>
                                 <td><Button className="btn btn-edit"><FaEdit /></Button></td>
                                 <td><Button className="btn btn-delete"><FaTrash /> </Button></td>

@@ -38,6 +38,7 @@ export default function AdminPage() {
   const [countCategorias, setCountCategorias] = useState(0);
   const [countBaterias, setCountBaterias] = useState(0);
   const [countUsuario, setCountUsuario] = useState(0);
+  const imgUser = useContext(AuthContext).users;
   const [countProximosEventos, setCountProximosEventos] = useState(0);
 
   useEffect(() => {
@@ -46,12 +47,13 @@ export default function AdminPage() {
     buscaUsuario();
     buscaBateria();
     buscaEventos();
+    console.log(imgUser?.avatarUser);
   }, []);
   const {logout} = useContext(AuthContext);
 
   async function buscaEventos() {
         try {
-            const response = await fetch("http://localhost:3030/evento");
+            const response = await fetch("http://localhost:3030/api/evento");
             if (!response.ok) {
                 throw new Error('Erro ao buscar eventos');
             }
@@ -86,7 +88,7 @@ export default function AdminPage() {
         // Exemplo de chamada fictícia: 
         // const response = await api.get('/pilotos');
         try {
-            const response = await fetch("http://localhost:3030/piloto");
+            const response = await fetch("http://localhost:3030/api/piloto");
             if (!response.ok) {
                 throw new Error('Erro ao buscar pilotos');
             }
@@ -100,7 +102,7 @@ export default function AdminPage() {
     }
     async function buscaCategoria() {
         try {
-            const response = await fetch("http://localhost:3030/categoria");
+            const response = await fetch("http://localhost:3030/api/categoria");
             if (!response.ok) {
                 throw new Error('Erro ao buscar categorias');
             }
@@ -115,12 +117,14 @@ export default function AdminPage() {
 
     const buscaUsuario = async () => {
         try {
-            const response = await fetch("http://localhost:3030/user");
+            const response = await fetch("http://localhost:3030/api/usuario");
             if (!response.ok) {
                 throw new Error('Erro ao buscar usuários');
             }
             const data = await response.json();
             setCountUsuario(data.length);
+            
+            
         } catch (error:any) {
             console.error("Erro ao buscar usuários:", error);
             alert("Erro ao buscar usuários: " + error.message);
@@ -128,7 +132,7 @@ export default function AdminPage() {
     };
     const buscaBateria = async () => {
         try {
-            const response = await fetch("http://localhost:3030/bateria");
+            const response = await fetch("http://localhost:3030/api/bateria");
             if (!response.ok) {
                 throw new Error('Erro ao buscar baterias');
             }
@@ -141,7 +145,7 @@ export default function AdminPage() {
     };
     const buscaConfiguracaoEvento = async () => {
         try {
-            const response = await fetch("http://localhost:3030/evento");
+            const response = await fetch("http://localhost:3030/api/evento");
             if (!response.ok) {
                 throw new Error('Erro ao buscar configurações de eventos');
             }
@@ -258,7 +262,7 @@ export default function AdminPage() {
               <Button className="bg-cronometro btn-corrida" onClick={logout}>Sair</Button>
               <img
                 alt="perfil"
-                src="https://github.com/jmarioasilva.png"
+                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.svg"}
                 className="mx-auto h-15 w-auto"
               />
             </div>

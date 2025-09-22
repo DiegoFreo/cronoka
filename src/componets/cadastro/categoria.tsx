@@ -19,7 +19,7 @@ const Categoria = () => {
   // Função para buscar categorias (simulação)
   const fetchCategorias = async () => {
     try {
-      const response = await fetch("http://localhost:3030/categoria");
+      const response = await fetch("http://localhost:3030/api/categoria");
       if (!response.ok) {
         throw new Error('Erro ao buscar categorias');
       }
@@ -34,7 +34,7 @@ const Categoria = () => {
   // Função para lidar com o envio do formulário
   async function handleFormSubmit(data: any) {
     try {
-      const response = await fetch("http://localhost:3030/categoria", {
+      const response = await fetch("http://localhost:3030/api/categoria", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

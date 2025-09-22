@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import * as Tone from 'tone';
-import type { voltas, StatusPiloto, Piloto } from '@/lib/type';
+import type { voltas, StatusPiloto, Piloto, Bateria, Categoria } from '@/lib/type';
 import { PilotDataTable } from '@/componets/corrida/TableDataPiloto';
 import { getPilotColor, formatMilliseconds } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
@@ -35,18 +35,21 @@ export default function corrida(){
     const { toast } = useToast();
     const [idPiloto, setIdPiloto]= useState<string>('');
     const[pilotos, setPilotos] = useState<Piloto[]>([]);
-    const[bateria, setBaterias] = useState<number>(0);
+    const[bateria, setBaterias] = useState<Bateria[]>([]);
+    const[categoria, setCategoria] = useState<Categoria[]>([]);
     const synthRef = useRef<Tone.Synth | null>(null);
 
      useEffect(() => {
       // Carregar pilotos do servidor quando o componente for montado
       loadPiloto();
+      loadBateria();
+      loadCategoria();
     }, []);
 
     // carrega os pilotos do servidor
     async function loadPiloto(){
       try {
-        const response = await fetch("http://localhost:3030/piloto");
+        const response = await fetch("http://localhost:3030/api/piloto");
         if (!response.ok) {
           throw new Error('Failed to fetch pilots');
         }
@@ -72,6 +75,35 @@ export default function corrida(){
         toast({ title: "Error", description: "Failed to load pilots from the server.", variant: "destructive" });
       }
     }
+
+    // buscar as bateria do servidor
+    async function loadBateria(){
+      try {
+        const response = await fetch("http://localhost:3030/api/bateria");
+        if (!response.ok) {
+          throw new Error('Failed to fetch bateria');
+        }
+        const data = await response.json();
+        setBaterias(data);
+      }catch (error) {
+        console.error("Falha ao carregar a bateria:", error);
+        toast({ title: "Error", description: "Failed to load bateria from the server.", variant: "destructive" });
+      }
+    }
+    //busca as categorias do servidor
+    async function loadCategoria(){
+      try {
+        const response = await fetch("http://localhost:3030/api/categoria");
+        if (!response.ok) {
+          throw new Error('Failed to fetch categoria');
+        }
+        const data = await response.json();
+        setCategoria(data);
+      }catch (error) {
+        console.error("Falha ao carregar a categoria:", error);
+        toast({ title: "Error", description: "Failed to load categoria from the server.", variant: "destructive" });
+      }
+    }     
    
 
     useEffect(() => {
@@ -187,7 +219,7 @@ export default function corrida(){
     
     setPilots(prevPilots => {
       const targetPilotIndex = pilotIdToSimulate 
-        ? prevPilots.findIndex(p => p.id_piloto === pilotIdToSimulate)
+        ? prevPilots.findIndex(p => p.numero_piloto === pilotIdToSimulate)
         : Math.floor(Math.random() * prevPilots.length);
       
       if (targetPilotIndex === -1) return prevPilots;
@@ -275,25 +307,26 @@ export default function corrida(){
         <Button className="btn-corrida-reset " onClick={resetRaceState}><RotateCcwIcon /> Resete</Button>
         <Select className="select-corrida w-100 border-2 border-red-500" >
           <SelectItem value="">Selecione a Categoria</SelectItem>
-          {pilots.map((pilot) => (
-            <SelectItem key={pilot.id_piloto} value={pilot.id_piloto}>
-              {pilot.nome} 
-            </SelectItem>
-          ))}
+          {categoria.map((cat, key) => (
+              <SelectItem key={key} value={cat.nome}>
+                {cat.nome} 
+              </SelectItem>
+            ))}
         </Select>
         <Select className="select-corrida w-100 border-2 border-red-500" >
           <SelectItem value="">Selecione a Bateria</SelectItem>
-          {pilots.map((pilot) => (
-            <SelectItem key={pilot.id_piloto} value={pilot.id_piloto}>
-              {pilot.nome} 
+         {bateria.map((bat, key) => (
+            <SelectItem key={key} value={bat.nome}>
+              {bat.nome} 
             </SelectItem>
           ))}
+
         </Select>
        
         <div className="flex justify-center items-center space-x-4 w-100 aling-height border-2 border-red-500 bg-cronometro rounded-md">
             <p className="size-cronometro color-cronometro">{formatMilliseconds(raceTime)}</p>
         </div>
-         <input type="text" className="input-corrida rounded-md p-3 border-2 border-red-500 bg-cronometro text-center" onKeyDown={handleKeyDown} onChange={handlInpuChange} value={idPiloto} placeholder="ID Piloto" />
+         <input type="text" className="input-corrida rounded-md p-3 border-2 border-red-500 bg-cronometro text-center" onKeyDown={handleKeyDown} onChange={handlInpuChange} value={idPiloto} placeholder="Piloto" />
       </footer>
     </div>
     )
