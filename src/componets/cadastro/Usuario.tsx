@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React,{use, useEffect, useState} from "react";
 import Button from "../ui/Buttom";
 import { useForm } from "react-hook-form";
 import { FaTrash, FaEdit } from "react-icons/fa";
@@ -14,7 +14,16 @@ interface UsuarioProps {
 const Usuario = () => {
   const { register, handleSubmit, reset } = useForm();
   const [usuarios, setUsuarios] = useState<UsuarioProps[]>([]);
+  const [idUser, setIdUser] = useState<number | null>(null);
+  const [nomeUser, setNomeUser] = useState("");
+  const [emailUser, setEmailUser] = useState("")
+  const [nivelUser, setNivelUser] = useState('');
+  const [avatarUser, setAvatarUser] = useState("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  const handleChangeNomeUser = (e:any)=>{
+    setNomeUser(e.target.value);
+  }
 
     useEffect(() => {
         fetchUsuarios();
@@ -23,7 +32,7 @@ const Usuario = () => {
     // Função para buscar usuários
     const fetchUsuarios = async () => {
         try {
-            const response = await fetch("http://localhost:3030/api/usuario",{
+            const response = await fetch("https://apicronoka.vercel.app/api/usuario",{
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -66,7 +75,8 @@ const Usuario = () => {
         console.log("Dados do usuário para envio:", data);
 
         try {
-            const response = await fetch("http://localhost:3030/api/usuario", {
+           
+            const response = await fetch("https://apicronoka.vercel.app/api/usuario", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -85,6 +95,18 @@ const Usuario = () => {
         }
     };
 
+    function carregaUsuario(id: number){
+        usuarios.forEach((user)=>{
+            if(user._id === id){
+                setIdUser(user._id);
+                setNomeUser(user.nameUser);
+                setEmailUser(user.emailUser);
+                setNivelUser(user.nivelUser);
+                setAvatarUser(user.avatarUser || "");
+            }
+        });
+    };
+
 
   return (
     <div className="is-flex">
@@ -94,7 +116,7 @@ const Usuario = () => {
                 <div className="w-100 flex is-flex-wrap-wrap">
                     <div className="w-50">
                         <label htmlFor="nameUser">Nome do Usuário:</label>
-                        <input {...register('nameUser')} type="text" className="ka-input w-100" id="nameUser" name="nameUser" required />
+                        <input {...register('nameUser')} type="text" value={nomeUser ?? ""} onChange={handleChangeNomeUser} className="ka-input w-100" id="nameUser" name="nameUser" required />
                     </div>
                     <div className="w-50">
                         <label htmlFor="emailUser">Email:</label>  
@@ -154,7 +176,7 @@ const Usuario = () => {
                             <tr key={index}>
                                 <td>{usuario._id}</td>
                                 <td>{usuario.nameUser}</td>
-                                <td><Button className="btn btn-edit"><FaEdit /></Button></td>
+                                <td><Button className="btn btn-edit" onClick={()=>carregaUsuario(usuario._id)}><FaEdit /></Button></td>
                                 <td><Button className="btn btn-delete"><FaTrash /> </Button></td>
                             </tr>
                         ))}       

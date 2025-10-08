@@ -4,6 +4,7 @@ import { createContext } from "react";
 import {setCookie, parseCookies, destroyCookie}from 'nookies'
 import { useRouter } from 'next/navigation';
 
+
 interface AuthContextType {
   isAuthenticated: boolean;
   users: UserType | null;
@@ -45,8 +46,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
     // Aqui você implementaria a lógica de autenticação, como uma chamada à API
     // Por exemplo:
-    const {token, usuario}= await fetch( "http://localhost:3030/api/usuario/login", {
-      method: 'POST',
+    const {token, usuario}= await fetch( "/api/usuario", {
+      method: 'LOGIN',
       body: JSON.stringify({emailUser, passworUser}),
       headers: {'Content-Type': 'application/json'} ,   
     }).then((response) => {

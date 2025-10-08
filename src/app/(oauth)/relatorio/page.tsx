@@ -251,7 +251,7 @@ export default function AdminPage() {
               <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
               <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
               <li onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
-              <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
+              <li onClick={()=>{}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
               <li onClick={handleConfiguracaoEventos} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
               <li onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
@@ -269,61 +269,17 @@ export default function AdminPage() {
           </div>
         </div>
         
-        <div className="continerdashboard-right gap-4">
-          <Card className="w-45 mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
-            <CardContent className="flex flex-col items-center justify-center">  
-              <h2 className="text-2xl  font-bold mb-4">Administrador</h2>
-            </CardContent>
-          </Card>
-          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalUsuario}>
-            <CardContent className="flex flex-col items-center justify-center" >              
-              <UserPen className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold text-center mb-4">Usuário</h2>
-              <p className="font-color-red">Total - {countUsuario}</p>
-            </CardContent>
-          </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalPiloto}>
-            <CardContent className="flex flex-col items-center justify-center">
-              <User className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold text-center mb-4">Competidor</h2>
-               <p className="font-color-red">Total - {countCompetidores}</p>
-            </CardContent>
-          </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalEvento}>
-            <CardContent className="flex flex-col items-center justify-center">             
-              <Trophy className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold text-center mb-4">Eventos</h2>
-              <p className="font-color-red">Total - {countEventos}</p>
-            </CardContent>
-          </Card>
-           <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalCategoria}>
-            <CardContent className="flex flex-col items-center justify-center">
-              <FolderTree className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold text-center mb-4">Categoria</h2>            
-              <p className="font-color-red">Total - {countCategorias}</p>
-            </CardContent>
-          </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalBateria}>
-            <CardContent className="flex flex-col items-center justify-center">
-              <Flag className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold text-center mb-4">Bateria</h2>              
-              <p className="font-color-red">Total - {countBaterias}</p>
-            </CardContent>
-          </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
-            <CardContent className="flex flex-col items-center justify-center">
-              <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold text-center mb-4">Licenças</h2>              
-              <p className="font-color-red">Total - 0</p>
-            </CardContent>
-          </Card>
-          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
-            <CardContent className="flex flex-col items-center justify-center">
-              <MapPin className="w-20 h-20 mb-2 mt-2 font-bold" />
-              <h2 className="text-2xl font-bold text-center mb-4">Proximo Evento</h2>              
-              <p className="font-color-red">Total - {countProximosEventos}</p>
-            </CardContent>
-          </Card>
+        <div className="continerdashboard-right">
+            <Card className="w-45 mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
+               <CardContent className="flex flex-col items-center justify-center">  
+                  <h2 className="text-2xl  font-bold mb-4">Relatórios</h2>
+                </CardContent>
+            </Card>
+            <Card className="w-45 mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-80" >
+               <CardContent className="flex flex-col items-center justify-center">  
+                  <h2 className="text-2xl  font-bold mb-4">Em desenvolvimento...</h2>
+                </CardContent>
+            </Card>
         </div>
       </div>
   );

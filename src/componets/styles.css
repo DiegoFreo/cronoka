@@ -581,3 +581,10 @@
 .input_oculta{
     display: none;
 }
+.ka-title-relatorio{
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    color: rgb(208, 212, 206);
+}
