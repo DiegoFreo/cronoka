@@ -57,20 +57,4 @@ export async function DELETE(request) {
     return NextResponse.json({ error: err.message }, { status: 500 });
     }
 }
-export async function LOGIN(request) {
-   
-    try{
-    await conectDb();
-    const req = await request.json();
-    const res = {
-        status: (status) => ({
-            json: (data) => NextResponse.json(data, { status }),
-        }),
-    };
-    return loginUsuario(req, res);
-}    catch(err){
-    console.log(err)
-    return NextResponse.json({ error: err.message }, { status: 500 });
-}
-    
-}
+
