@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import conectDb from '../../../lib/mongodb';
-import Tag from '../../model/tag';
-import { criarTag, listarTags, atualizarTag, deletarTag } from  '../../controller/tagController';   
+import Tag from '../../model/tags';
+import { criarTag, listarTags, atualizarTag, deletarTag } from  '../../controller/tagsController';   
 
 export async function POST(request) {
     try{
