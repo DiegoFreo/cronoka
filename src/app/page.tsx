@@ -1,7 +1,7 @@
 'use client';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { AuthContext } from '@/contexts/AuthContexts';
+import { AuthContext } from '@/contexts/AuthContext';
 import '@/componets/styles.css';
 import '@/componets/stylescorrida.css';
 

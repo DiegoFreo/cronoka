@@ -1,6 +1,6 @@
 'use client';
 import React,{useState, useEffect, useContext} from "react";
-import { AuthContext } from "@/contexts/AuthContexts";
+import { AuthContext } from "@/contexts/AuthContext";
 import Modal from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
 import Evento from "@/componets/cadastro/evento";
@@ -53,7 +53,7 @@ export default function AdminPage() {
 
   async function buscaEventos() {
         try {
-            const response = await fetch("http://localhost:3030/api/evento");
+            const response = await fetch("/api/evento");
             if (!response.ok) {
                 throw new Error('Erro ao buscar eventos');
             }
@@ -88,7 +88,7 @@ export default function AdminPage() {
         // Exemplo de chamada fictícia: 
         // const response = await api.get('/pilotos');
         try {
-            const response = await fetch("http://localhost:3030/api/piloto");
+            const response = await fetch("/api/piloto");
             if (!response.ok) {
                 throw new Error('Erro ao buscar pilotos');
             }
@@ -102,7 +102,7 @@ export default function AdminPage() {
     }
     async function buscaCategoria() {
         try {
-            const response = await fetch("http://localhost:3030/api/categoria");
+            const response = await fetch("/api/categoria");
             if (!response.ok) {
                 throw new Error('Erro ao buscar categorias');
             }
@@ -117,7 +117,7 @@ export default function AdminPage() {
 
     const buscaUsuario = async () => {
         try {
-            const response = await fetch("http://localhost:3030/api/usuario");
+            const response = await fetch("/api/usuario");
             if (!response.ok) {
                 throw new Error('Erro ao buscar usuários');
             }
@@ -132,7 +132,7 @@ export default function AdminPage() {
     };
     const buscaBateria = async () => {
         try {
-            const response = await fetch("http://localhost:3030/api/bateria");
+            const response = await fetch("/api/bateria");
             if (!response.ok) {
                 throw new Error('Erro ao buscar baterias');
             }
@@ -145,7 +145,7 @@ export default function AdminPage() {
     };
     const buscaConfiguracaoEvento = async () => {
         try {
-            const response = await fetch("http://localhost:3030/api/evento");
+            const response = await fetch("/api/evento");
             if (!response.ok) {
                 throw new Error('Erro ao buscar configurações de eventos');
             }

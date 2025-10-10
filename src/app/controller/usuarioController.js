@@ -1,5 +1,4 @@
 import Usuario from '../model/usuario';
-import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import conectDb from '../../lib/mongodb';
 
@@ -33,7 +32,7 @@ export async function atualizarUsuario(req, res) {
         await conectDb();
         const usuarioAtualizado = await Usuario.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!usuarioAtualizado) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
+            return {status:404, error: 'Usuário não encontrado' };
         }
         res.status(200).json(usuarioAtualizado);
     } catch (err) {
@@ -53,22 +52,37 @@ export async function deletarUsuario(req, res) {
         res.status(500).json({ error: err.message });
     }
 }
-export async function loginUsuario(req, res) {
+export async function loginUsuario(dados) {
     try {
         await conectDb();
-        const {emailUser, passworUser } = req.body;
-
+        const {emailUser, passworUser } = dados;
+        
         const usuario = await Usuario.findOne({emailUser, passworUser});
         if (!usuario) {
-            return res.status(401).json({ error: 'Credenciais inválidas' });
+            return {status:401,  error: 'Credenciais inválidas' };
         }
-        const token = jwt.sign({ id: usuario._id, nivelUser: usuario.nivelUser }, jwtSecret, { expiresIn: '5h' });
+        
+        // Gerar um token JWT
+        const token = jwt.sign({ id: usuario._id, nivelUser: usuario.nivelUser }, jwtSecret, { expiresIn: '6h' });
+        
         // Você pode retornar o token se estiver usando autenticação baseada em token
-
-        return res.status(200).json({ message: 'Login bem-sucedido', usuario, token });
+        //return {status:200, message: 'Login bem-sucedido', usuario, token };
+        return {
+            status: 200,
+            data: {
+                message: 'Login bem-sucedido',
+                usuario: {
+                    idUser: usuario._id,
+                    nameUser: usuario.nameUser,
+                    emailUser: usuario.emailUser,
+                    nivelUser: usuario.nivelUser,
+                    },
+                token,
+            },
+        };
         
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        return {status:500, error: err.message };
     }
 }
 
