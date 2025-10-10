@@ -1,4 +1,4 @@
-import Tag from '../model/tag.js';
+import Tag from '../model/tags.js';
 
 // Criar uma nova tag
 export async function criarTag(req, res) {
@@ -20,7 +20,7 @@ export async function listarTags(req, res) {
     }
 }
 // Atualizar uma tag
-async function atualizarTag(req, res) {
+export async function atualizarTag(req, res) {
     try {
         const tagAtualizada = await Tag.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!tagAtualizada) {
