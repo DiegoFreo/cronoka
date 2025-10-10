@@ -1,22 +1,51 @@
 import { NextResponse } from "next/server";
-import conectDB from '../../../../lib/mongodb';
-import {loginUsuario } from  '../../../controller/usuarioController';
+import jwt from "jsonwebtoken";
+import conectDb from "@/lib/mongodb";
+import Usuario from "../../../model/usuario"
 
 export async function POST(request) {
-    try{
-    
-    //await conectDB();
-    const dados = await request.json();
-    const result = await loginUsuario(dados);
+  try {
+    await conectDb();
+    const { emailUser, passworUser } = await request.json();
 
-    if(result.error){
-        return NextResponse.json({ error: result.error }, { status: result.status });
-    }
-    
-    return NextResponse.json(result, { status: result.status });
-    
-    }catch(err){
+    const usuario = await Usuario.findOne({ emailUser, passworUser });
 
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    if (!usuario) {
+      return NextResponse.json(
+        { error: "Credenciais inválidas" },
+        { status: 401 }
+      );
     }
+
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) throw new Error("JWT_SECRET não configurado");
+
+    const token = jwt.sign(
+      {
+        idUser: usuario._id,
+        nivelUser: usuario.nivelUser,
+        nameUser: usuario.nameUser,
+      },
+      jwtSecret,
+      { expiresIn: "6h" }
+    );
+
+    return NextResponse.json(
+      {
+        data: {
+          token,
+          usuario: {
+            _id: usuario._id,
+            nameUser: usuario.nameUser,
+            emailUser: usuario.emailUser,
+            nivelUser: usuario.nivelUser,
+          },
+        },
+      },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error("Erro no login:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
 }

@@ -72,10 +72,6 @@ export default function AdminPage() {
                                   
                 });
             }
-               
-                
-               /*
-                */
             
         } catch (error:any) {
             console.error("Erro ao buscar eventos:", error);

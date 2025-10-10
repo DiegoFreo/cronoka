@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       setUser(usuario);
-      console.log("Usuário autenticado:", users?.nivelUser);
+      
 
       // ✅ Redireciona conforme o nível
         if (usuario?.nivelUser === "A") router.push("/admin");
