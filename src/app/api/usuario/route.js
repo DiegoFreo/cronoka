@@ -29,13 +29,14 @@ export async function PUT(request) {
     try{
     await conectDb();
     const req = await request.json();
-    req.params = { id: req.id };    
+    req.params = { id: req.id };
     const res = {
         status: (status) => ({
             json: (data) => NextResponse.json(data, { status }),    
         }),
     };
-    return atualizarUsuario(req, res);
+    const AtUser = atualizarUsuario(req, res);
+    return NextResponse.json(AtUser);
 }    catch(err){
     console.log(err)
     return NextResponse.json({ error: err.message }, { status: 500 });
