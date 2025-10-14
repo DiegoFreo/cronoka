@@ -25,6 +25,7 @@ export async function POST(request) {
         idUser: usuario._id,
         nivelUser: usuario.nivelUser,
         nameUser: usuario.nameUser,
+        emailUser: usuario.emailUser,
       },
       jwtSecret,
       { expiresIn: "6h" }
@@ -32,14 +33,12 @@ export async function POST(request) {
 
     return NextResponse.json(
       {
-        data: {
-          token,
-          usuario: {
-            _id: usuario._id,
-            nameUser: usuario.nameUser,
-            emailUser: usuario.emailUser,
-            nivelUser: usuario.nivelUser,
-          },
+        token,
+        usuario: {
+          _id: usuario._id,
+          nameUser: usuario.nameUser,
+          emailUser: usuario.emailUser,
+          nivelUser: usuario.nivelUser,
         },
       },
       { status: 200 }

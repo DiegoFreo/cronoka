@@ -7,7 +7,7 @@ export default function CronometristaLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <RequireAuth>  
+    <RequireAuth>
             {children}
     </RequireAuth>
   );

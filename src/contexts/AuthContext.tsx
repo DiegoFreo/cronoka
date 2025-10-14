@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const isAuthenticated = !!users;
   const router = useRouter();
 
-  // ✅ Verifica o token quando o app inicia
+  // ✅ Verifica o token ao carregar a aplicação
   useEffect(() => {
     const { "cronometro-token": token } = parseCookies();
 
@@ -47,7 +47,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         if (res.ok) {
           const data = await res.json();
-          
           setUser(data.usuario);
           console.log("Usuário validado:", data.usuario);
         } else {
@@ -62,9 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     validarToken();
-  }, []);
+  }, [router]);
 
-  // ✅ Função de login
+  // ✅ Login
   async function signIn({ emailUser, passworUser }: SignInCredentials) {
     try {
       const response = await fetch("/api/usuario/login", {
@@ -74,38 +73,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        alert("Erro ao fazer login, verifique os dados informados");
+        alert("Erro ao fazer login. Verifique os dados informados.");
         throw new Error("Erro ao fazer login");
       }
 
-      const data = await response.json();
-      const {token, usuario } = data.data;
-      
-      console.log("Login bem-sucedido, token recebido:",usuario,  token);
-      
-      // ✅ Salva o token e o usuário
+      // Agora o backend retorna { token, usuario } (sem data.data)
+      const { token, usuario } = await response.json();
+
+      console.log("Login bem-sucedido:", usuario);
+      console.log("Token recebido:", token);
+
+      // ✅ Salva o token no cookie
       setCookie(null, "cronometro-token", token, {
-        maxAge: 60 * 60 * 6,
+        maxAge: 60 * 60 * 6, // 6 horas
         path: "/",
       });
 
+      // ✅ Atualiza o usuário localmente
       setUser(usuario);
-      
 
       // ✅ Redireciona conforme o nível
-        if (usuario?.nivelUser === "A") router.push("/admin");
-        else if (usuario?.nivelUser === "C") router.push("/cronometrista");
-        else if (usuario?.nivelUser === "S") router.push("/secretaria");
-        else alert("Nível de usuário não reconhecido");
-      
+      if (usuario.nivelUser === "A") {
+        console.log("🔹 Redirecionando para /admin");
+        router.push("/admin");
+      } else if (usuario.nivelUser === "C") {
+        console.log("🔹 Redirecionando para /cronometrista");
+        router.push("/cronometrista");
+      } else if (usuario.nivelUser === "S") {
+        console.log("🔹 Redirecionando para /secretaria");
+        router.push("/secretaria");
+      } else {
+        alert("Nível de usuário não reconhecido.");
+      }
     } catch (error) {
       alert("Erro ao redirecionar após o login");
       console.error("Erro ao redirecionar após o login:", error);
     }
-    
   }
 
-  // ✅ Função de logout
+  // ✅ Logout
   function logout() {
     destroyCookie(null, "cronometro-token", { path: "/" });
     setUser(null);

@@ -1,6 +1,6 @@
 'use client';
 import React,{useState, useEffect, useContext} from "react";
-import { AuthContext } from "@/contexts/AuthContext";
+//import { AuthContext } from "@/contexts/AuthContext";
 import Modal from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
 import Evento from "@/componets/cadastro/evento";
@@ -14,8 +14,6 @@ import {UserPen, User, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpl
 import '../../../componets/dashboard.css';
 import '../../../componets/styles.css';
 import { useRouter } from "next/navigation";
-import { set } from "react-hook-form";
-import { count } from "console";
 import { Time } from "tone/build/esm/core/type/Units";
 
 interface EventoProps {
@@ -38,7 +36,7 @@ export default function AdminPage() {
   const [countCategorias, setCountCategorias] = useState(0);
   const [countBaterias, setCountBaterias] = useState(0);
   const [countUsuario, setCountUsuario] = useState(0);
-  const imgUser = useContext(AuthContext).users;
+ // const imgUser = useContext(AuthContext).users;
   const [countProximosEventos, setCountProximosEventos] = useState(0);
 
   useEffect(() => {
@@ -47,9 +45,9 @@ export default function AdminPage() {
     buscaUsuario();
     buscaBateria();
     buscaEventos();
-    console.log(imgUser?.avatarUser);
+    //console.log(imgUser?.avatarUser);
   }, []);
-  const {logout} = useContext(AuthContext);
+  // {logout} = useContext(AuthContext);
 
   async function buscaEventos() {
         try {
@@ -255,10 +253,10 @@ export default function AdminPage() {
           </div>
           <div className="continerdashboard-logout pt-4">
             <div className="continerdashboard-logout-perfill">
-              <Button className="bg-cronometro btn-corrida" onClick={logout}>Sair</Button>
+              <Button className="bg-cronometro btn-corrida" onClick={()=>{}}>Sair</Button>
               <img
                 alt="perfil"
-                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.svg"}
+                //src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.svg"}
                 className="mx-auto h-15 w-auto"
               />
             </div>
