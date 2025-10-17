@@ -49,7 +49,7 @@ export default function corrida(){
     // carrega os pilotos do servidor
     async function loadPiloto(){
       try {
-        const response = await fetch("http://localhost:3030/api/piloto");
+        const response = await fetch("/api/piloto");
         if (!response.ok) {
           throw new Error('Failed to fetch pilots');
         }
@@ -79,7 +79,7 @@ export default function corrida(){
     // buscar as bateria do servidor
     async function loadBateria(){
       try {
-        const response = await fetch("http://localhost:3030/api/bateria");
+        const response = await fetch("/api/bateria");
         if (!response.ok) {
           throw new Error('Failed to fetch bateria');
         }
@@ -93,7 +93,7 @@ export default function corrida(){
     //busca as categorias do servidor
     async function loadCategoria(){
       try {
-        const response = await fetch("http://localhost:3030/api/categoria");
+        const response = await fetch("/api/categoria");
         if (!response.ok) {
           throw new Error('Failed to fetch categoria');
         }

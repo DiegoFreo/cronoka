@@ -17,7 +17,7 @@ const Bateria = () => {
   // Função para buscar baterias
   const fetchBaterias = async () => {
     try {
-      const response = await fetch("http://localhost:3030/api/bateria");
+      const response = await fetch("/api/bateria");
       if (!response.ok) {
         throw new Error('Erro ao buscar baterias');
       }
@@ -31,7 +31,7 @@ const Bateria = () => {
   // Função para lidar com o envio do formulário
   const onSubmit = async (data: any) => {
     try {
-      const response = await fetch("http://localhost:3030/api/bateria", {
+      const response = await fetch("api/bateria", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

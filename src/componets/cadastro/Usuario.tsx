@@ -32,7 +32,7 @@ const Usuario = () => {
     // Função para buscar usuários
     const fetchUsuarios = async () => {
         try {
-            const response = await fetch("https://apicronoka.vercel.app/api/usuario",{
+            const response = await fetch("/api/usuario",{
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -76,7 +76,7 @@ const Usuario = () => {
 
         try {
            
-            const response = await fetch("https://apicronoka.vercel.app/api/usuario", {
+            const response = await fetch("/api/usuario", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

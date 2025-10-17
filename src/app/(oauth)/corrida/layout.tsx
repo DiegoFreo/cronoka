@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {RequireAuth} from "@/componets/RequireAuth";
 import "@/app/globals.css";
 import "@/componets/stylescorrida.css";
+
 export default function CronometristaLayout({
   children,
 }: Readonly<{

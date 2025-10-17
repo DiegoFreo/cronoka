@@ -1,22 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { verifyToken } from "./lib/verifyToken";
+import { verifyToken } from "@/lib/verifyToken";
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("cronometro-token")?.value;
 
-  if (!token) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
+  //if (!token) return NextResponse.redirect(new URL("/", req.url));
 
   const { valid } = verifyToken(token);
-  if (!valid) {
-    const url = req.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
+  //if (!valid) return NextResponse.redirect(new URL("/", req.url));
 
   return NextResponse.next();
 }

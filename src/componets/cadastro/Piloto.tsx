@@ -58,7 +58,7 @@ const Piloto = () => {
         // Exemplo de chamada fictícia: 
         // const response = await api.get('/pilotos');
         try {
-            const response = await fetch("http://localhost:3030/api/piloto");
+            const response = await fetch("/api/piloto");
             if (!response.ok) {
                 throw new Error('Erro ao buscar pilotos');
             }
@@ -100,7 +100,7 @@ const Piloto = () => {
         // Exemplo de chamada fictícia: 
         // await api.delete(`/pilotos/${id}`); 
         try {
-            const response = await fetch(`http://localhost:3030/api/piloto/${id}`, {
+            const response = await fetch(`/api/piloto/${id}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {
@@ -131,7 +131,7 @@ const Piloto = () => {
             const tag_rfid_3 = tag3Piloto || null;
             const tag_rfid_4 = tag4Piloto || null;
            
-        const response = await fetch(`http://localhost:3030/api/piloto/${idPiloto}`, {
+        const response = await fetch(`/api/piloto/${idPiloto}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const Piloto = () => {
     } else{
         const { nome, numero_piloto, cpf, tag_rfid_1 } = data;
         
-        const response = await fetch("http://localhost:3030/api/piloto", {
+        const response = await fetch("/api/piloto", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
