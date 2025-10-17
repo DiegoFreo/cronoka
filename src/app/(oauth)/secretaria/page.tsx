@@ -27,7 +27,14 @@ interface EventoProps {
   hora_evento: Time;
 }
 
+/*
+<img
+                alt="perfil"
+                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.svg"}
+                className="mx-auto h-15 w-auto"
+              />
 
+*/ 
 
 export default function AdminPage() {
   const[isOpen, setIsOpen] = useState(false);
@@ -47,7 +54,7 @@ export default function AdminPage() {
     buscaUsuario();
     buscaBateria();
     buscaEventos();
-    console.log(imgUser?.avatarUser);
+    
   }, []);
   const {logout} = useContext(AuthContext);
 
@@ -260,11 +267,7 @@ export default function AdminPage() {
           <div className="continerdashboard-logout pt-4">
             <div className="continerdashboard-logout-perfill">
               <Button className="bg-cronometro btn-corrida" onClick={logout}>Sair</Button>
-              <img
-                alt="perfil"
-                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.svg"}
-                className="mx-auto h-15 w-auto"
-              />
+              
             </div>
           </div>
         </div>
