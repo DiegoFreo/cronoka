@@ -4,7 +4,7 @@ export function Header() {
       <div className="flex items-center gap-3">
        <img
             alt="logo"
-            src="./FPMX-logo.png"
+            src="../FPMX-logo.png"
             className="mx-auto h-15 w-40"
           />       
       </div>

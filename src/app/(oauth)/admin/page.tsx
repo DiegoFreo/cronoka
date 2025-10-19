@@ -11,8 +11,8 @@ import ConfiguracaoEventos from "@/componets/cadastro/ConfiguracaoEventos";
 import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
 import {UserPen, User, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal, Flag, BadgeDollarSign, Pi} from "lucide-react";
-import '../../../componets/dashboard.css';
-import '../../../componets/styles.css';
+import '@/componets/dashboard.css';
+import '@/componets/styles.css';
 import { useRouter } from "next/navigation";
 import { Time } from "tone/build/esm/core/type/Units";
 
@@ -248,7 +248,7 @@ export default function AdminPage() {
               <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
               <li onClick={handleConfiguracaoEventos} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
-              <li onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
+              <li onClick={()=>{router.push("./admin/corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
             </ul>
           </div>
           <div className="continerdashboard-logout pt-4">

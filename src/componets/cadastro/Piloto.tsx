@@ -149,28 +149,22 @@ const Piloto = () => {
             }
         })
     } else{
-        const { nome, numero_piloto, cpf, tag_rfid_1 } = data;
-        
-        const response = await fetch("/api/piloto", {
+            const response = await fetch('/api/piloto', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, numero_piloto, cpf, tag_rfid_1 }),
-        }).then((response) => {
+            body: JSON.stringify(data),
+        })
             if (!response.ok) {
                 throw new Error('Erro ao cadastrar piloto');
-
             }else{
                 alert("Piloto cadastrado com sucesso!");
-                buscatPiloto(); // Atualiza a lista de pilotos após o cadastro
-                limparCanpos(); // Limpa os campos do formulário após o cadastro
+                buscatPiloto();
+                limparCanpos();
                 return response.json();
-            }
-        })
+            }        
     } 
-
-
         } catch (erro: any) {
             console.error("Erro ao cadastrar piloto:", erro);
             alert("Erro ao cadastrar piloto: " + erro.message);

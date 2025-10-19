@@ -4,6 +4,7 @@ import Piloto from '../model/piloto';
 export async function criarPiloto(dados) {
   try {
     await conectDb();
+    console.log("Criando novo piloto com dados:", dados);
     const novoPiloto = new Piloto(dados);
     const resultado = await novoPiloto.save();
     res.status(201).json(resultado);

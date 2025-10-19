@@ -31,7 +31,7 @@ export function PilotDataTable({ pilots }: PilotDataTableProps) {
         </TableHeader>
         <TableBody>
           {pilots.map((pilot, index) => (
-            <PilotoRow key={pilot.id_piloto} piloto={pilot} rank={index + 1} />
+            <PilotoRow key={pilot._id} piloto={pilot} rank={index + 1} />
           ))}
         </TableBody>
       </Table>

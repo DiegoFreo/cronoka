@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/componets/ui/card';
 import {Header} from "@/componets/Header";
 import Button from "@/componets/ui/Buttom";
 import {PlayCircle, RotateCcwIcon, PauseCircle} from "lucide-react";
-//import "../../../componets/stylescorrida.css";
+import "@/componets/stylescorrida.css";
 import { Select, SelectItem } from '@/componets/ui/select';
 
 
@@ -55,7 +55,7 @@ export default function corrida(){
         }
         const data: Piloto[] = await response.json();
         const formattedPilots = data.map((p, index) => ({
-          id_piloto: String(p.id_piloto),
+          _id: String(p._id),
           nome: p.nome,
           numero_piloto: p.numero_piloto,
           status: "NORMAL" as StatusPiloto,
@@ -68,7 +68,7 @@ export default function corrida(){
           posicao: 0,
           cor: getPilotColor(index),
         }));
-        setPilots(sortPiloto(formattedPilots));
+        setPilots(formattedPilots);
         setPilotos(formattedPilots);
       }catch (error) {
         console.error("Falha ao carregar o piloto:", error);
@@ -219,8 +219,10 @@ export default function corrida(){
     
     setPilots(prevPilots => {
       const targetPilotIndex = pilotIdToSimulate 
-        ? prevPilots.findIndex(p => p.numero_piloto === pilotIdToSimulate)
+        ? prevPilots.findIndex(p => p._id === pilotIdToSimulate)
         : Math.floor(Math.random() * prevPilots.length);
+
+        console.log("Target Pilot Index:", pilotIdToSimulate );
       
       if (targetPilotIndex === -1) return prevPilots;
 
