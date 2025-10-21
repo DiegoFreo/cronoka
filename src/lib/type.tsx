@@ -31,7 +31,7 @@ export interface Evento{
 export interface Piloto{
     _id: string;
     nome: string;
-    numero_piloto: string;
+    numero_piloto: number;
     status: StatusPiloto;
     voltas: voltas[];
     steutusUltamaVolta: number; //status da ultama alteração da volta

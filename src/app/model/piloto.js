@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const PilotoSchema = new mongoose.Schema({
     nome: { type: String, required: true },
-    numero_piloto: { type: Number, required: true },
+    numero_piloto: { type: Number, required: true, unique: true },
     nome_equipe: { type: String, required: false},
     filiacao: { type: String, required: false },
     patrocinador: { type: String, required: false },

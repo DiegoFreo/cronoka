@@ -122,6 +122,7 @@ const Piloto = () => {
         // await api.post('/pilotos', { nome, npiloto, cpf });
                 
         try{
+            
         if(piloto.map(p=> p._id === idPiloto).includes(true)){
             const nome = nmPiloto;
             const numero_piloto = numeroPiloto;
@@ -130,6 +131,7 @@ const Piloto = () => {
             const tag_rfid_2 = tag2Piloto || null;
             const tag_rfid_3 = tag3Piloto || null;
             const tag_rfid_4 = tag4Piloto || null;
+            console.log("Dados do piloto para envio:", data);
            
         const response = await fetch(`/api/piloto/${idPiloto}`, {
             method: 'PUT',
@@ -137,8 +139,9 @@ const Piloto = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ nome, numero_piloto, cpf, tag_rfid_1, tag_rfid_2, tag_rfid_3, tag_rfid_4 }),
-        }).then((response) => {
-            if (!response.ok) {
+        });
+
+        if (!response.ok) {
                 throw new Error('Erro ao cadastrar piloto');
 
             }else{
@@ -147,7 +150,6 @@ const Piloto = () => {
                 limparCanpos(); // Limpa os campos do formulário após o cadastro
                 return response.json();
             }
-        })
     } else{
             const response = await fetch('/api/piloto', {
             method: 'POST',

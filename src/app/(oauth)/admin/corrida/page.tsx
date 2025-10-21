@@ -172,22 +172,6 @@ export default function corrida(){
       raceTimeRef.current = 0;
      loadPiloto(); // Reload pilots from server
 
-     /* const initialPilots = pilots.map((p, index) => ({
-          id_piloto: String(p.id_piloto),
-          nome: p.nome,
-          numero_piloto: p.numero_piloto,
-          status: "NORMAL" as StatusPiloto,
-          voltas: [],
-          steutusUltamaVolta: Date.now(),
-          melhorVolta: null,
-          ultimaVolta: null,
-          tempoTotal: 0,
-          ultimaVoltaCompleta: null,
-          posicao: 0,
-          cor: getPilotColor(index),
-    }));
-    setPilots(sortPiloto(initialPilots));
-    */
     toast({ title: "Reseta Corrida", description: "Todos os dados do piloto e temporizadores foram reiniciados." });
   }, [toast]);
 
@@ -218,18 +202,16 @@ export default function corrida(){
     }
     
     setPilots(prevPilots => {
-      const targetPilotIndex = pilotIdToSimulate 
-        ? prevPilots.findIndex(p => p._id === pilotIdToSimulate)
-        : Math.floor(Math.random() * prevPilots.length);
+      const targetPilotIndex = pilotIdToSimulate
+        ? prevPilots.findIndex(p => p.numero_piloto === Number(pilotIdToSimulate))
+        : Math.floor(Math.random() * prevPilots.length) && alert("Piloto não encontrado!");
 
-        console.log("Target Pilot Index:", pilotIdToSimulate );
-      
       if (targetPilotIndex === -1) return prevPilots;
 
       const updatedPilots = prevPilots.map((pilot, index) => {
         if (index === targetPilotIndex) {
-          //const rawLapTime = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // 60s to 120s
-          const rawLapTime = Math.floor((raceTime)); // 30s to 90s
+          const rawLapTime = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // 60s to 120s
+          //const rawLapTime = Math.floor((raceTime)); // 30s to 90s
           const newLap: voltas = {
             qtVoltas: pilot.voltas.length + 1,
             tempo: raceTime, // Overall race time at lap completion
@@ -264,6 +246,8 @@ export default function corrida(){
       return sortPiloto(updatedPilots);
     });
   }, [isRaceRunning, pilots, toast]);
+
+
 
     const sortPiloto = (pilotsToSort: Piloto[]): Piloto[] => {
     return [...pilotsToSort].sort((a, b) => {

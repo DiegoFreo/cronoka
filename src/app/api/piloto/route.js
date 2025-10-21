@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
-import conectDb from '../../../lib/mongodb';
+import conectDB from '../../../lib/mongodb';
 import Piloto from '../../model/piloto';
 import { criarPiloto, listarPilotos, atualizarPiloto, deletarPiloto } from  '../../controller/pilotoController';
 
 export async function POST(request) {
     try{
-    await conectDb();
+    await conectDB();
     const dados = await request.json();
     const result = await criarPiloto(dados);
-    return NextResponse.json(result.data || { error: result.error }, { status: result.status });
+    return NextResponse.json(result.data || { error: result.erro}, { status: result.status });
 }    catch(err){
     console.log(err)
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -16,7 +16,7 @@ export async function POST(request) {
 }
 export async function GET() {
   try {
-    await conectDb();
+    await conectDB();
     const pilotos = await Piloto.find();
     return NextResponse.json(pilotos); // ✅ retorno obrigatório
   } catch (error) {
@@ -26,7 +26,7 @@ export async function GET() {
 
 export async function PUT(request) {
     try{
-    await conectDb();
+    await conectDB();
     const req = await request.json();
     req.params = { id: req.id };    
     const res = {
@@ -42,7 +42,7 @@ export async function PUT(request) {
 }
 export async function DELETE(request) {
     try{
-    await conectDb();
+    await conectDB();
     const req = await request.json();
     req.params = { id: req.id };    
     const res = {

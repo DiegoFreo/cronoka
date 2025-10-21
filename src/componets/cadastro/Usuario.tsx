@@ -24,6 +24,15 @@ const Usuario = () => {
   const handleChangeNomeUser = (e:any)=>{
     setNomeUser(e.target.value);
   }
+  const handleChangeEmailUser = (e:any)=>{
+    setEmailUser(e.target.value);
+  }
+  const handleChangeNivelUser = (e:any)=>{
+    setNivelUser(e.target.value);
+  }
+  const handleChangeAvatarUser = (e:any)=>{
+    setAvatarUser(e.target.value);
+  }
 
     useEffect(() => {
         fetchUsuarios();
@@ -73,9 +82,8 @@ const Usuario = () => {
         // Remove a propriedade de confirmação de senha antes de enviar
         delete data.confirmarSenha
         console.log("Dados do usuário para envio:", data);
-
+        
         try {
-           
             const response = await fetch("/api/usuario", {
                 method: "POST",
                 headers: {
@@ -120,12 +128,12 @@ const Usuario = () => {
                     </div>
                     <div className="w-50">
                         <label htmlFor="emailUser">Email:</label>  
-                        <input {...register('emailUser')} type="emailUser" className="ka-input w-100" id="emailUser" name="emailUser" required />
+                        <input {...register('emailUser')} type="emailUser" value={emailUser ?? ""} onChange={handleChangeEmailUser} className="ka-input w-100" id="emailUser" name="emailUser" required />
                     </div>
                 </div>
                 <div className="w-100">                   
                         <label htmlFor="nivelUser">Nível de Acesso:</label>
-                        <select {...register('nivelUser')} className="ka-input w-100" id="nivelUser" name="nivelUser" required>
+                        <select {...register('nivelUser')} className="ka-input w-100"value={nivelUser ?? ""} onChange={handleChangeNivelUser}  id="nivelUser" name="nivelUser" required>
                             <option value="">Selecione</option>
                             <option value="A">Administrador</option>
                             <option value="S">Secretaria</option>
