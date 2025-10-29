@@ -4,7 +4,7 @@ import{FaTrash, FaEdit } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 
 interface CategoriaProps {
-  id_categoria: number;
+  _id: string;
   nome: string;
 }
 
@@ -51,6 +51,22 @@ const Categoria = () => {
       alert("Erro ao cadastrar categoria: " + error.message);
     }
   };
+  async function handleOnDelete(id:string){
+    try{
+     const response = await fetch(`/api/categoria/${id}`, {
+                method: 'DELETE',
+            });
+            console.log(response);
+            if(!response.ok){
+               throw new Error('Erro ao excluir a Categoria');
+            }else{
+              alert("Piloto excluído com sucesso!");
+              fetchCategorias(); // Atualiza a lista de categorias
+            }
+          }catch(err){
+            return{status:404, error: err};
+          }
+  }
 
 
   return (
@@ -83,10 +99,10 @@ const Categoria = () => {
                     <tbody>
                         {categorias.map((categoria, index) => (
                             <tr key={index}>
-                                <td>{categoria.id_categoria}</td>
+                                <td>{categoria._id}</td>
                                 <td>{categoria.nome}</td>
                                 <td><Button className="component-button-black"><FaEdit /></Button></td>
-                                <td><Button className="component-button-black"><FaTrash /> </Button></td>
+                                <td><Button className="component-button-black" onClick={()=>handleOnDelete(categoria._id)}><FaTrash /> </Button></td>
                             </tr>
                         ))}                        
                                   

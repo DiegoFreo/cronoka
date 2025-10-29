@@ -1,13 +1,13 @@
 import Volta from '../model/volta.js';
 
 // Criar uma nova volta
-export async function criarVolta(req, res) {
+export async function criarVolta(dados) {
   try {
-    const novaVolta = new Volta(req.body);
-    const resultado = await novaVolta.save();
-    res.status(201).json(resultado);
+    const novaVolta = new Volta(dados);
+    await novaVolta.save();
+    return { status: 201, data: novaVolta };
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    return { status: 400, error: err.message };
   }
 }
 // Listar todas as voltas

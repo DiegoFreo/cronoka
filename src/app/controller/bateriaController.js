@@ -1,27 +1,32 @@
 import Bateria from '../model/bateria.js';
+import conectDB from '../../lib/mongodb';
+import { error } from 'console';
 
 // Criar uma nova bateria
-export async function criarBateria(req, res) {
+export async function criarBateria(data) {
     try {
-        const novaBateria = new Bateria(req.body);
-        const resultado = await novaBateria.save();
-        res.status(201).json(resultado);
+        await conectDB();
+        const novaBateria = new Bateria(data);
+        await novaBateria.save();
+        return {status: 201, data: novaBateria}
     } catch (err) {
-        res.status(500).json({ erro: err.message });
+        return {status: 400, erro: err.message}
     }
 }
 // Listar todas as baterias
-export async function listarBaterias(req, res) {
+export async function listarBaterias() {
     try {
-        const baterias = await Bateria.find();
-        res.status(200).json(baterias);
+        await conectDB();
+        const bateria = await Bateria.find();
+        return bateria;
     } catch (err) {
-        res.status(500).json({ erro: err.message });
+        return {status: 400, erro: err.message}
     }
 }   
 //atualizar bateria
 export async function atualizarBateria(req, res) {
     try {
+        await conectDB()
         const bateriaAtualizada = await Bateria.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!bateriaAtualizada) {
             return res.status(404).json({ erro: 'Bateria não encontrada' });

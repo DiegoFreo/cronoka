@@ -210,15 +210,18 @@ export default function corrida(){
 
       const updatedPilots = prevPilots.map((pilot, index) => {
         if (index === targetPilotIndex) {
-          const rawLapTime = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // 60s to 120s
+          //const rawLapTime = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // 60s to 120s
           //const rawLapTime = Math.floor((raceTime)); // 30s to 90s
+          const rawLapTime = raceTimeRef.current - (pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : 0);
+          const ultimaVolta = rawLapTime;
+
           const newLap: voltas = {
             qtVoltas: pilot.voltas.length + 1,
             tempo: raceTime, // Overall race time at lap completion
-            tempoAtual: ultimaVolta, //rawLapTime, // Actual time for this specific lap
+            tempoAtual: rawLapTime, // Actual time for this specific lap ultimaVolta, //
             VoltaCompleta: Date.now(), // Timestamp of lap completion
           };
-          const newTotalTime = raceTime; //pilot.tempoTotal + rawLapTime;
+          const newTotalTime = pilot.tempoTotal + rawLapTime; //raceTime; 
           const UTV = pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : 0;
           const newBestLapTime = pilot.melhorVolta === null || ultimaVolta < pilot.melhorVolta ? ultimaVolta : pilot.melhorVolta ; // Update best lap time if this lap is better
           
@@ -241,13 +244,33 @@ export default function corrida(){
             ultimaVoltaCompleta: raceTimeRef.current, // Current race time, for next lap prediction
           };
         }
+        voltarApi(pilot.voltas[pilot.voltas.length -1]);
         return pilot;
       });
       return sortPiloto(updatedPilots);
     });
   }, [isRaceRunning, pilots, toast]);
-
-
+  
+  async function voltarApi(voltaData: voltas){
+    alert('enviando dados da volta para api'+ JSON.stringify(voltaData));
+    try {
+      const response = await fetch('/api/volta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(voltaData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to save lap data');
+      }
+      const data = await response.json();
+      console.log('Lap data saved successfully:', data);
+    } catch (error) {
+      console.error('Error saving lap data:', error);
+    }
+  }
+  
 
     const sortPiloto = (pilotsToSort: Piloto[]): Piloto[] => {
     return [...pilotsToSort].sort((a, b) => {

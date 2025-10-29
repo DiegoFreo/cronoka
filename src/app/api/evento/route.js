@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import conectDb from '../../../lib/mongodb';
-import Evento from '../../model/evento';
+import conectDB from '../../../lib/mongodb';
+import evento from "../../model/evento";
 import { criarEvento, listarEventos, atualizarEvento, deletarEvento } from  '../../controller/eventoController';
 
 export async function POST(request) {
     try{
-    await conectDb();
+    await conectDB();
     const dados = await request.json();
     const result = await criarEvento(dados);
     return NextResponse.json(result.data || { error: result.error }, { status: result.status });
@@ -16,7 +16,7 @@ export async function POST(request) {
 }
 export async function GET() {
   try {
-    await conectDb();
+    await conectDB();
     const eventos = await listarEventos();
     return NextResponse.json(eventos); // ✅ retorno obrigatório
   } catch (error) {
@@ -24,19 +24,18 @@ export async function GET() {
   }
 }
 
-export async function PUT(request) {    
-    try{
-    await conectDb();
-    const req = await request.json();
-    req.params = { id: req.id };    
-    const res = {
-        status: (status) => ({
-            json: (data) => NextResponse.json(data, { status }),    
-        }),
-    };
-    return atualizarEvento(req, res);
-}    catch(err){
-    console.log(err)
+export async function PUT(request, { params }) {
+  try {
+    await conectDB();
+
+    console.log(params);
+
+    const data = await request.json(); // corpo enviado no PUT
+    const result = await atualizarEvento(params._id, data);
+
+    return NextResponse.json(result.data, { status: result.status });
+  } catch (err) {
+    console.error("Erro na rota PUT:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });
-    }   
+  }
 }
