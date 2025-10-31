@@ -11,10 +11,16 @@ interface CategoriaProps {
 const Categoria = () => {
   const { register, handleSubmit, reset } = useForm();
   const [categorias, setCategorias] = useState<CategoriaProps[]>([]);
+  const [idCategoria, setIdCategoria] = useState("");
+  const [dsCategoria, setDsCategoria] = useState("");
 
   useEffect(() => {
     fetchCategorias();  
   }, []);
+
+  const handleChangeDsCategoria = (e: any)=>{
+    setDsCategoria(e.target.value);
+  }
 
   // Função para buscar categorias (simulação)
   const fetchCategorias = async () => {
@@ -33,24 +39,35 @@ const Categoria = () => {
 
   // Função para lidar com o envio do formulário
   async function handleFormSubmit(data: any) {
-    try {
-      const response = await fetch("/api/categoria", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        throw new Error('Erro ao cadastrar categoria');
-      }
-      reset(); // Limpa o formulário após o envio
-      fetchCategorias(); // Atualiza a lista de categorias
-    } catch (error:any) {
-      console.error("Erro ao cadastrar categoria:", error);
-      alert("Erro ao cadastrar categoria: " + error.message);
+  try {
+    const categoriaExiste = categorias.some(c => c._id === idCategoria);
+    const url = categoriaExiste ? `/api/categoria/${idCategoria}` : "/api/categoria";
+    const method = categoriaExiste ? "PUT" : "POST";
+    const body = JSON.stringify({ nome: data.nome || dsCategoria });
+
+    const response = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro ao ${categoriaExiste ? "atualizar-" : "cadastrar"} categoria`);
     }
-  };
+
+    alert(`Categoria ${categoriaExiste ? "atualizada" : "cadastrada"} com sucesso!`);
+    limpar();
+    fetchCategorias();
+
+  } catch (error: any) {
+    console.error("Erro ao salvar categoria:", error);
+    alert("Erro ao salvar categoria: " + error.message);
+  }
+}
+async function limpar() {
+  setDsCategoria("");
+}
+
   async function handleOnDelete(id:string){
     try{
      const response = await fetch(`/api/categoria/${id}`, {
@@ -60,14 +77,22 @@ const Categoria = () => {
             if(!response.ok){
                throw new Error('Erro ao excluir a Categoria');
             }else{
-              alert("Piloto excluído com sucesso!");
-              fetchCategorias(); // Atualiza a lista de categorias
+              alert("Categoria excluído com sucesso!");
+              await fetchCategorias(); // Atualiza a lista de categorias
             }
           }catch(err){
-            return{status:404, error: err};
+            console.log("Erro ao excluir a categoria:", err);
+            alert("Erro ao excluir a categoria.")
           }
   }
-
+  function carregarDados(id:any){
+    categorias.forEach((Cat)=>{
+      if(Cat._id == id){
+        setDsCategoria(Cat.nome);
+        setIdCategoria(Cat._id);
+      }
+    })
+  }
 
   return (
     <div className="is-flex">
@@ -76,11 +101,11 @@ const Categoria = () => {
         <form onSubmit={handleSubmit(handleFormSubmit)}>
           <div className="w-100">
             <label htmlFor="nome">Nome da Categoria:</label>
-            <input  {...register('nome')} type="text" className="ka-input w-100"  id="nome" name="nome" required />
+            <input  {...register('nome')} type="text" className="ka-input w-100" value={dsCategoria ?? ''} onChange={handleChangeDsCategoria}   id="nome" name="nome" required />
           </div>
           <div className=" ka-modal-footer">
             <Button className="btn btn-green" onClick={handleSubmit(handleFormSubmit)}>Salvar</Button>
-            <Button className="btn btn-corrida-reset" onClick={reset}>Limpar</Button>
+            <Button className="btn btn-corrida-reset" onClick={limpar}>Limpar</Button>
           </div>
         </form>
       </div>
@@ -88,7 +113,7 @@ const Categoria = () => {
              <div className="scrollbar">                
                 <table border={1} className="ka-table">
                     <thead>
-                        <tr><th colSpan={4} className="ka-table-title" >Tabela Piloto</th></tr>
+                        <tr><th colSpan={4} className="ka-table-title" >Tabela Categoria</th></tr>
                             <tr>
                               <th>ID</th>
                               <th>Nome</th>
@@ -101,7 +126,7 @@ const Categoria = () => {
                             <tr key={index}>
                                 <td>{categoria._id}</td>
                                 <td>{categoria.nome}</td>
-                                <td><Button className="component-button-black"><FaEdit /></Button></td>
+                                <td><Button className="component-button-black" onClick={()=>carregarDados(categoria._id)}><FaEdit /></Button></td>
                                 <td><Button className="component-button-black" onClick={()=>handleOnDelete(categoria._id)}><FaTrash /> </Button></td>
                             </tr>
                         ))}                        
