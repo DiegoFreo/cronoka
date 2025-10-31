@@ -3,7 +3,7 @@
 import React, {useState} from "react";
 import ModalCadastro from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
-import GerenciamentoProva from "@/componets/config/prova";
+import Prova from "@/componets/config/prova";
 
 
 const Cronometrista = () => {
@@ -11,7 +11,7 @@ const Cronometrista = () => {
     return (
         <div className="content">            
                 <ModalCadastro isOpen={isOpen} setOpenModal={()=>setIsOpen(!isOpen)} Titulo="Gerenciamento de Prova">
-                    <GerenciamentoProva />
+                    <Prova />
                 </ModalCadastro>
         </div>
     );
