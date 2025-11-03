@@ -10,16 +10,17 @@ export type StatusPiloto = "NORMAL" | "PASSOU" | "ALERTA" | "SAIU" | "BURLOU";
 export interface Bateria{
     _id: string;
     nome: string;
+    eventos: Evento[];
     pilotos: Piloto[];
 };
 export interface Categoria{
     _id: string;
     nome: string;
-    baterias: Bateria[];
+   // baterias: Bateria[];
 };
 export interface Evento{
     _id: string;
-    nome: string;
+    nome_evento: string;
     descricao: string;
     data_inicio: string;
     data_fim: string;

@@ -4,6 +4,7 @@ import Button from "../ui/Buttom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 
+
 interface Piloto {
     _id: number;
     nome: string;
@@ -131,7 +132,6 @@ const Piloto = () => {
             const tag_rfid_2 = tag2Piloto || null;
             const tag_rfid_3 = tag3Piloto || null;
             const tag_rfid_4 = tag4Piloto || null;
-            console.log("Dados do piloto para envio:", data);
            
         const response = await fetch(`/api/piloto/${idPiloto}`, {
             method: 'PUT',

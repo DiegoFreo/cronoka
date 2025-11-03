@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
 interface UsuarioProps {
-  _id: number;
+  _id: string;
   nameUser: string;
   emailUser: string;
   nivelUser: string;
@@ -14,7 +14,7 @@ interface UsuarioProps {
 const Usuario = () => {
   const { register, handleSubmit, reset } = useForm();
   const [usuarios, setUsuarios] = useState<UsuarioProps[]>([]);
-  const [idUser, setIdUser] = useState<number | null>(null);
+  const [idUser, setIdUser] = useState<string | null>("");
   const [nomeUser, setNomeUser] = useState("");
   const [emailUser, setEmailUser] = useState("")
   const [nivelUser, setNivelUser] = useState('');
@@ -71,6 +71,25 @@ const Usuario = () => {
             reader.readAsDataURL(file);
         }
     }
+        // Função para excluir um usuario
+    async function excluirUsuario(id: string) {
+        // Aqui você pode fazer uma chamada à API para excluir o piloto
+        // Exemplo de chamada fictícia: 
+        // await api.delete(`/pilotos/${id}`); 
+        try {
+            const response = await fetch(`/api/usuario/${id}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Erro ao excluir usuario');
+            }
+            alert("Usuario excluído com sucesso!");
+            fetchUsuarios(); // Atualiza a lista de pilotos após a exclusão
+        } catch (erro: any) {
+            console.error("Erro ao excluir usuario:", erro);
+            alert("Erro ao excluir usuario: " + erro.message);
+        }
+    }
 
     // Função para lidar com o envio do formulário
     const onSubmit = async (data: any) => {
@@ -81,9 +100,32 @@ const Usuario = () => {
         }
         // Remove a propriedade de confirmação de senha antes de enviar
         delete data.confirmarSenha
-        console.log("Dados do usuário para envio:", data);
-        
+                
         try {
+
+            if(idUser){
+                const senha = data.passworUser;
+
+                // Atualiza usuário existente
+                const response = await fetch(`/api/usuario/${idUser}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({nomeUser, emailUser, nivelUser, avatarUser, passworUser: senha}),
+                });
+                if (!response.ok) {
+                    throw new Error('Erro ao atualizar usuário');
+                }
+                reset(); // Limpa o formulário após o envio
+                setSelectedImage(null);
+                setIdUser(null); // Limpa a imagem selecionada
+                alert("Usuário atualizado com sucesso.");
+                fetchUsuarios(); // Atualiza a lista de usuários
+                return;
+            }
+            // Cria novo usuário
+
             const response = await fetch("/api/usuario", {
                 method: "POST",
                 headers: {
@@ -96,6 +138,7 @@ const Usuario = () => {
             }
             reset(); // Limpa o formulário após o envio
             setSelectedImage(null); // Limpa a imagem selecionada
+            alert("Usuário cadastrado com sucesso.");
             fetchUsuarios(); // Atualiza a lista de usuários
         } catch (error:any) {
             console.error("Erro ao cadastrar usuário:", error);
@@ -103,7 +146,7 @@ const Usuario = () => {
         }
     };
 
-    function carregaUsuario(id: number){
+    function carregaUsuario(id: string){
         usuarios.forEach((user)=>{
             if(user._id === id){
                 setIdUser(user._id);
@@ -185,7 +228,7 @@ const Usuario = () => {
                                 <td>{usuario._id}</td>
                                 <td>{usuario.nameUser}</td>
                                 <td><Button className="btn btn-edit" onClick={()=>carregaUsuario(usuario._id)}><FaEdit /></Button></td>
-                                <td><Button className="btn btn-delete"><FaTrash /> </Button></td>
+                                <td><Button className="btn btn-delete" onClick={()=>excluirUsuario(usuario._id)}><FaTrash /> </Button></td>
                             </tr>
                         ))}       
                     </tbody>    

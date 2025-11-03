@@ -1,17 +1,44 @@
 'use client';
-import React from "react";
+import React, { useState } from "react";
 import Button from "@/componets/ui/Buttom";
 import { Card, CardContent } from "@/componets/ui/card";
 import { Medal, FolderTree, User, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, UserPen } from "lucide-react";
 import '@/componets/stylescorrida.css';
 import '@/componets/dashboard.css';
+import '@/componets/styles.css';
+import Prova from "@/componets/config/prova";
 import { useRouter } from "next/navigation";
-
+import Modal from "@/componets/Modal";
 
 export default function ProvaPage() {
+  const[isOpen, setIsOpen] = useState(false);
+  const [titleModal, setTitleModal] = useState('');
+  const [formModal, setFormModal] = useState('');
+
+  const openModalProva = () => {
+    setTitleModal('Configuração de Prova');
+    setFormModal('prova');
+    setIsOpen(true);
+  }
+   const handleFormModal = () => {
+    if (formModal === 'prova') {
+      if(isOpen){
+      return <Prova />; 
+      }else{
+        return <></>;
+      }
+    }else{
+      return ;
+    }
+  }
+
     const router = useRouter();
   return (
     <div className="continerdashboard">
+       <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
+                {handleFormModal() }
+        </Modal>
+
         <div className="continerdashboard-left">
           <div className="continerdashboard-logo">
             <img
@@ -49,8 +76,17 @@ export default function ProvaPage() {
             </CardContent>
           </Card>
             <div className="continerdashboard-content p-4">
-                <h1 className="text-3xl font-bold mb-4">Bem-vindo ao Painel de Administração</h1>
-                <p className="text-lg mb-6">Gerencie seus eventos, pilotos, categorias e muito mais.</p>
+                <h1 className="text-3xl font-bold mb-4">Bem-vindo ao Painel de Configuração de Eventos</h1>
+                <p className="text-lg mb-6">Gerencie seus eventos</p>
+                <ul className="list-disc list-inside mb-6">
+                  <li>Crie e edite eventos de corrida</li>
+                  <li>Adicione pilotos e categorias</li>
+                  <li>Configure baterias e cronometagem</li>
+                  <li>Visualize resultados e relatórios</li>
+                </ul>
+                <Button onClick={openModalProva} className="btn btn-corrida">
+                  Configurar Novo Evento
+                </Button>
             </div>
         </div>     
       </div>

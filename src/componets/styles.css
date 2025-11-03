@@ -555,6 +555,12 @@
     border: 2px solid rgb(255, 0, 0);
     border-radius: 10px;
 }
+.scrollba-evento{
+    height: 30vh;
+    overflow: auto;
+    border: 2px solid rgb(255, 0, 0);
+    border-radius: 10px;
+}
 
 .ka-table-title{
     border-bottom: 1px solid #fff;
