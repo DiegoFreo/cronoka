@@ -222,7 +222,7 @@ export default function corrida(){
             VoltaCompleta: Date.now(), // Timestamp of lap completion
           };
           const newTotalTime = pilot.tempoTotal + rawLapTime; //raceTime; 
-          const UTV = pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : 0;
+          const UTV = pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : rawLapTime;
           const newBestLapTime = pilot.melhorVolta === null || ultimaVolta < pilot.melhorVolta ? ultimaVolta : pilot.melhorVolta ; // Update best lap time if this lap is better
           
 
@@ -238,7 +238,7 @@ export default function corrida(){
             voltas: [...pilot.voltas, newLap],
             tempoTotal: newTotalTime,
             melhorVolta: newBestLapTime,
-            ultimaVolta: ultimaVolta,//raceTime - raceTimeRef.current, // Time for the last lap
+            ultimaVolta: ultimaVolta, //raceTime - raceTimeRef.current, // Time for the last lap
             status: 'PASSOU' as StatusPiloto,
             steutusUltamaVolta: Date.now(),
             ultimaVoltaCompleta: raceTimeRef.current, // Current race time, for next lap prediction
@@ -252,7 +252,7 @@ export default function corrida(){
   }, [isRaceRunning, pilots, toast]);
   
   async function voltarApi(voltaData: voltas){
-    alert('enviando dados da volta para api'+ JSON.stringify(voltaData));
+    
     try {
       const response = await fetch('/api/volta', {
         method: 'POST',

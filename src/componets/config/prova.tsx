@@ -4,6 +4,13 @@ import { Select, SelectItem } from "../ui/select";
 import {Evento, Piloto, Categoria, Bateria} from '@/lib/type';
 import { FaTrash } from "react-icons/fa";
 
+interface ProvaFormData {
+    nome: string;
+    data: string;
+    bateria: string;
+    categoria: string;
+    competidores: string[];
+}
 
 const Prova = ()=>{
     const { register, handleSubmit } = useForm();
