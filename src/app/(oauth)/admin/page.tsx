@@ -1,6 +1,6 @@
 'use client';
 import React,{useState, useEffect, useContext} from "react";
-//import { AuthContext } from "@/contexts/AuthContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import Modal from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
 import Evento from "@/componets/cadastro/evento";
@@ -36,7 +36,9 @@ export default function AdminPage() {
   const [countCategorias, setCountCategorias] = useState(0);
   const [countBaterias, setCountBaterias] = useState(0);
   const [countUsuario, setCountUsuario] = useState(0);
- // const imgUser = useContext(AuthContext).users;
+  const [userAvatar, setUserAvatar] = useState('');
+  const imgUser = useContext(AuthContext).users;
+  const logout = useContext(AuthContext).logout;
   const [countProximosEventos, setCountProximosEventos] = useState(0);
 
   useEffect(() => {
@@ -155,7 +157,7 @@ export default function AdminPage() {
   
   const handleOpenModalPiloto = () => {
     setIsOpen(!isOpen);
-    setTitleModal('Cadastro de Piloto');
+    setTitleModal('Cadastro de Competidor');
     setFormModal('piloto');
     console.log(isOpen);
   }
@@ -253,10 +255,10 @@ export default function AdminPage() {
           </div>
           <div className="continerdashboard-logout pt-4">
             <div className="continerdashboard-logout-perfill">
-              <Button className="bg-cronometro btn-corrida" onClick={()=>{}}>Sair</Button>
+              <Button className="bg-cronometro btn-corrida" onClick={()=>{logout()}}>Sair</Button>
               <img
                 alt="perfil"
-                //src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.svg"}
+                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.svg"}
                 className="mx-auto h-15 w-auto"
               />
             </div>

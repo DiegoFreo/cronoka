@@ -449,6 +449,16 @@
     background: #fff;
     color: #000;
 }
+.ka-seclect{
+    padding: 13px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #fff;
+    color: #000;
+}
 /*Gerenciamento de Prova*/
 .gerenciamento{
     width: 100%;

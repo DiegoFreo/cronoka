@@ -23,6 +23,7 @@ export async function POST(request) {
         nivelUser: usuario.nivelUser,
         nameUser: usuario.nameUser,
         emailUser: usuario.emailUser,
+        avatarUser: usuario.avatarUser,
       },
       jwtSecret,
       { expiresIn: "6h" }

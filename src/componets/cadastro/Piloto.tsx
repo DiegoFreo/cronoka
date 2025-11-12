@@ -3,17 +3,26 @@ import React, { useEffect, useState } from "react";
 import Button from "../ui/Buttom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-
+import { Select, SelectItem } from "../ui/select";
 
 interface Piloto {
     _id: number;
     nome: string;
     numero_piloto: string;
     cpf: string;
-    tag_rfid_1: string;
-    tag_rfid_2?: string;
-    tag_rfid_3?: string;
-    tag_rfid_4?: string;
+    nome_equipe: string;
+    filiacao:  String;
+    patrocinador:  String;   
+    dataNascimento: Date;
+    telefone: String;
+    responsavel:  String; 
+    tipoSanguineo:  String;
+    //categoriaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' },
+    tag: string[];   
+}
+interface TagsPiloto {
+    _id: number;
+    tag: string;   
 }
 
 const Piloto = () => {
@@ -23,10 +32,15 @@ const Piloto = () => {
     const [nmPiloto, setNmPiloto] = useState('');
     const [numeroPiloto, setNumeroPiloto] = useState('');
     const [CPFPiloto, setCPFPiloto] = useState('');
-    const [tag1Piloto, setTag1Piloto] = useState('');
-    const [tag2Piloto, setTag2Piloto] = useState('');
-    const [tag3Piloto, setTag3Piloto] = useState('');
-    const [tag4Piloto, setTag4Piloto] = useState('');
+    const [nomeEquipe, setNomeEquipe] = useState('');
+    const [filiacao, setFiliacao] = useState('');
+    const [patrocinador, setPatrocinador] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [dataNascimento, setDataNascimento] = useState('');
+    const [responsavel, setResponsavel] = useState('');
+    const [tipoSanguineo, setTipoSanguineo] = useState('');
+    const [tags, setTags] = useState<TagsPiloto[]>([]);
+    const [tagSelecionada, setTagSelecionada] = useState('');
 
     useEffect(() => {
         buscatPiloto();
@@ -41,18 +55,31 @@ const Piloto = () => {
     const handleChangeCPFPiloto = (e:any)=>{
             setCPFPiloto(e.target.value);
     }
-    const handleChangeTag1Piloto = (e:any)=>{
-            setTag1Piloto(e.target.value);
+    const handleChangeNomeEquipe = (e:any)=>{
+            setNomeEquipe(e.target.value);
     }
-    const handleChangeTag2Piloto = (e:any)=>{
-            setTag2Piloto(e.target.value);
+    const handleChangeFiliacao = (e:any)=>{
+            setFiliacao(e.target.value);
     }
-    const handleChangeTag3Piloto = (e:any)=>{
-            setTag3Piloto(e.target.value);
+    const handleChangePatrocinador = (e:any)=>{
+            setPatrocinador(e.target.value);
     }
-    const handleChangeTag4Piloto= (e:any)=>{
-            setTag4Piloto(e.target.value);
+    const handleChangeTelefone = (e:any)=>{
+            setTelefone(e.target.value);
     }
+    const handleChangeDataNascimento = (e:any)=>{
+            setDataNascimento(e.target.value);
+    }
+    const handleChangeResponsavel = (e:any)=>{
+            setResponsavel(e.target.value);
+    }
+    const handleChangeTipoSanguineo = (e:any)=>{
+            setTipoSanguineo(e.target.value);
+    }
+    const handleChangeTags = (e:any)=>{
+            setTagSelecionada(e.target.value);
+    }
+    
 
     async function buscatPiloto() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
@@ -78,10 +105,13 @@ const Piloto = () => {
                 setNmPiloto(Piloto.nome);
                 setNumeroPiloto(Piloto.numero_piloto);
                 setCPFPiloto(Piloto.cpf);
-                setTag1Piloto(Piloto.tag_rfid_1);
-                setTag2Piloto(Piloto.tag_rfid_2 || '');
-                setTag3Piloto(Piloto.tag_rfid_3 || '');
-                setTag4Piloto(Piloto.tag_rfid_4 || '');
+                setTelefone(Piloto.telefone as string);
+                setNomeEquipe(Piloto.nome_equipe);
+                setFiliacao(Piloto.filiacao as string);
+                setPatrocinador(Piloto.patrocinador as string);
+                setDataNascimento(Piloto.dataNascimento as unknown as string);
+                setResponsavel(Piloto.responsavel as string);
+                setTipoSanguineo(Piloto.tipoSanguineo as string);
             }
         });
     }
@@ -91,10 +121,6 @@ const Piloto = () => {
         setNmPiloto('');    
         setNumeroPiloto('');
         setCPFPiloto('');
-        setTag1Piloto('');
-        setTag2Piloto('');
-        setTag3Piloto('');
-        setTag4Piloto('');
     }
     async function excluirPiloto(id: number) {
         // Aqui você pode fazer uma chamada à API para excluir o piloto
@@ -128,17 +154,17 @@ const Piloto = () => {
             const nome = nmPiloto;
             const numero_piloto = numeroPiloto;
             const cpf = CPFPiloto;
-            const tag_rfid_1 = tag1Piloto;
-            const tag_rfid_2 = tag2Piloto || null;
-            const tag_rfid_3 = tag3Piloto || null;
-            const tag_rfid_4 = tag4Piloto || null;
+            const fone = telefone;
+            const nome_equipe = nomeEquipe;
+            const fil = filiacao;
+            
            
         const response = await fetch(`/api/piloto/${idPiloto}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, numero_piloto, cpf, tag_rfid_1, tag_rfid_2, tag_rfid_3, tag_rfid_4 }),
+            body: JSON.stringify({ nome, numero_piloto, cpf, fone, nome_equipe, fil }),
         });
 
         if (!response.ok) {
@@ -181,7 +207,18 @@ const Piloto = () => {
                         <div className="w-100 ">
                             <label htmlFor="nome" >Nome:</label>
                             <input {...register('nome')} className="ka-input w-100" value={nmPiloto ?? ''} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required />
-                        </div>                        
+                        </div> 
+                        <div className="w-100 ">
+                            <label htmlFor="tag">Tag:</label>
+                            <Select className="ka-seclect w-100" id="tag" value={tagSelecionada} onChange={handleChangeTags} >
+                                <option value="">Selecione uma Tag</option>
+                                {tags.map((tag) => (
+                                    <SelectItem key={tag._id} value={tag.tag}>
+                                        {tag.tag}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                        </div>                      
                     </div>
                     <div className="w-100 is-flex fix">
                         <div className="w-100 ">
@@ -192,26 +229,40 @@ const Piloto = () => {
                             <label htmlFor="cpf">CPF:</label>
                             <input {...register('cpf')} className="ka-input w-100"  type="text" value={CPFPiloto ?? ''} onChange={handleChangeCPFPiloto} id="cpf" placeholder="CPF" name="cpf" required />
                         </div>
+                        <div className="w-100 ">
+                            <label htmlFor="telefone">Telefone:</label>
+                            <input {...register('telefone')} className="ka-input w-100"  type="text" value={telefone ?? ''} onChange={handleChangeTelefone} id="telefone" placeholder="Telefone" name="telefone" required />
+                        </div>
                     </div>
                      <div className="w-100 is-flex fix">
-                        <div className="w-100 ">
-                            <label htmlFor="tag_rfid_1">TAG 1:</label>
-                            <input {...register('tag_rfid_1')} className="ka-input w-100"  type="text" value={tag1Piloto ?? ''} onChange={handleChangeTag1Piloto} id="tag_rfid_1" placeholder="tag_rfid_1" name="tag_rfid_1" required />
+                         <div className="w-100 ">
+                            <label htmlFor="nome_equipe">Nome da Equipe:</label>
+                            <input {...register('nome_equipe')} className="ka-input w-100"  type="text" value={nomeEquipe ?? ''} onChange={handleChangeNomeEquipe} id="nome_equipe" placeholder="Nome da Equipe" name="nome_equipe" required />
                         </div>
                         <div className="w-100 ">
-                            <label htmlFor="tag_rfid_2">TAG 2:</label>
-                            <input {...register('tag_rfid_2')} className="ka-input w-100"  type="text" value={tag2Piloto ?? ''} onChange={handleChangeTag2Piloto} id="tag_rfid_2" placeholder="tag_rfid_2" name="tag_rfid_2" />
+                            <label htmlFor="filiacao">Filiação:</label>
+                            <input {...register('filiacao')} className="ka-input w-100"  type="text" value={filiacao ?? ''} onChange={handleChangeFiliacao} id="filiacao" placeholder="Filiação" name="filiacao" required />
                         </div>
+                         <div className="w-100 ">
+                            <label htmlFor="patrocinador">Patrocinador:</label>
+                            <input {...register('patrocinador')} className="ka-input w-100"  type="text" value={patrocinador ?? ''} onChange={handleChangePatrocinador} id="patrocinador" placeholder="Patrocinador" name="patrocinador" required />
+                        </div>
+                        
                      </div>
                      <div className="w-100 is-flex fix">
-                        <div className="w-100 ">
-                            <label htmlFor="tag_rfid_3">TAG 3:</label>
-                            <input {...register('tag_rfid_3')} className="ka-input w-100"  type="text"value={tag3Piloto ?? ''} onChange={handleChangeTag3Piloto} id="tag_rfid_3" placeholder="tag_rfid_3" name="tag_rfid_3" />
+                         <div className="w-100 ">
+                            <label htmlFor="datanascimento">Data de Nascimento:</label>
+                            <input {...register('datanascimento')} className="ka-input w-100"  type="text" value={dataNascimento ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
                         </div>
                         <div className="w-100 ">
-                            <label htmlFor="tag_rfid_4">TAG 4:</label>
-                            <input {...register('tag_rfid_4')} className="ka-input w-100"  type="text" value={tag4Piloto ?? ''} onChange={handleChangeTag4Piloto} id="tag_rfid_4" placeholder="tag_rfid_4" name="tag_rfid_4" />
+                            <label htmlFor="responsavel">Responsavel:</label>
+                            <input {...register('responsavel')} className="ka-input w-100"  type="text" value={responsavel ?? ''} onChange={handleChangeResponsavel} id="responsavel" placeholder="Responsavel" name="responsavel" required />
                         </div>
+                         <div className="w-100 ">
+                            <label htmlFor="tiposanguineo">Tipo Sanguíneo:</label>
+                            <input {...register('tiposanguineo')} className="ka-input w-100"  type="text" value={tipoSanguineo ?? ''} onChange={handleChangeTipoSanguineo} id="tiposanguineo" placeholder="Tipo Sanguíneo" name="tiposanguineo" required />
+                        </div>
+                        
                      </div>
                 <div className=" ka-modal-footer">
                     <Button className="btn btn-green" onClick={handleSubmit(handleFormSubmit)}>Salvar</Button>
@@ -224,7 +275,7 @@ const Piloto = () => {
                 <div className="scrollbar">                
                     <table border={1} className="ka-table">
                         <thead>
-                            <tr><th colSpan={4} className="ka-table-title" >Tabela Piloto</th></tr>
+                            <tr><th colSpan={4} className="ka-table-title" >Tabela Competidores</th></tr>
                                 <tr>
                                     <th>Nome</th>
                                     <th>Número Piloto</th>

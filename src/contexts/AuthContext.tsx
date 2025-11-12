@@ -20,6 +20,7 @@ interface UserType {
   nameUser: string;
   emailUser: string;
   nivelUser: string;
+  avatarUser?: string;
 }
 
 export const AuthContext = createContext({} as AuthContextType);

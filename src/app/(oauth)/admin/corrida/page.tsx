@@ -34,27 +34,33 @@ export default function corrida(){
     const raceTimeRef = useRef<number>(0); // Ref to hold current race time for accurate lap capture
     const { toast } = useToast();
     const [idPiloto, setIdPiloto]= useState<string>('');
-    const[pilotos, setPilotos] = useState<Piloto[]>([]);
+    //const[pilotos, setPilotos] = useState<Piloto[]>([]);
     const[bateria, setBaterias] = useState<Bateria[]>([]);
     const[categoria, setCategoria] = useState<Categoria[]>([]);
+    const [selectedBateria, setSelectedBateria] = useState<string>('');
+    const [selectedCategoria, setSelectedCategoria] = useState<string>('');
     const synthRef = useRef<Tone.Synth | null>(null);
 
      useEffect(() => {
       // Carregar pilotos do servidor quando o componente for montado
-      loadPiloto();
+      loadPiloto(selectedBateria || '');
       loadBateria();
       loadCategoria();
     }, []);
 
     // carrega os pilotos do servidor
-    async function loadPiloto(){
+    async function loadPiloto(idBateria: string){
       try {
-        const response = await fetch("/api/piloto");
+        
+        const response = await fetch(`/api/bateria/${idBateria}`);
         if (!response.ok) {
           throw new Error('Failed to fetch pilots');
         }
-        const data: Piloto[] = await response.json();
-        const formattedPilots = data.map((p, index) => ({
+        //const data: Piloto[] = await response.json();
+        const {data: {pilotos} } = await response.json();
+        console.log("Pilotos carregados:", pilotos );
+                
+        const formattedPilots = pilotos.map((p: Piloto, index: number) => ({
           _id: String(p._id),
           nome: p.nome,
           numero_piloto: p.numero_piloto,
@@ -68,8 +74,9 @@ export default function corrida(){
           posicao: 0,
           cor: getPilotColor(index),
         }));
+        
         setPilots(formattedPilots);
-        setPilotos(formattedPilots);
+        //setPilotos(formattedPilots);
       }catch (error) {
         console.error("Falha ao carregar o piloto:", error);
         toast({ title: "Error", description: "Failed to load pilots from the server.", variant: "destructive" });
@@ -170,7 +177,7 @@ export default function corrida(){
       setIsRaceRunning(false);
       setRaceTime(0);
       raceTimeRef.current = 0;
-     loadPiloto(); // Reload pilots from server
+     loadPiloto(selectedBateria); // Reload pilots from server
 
     toast({ title: "Reseta Corrida", description: "Todos os dados do piloto e temporizadores foram reiniciados." });
   }, [toast]);
@@ -297,6 +304,13 @@ export default function corrida(){
       toast({ title: "Race Paused", description: "O cronômetro está pausado." });
     }
   };
+  const handleBateriaChange = (value: string) => {
+    setSelectedBateria(value); 
+    loadPiloto(value || '');   
+  }
+  const handleCategoriaChange = (value: string) => {
+    setSelectedCategoria(value);
+  }
 
     return(
        <div className="flex flex-col min-h-screen bg-background text-foreground continer-corrida">
@@ -314,7 +328,7 @@ export default function corrida(){
         
         <Button className="btn-corrida bg-cronometro " onClick={toggleRace}>{isRaceRunning ? <PauseCircle className="mr-2 h-5 w-5"/> :<PlayCircle className="mr-2 h-5 w-5"/> } {isRaceRunning ? 'Pausa': 'Início'}</Button>
         <Button className="btn-corrida-reset " onClick={resetRaceState}><RotateCcwIcon /> Resete</Button>
-        <Select className="select-corrida w-100 border-2 border-red-500" >
+        <Select className="select-corrida w-100 border-2 border-red-500" value={selectedCategoria} onChangeCapture={(e) => handleCategoriaChange(e.currentTarget.value)} >
           <SelectItem value="">Selecione a Categoria</SelectItem>
           {categoria.map((cat, key) => (
               <SelectItem key={key} value={cat.nome}>
@@ -322,10 +336,10 @@ export default function corrida(){
               </SelectItem>
             ))}
         </Select>
-        <Select className="select-corrida w-100 border-2 border-red-500" >
+        <Select className="select-corrida w-100 border-2 border-red-500"defaultValue={selectedBateria} onChange={(e) => handleBateriaChange(e.currentTarget.value)}>
           <SelectItem value="">Selecione a Bateria</SelectItem>
          {bateria.map((bat, key) => (
-            <SelectItem key={key} value={bat.nome}>
+            <SelectItem key={key} value={bat._id}>
               {bat.nome} 
             </SelectItem>
           ))}
