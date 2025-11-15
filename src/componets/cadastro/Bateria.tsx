@@ -4,13 +4,32 @@ import { useForm } from "react-hook-form";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 interface BateriaProps {
-  _id: number;
+  _id: string;
   nome: string;
 }
 
 const Bateria = () => {
   const { register, handleSubmit, reset } = useForm();
   const [baterias, setBaterias] = useState<BateriaProps[]>([]);
+  const [idBateria, setIdBateria] = useState<string | null>(null);
+  const [nomeBateria, setNomeBateria] = useState('');
+
+  const handleChangeNomeBateria = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNomeBateria(e.target.value);
+  };  
+  
+  const carregarDadosBateria = (id: string) => {
+    const bateria = baterias.find(b => b._id === id);
+    if (bateria) {
+      setIdBateria(bateria._id);
+      setNomeBateria(bateria.nome);
+    }
+  };
+  const limparFormulario = () => {  
+    setIdBateria(null);
+    setNomeBateria('');
+  };
+
   useEffect(() => {
     fetchBaterias();
   }, []);
@@ -31,6 +50,20 @@ const Bateria = () => {
   // Função para lidar com o envio do formulário
   const onSubmit = async (data: any) => {
     try {
+      if (idBateria) {
+        // Atualiza uma bateria existente
+        const response = await fetch(`/api/bateria/${idBateria}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        alert("Bateria atualizada com sucesso!");
+        if (!response.ok) {
+          throw new Error('Erro ao atualizar bateria');
+        }
+      } else {
       const response = await fetch("api/bateria", {
         method: "POST",
         headers: {
@@ -38,17 +71,32 @@ const Bateria = () => {
         },
         body: JSON.stringify(data),
       });
+      alert("Bateria cadastrada com sucesso!");
       if (!response.ok) {
         throw new Error('Erro ao cadastrar bateria');
       }
-      reset(); // Limpa o formulário após o envio
+    }
+      limparFormulario(); // Limpa o formulário após o envio
       fetchBaterias(); // Atualiza a lista de baterias
     } catch (error:any) {
       console.error("Erro ao cadastrar bateria:", error);
       alert("Erro ao cadastrar bateria: " + error.message);
     }
   }; 
-
+async function deleteBateria(id: string) {
+    try {
+      const response = await fetch(`/api/bateria/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error('Erro ao deletar bateria');
+      }
+      fetchBaterias(); // Atualiza a lista de baterias após a exclusão
+    } catch (error:any) {
+      console.error("Erro ao deletar bateria:", error);
+      alert("Erro ao deletar bateria: " + error.message);
+    }
+  }
 
   return (
     <div className="is-flex"> 
@@ -57,11 +105,11 @@ const Bateria = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="w-100">
             <label htmlFor="nome">Nome da Bateria:</label>
-            <input {...register('nome')} type="text" className="ka-input w-100" id="nome" name="nome" required />
+            <input {...register('nome')} type="text" className="ka-input w-100" value={nomeBateria} onChange={handleChangeNomeBateria} id="nome" name="nome" required />
           </div>
           <div className="ka-modal-footer">
             <Button className="btn btn-green" onClick={handleSubmit(onSubmit)}>Salvar</Button>
-            <Button className="btn btn-corrida-reset" onClick={() => reset()}>Limpar</Button>
+            <Button className="btn btn-corrida-reset" onClick={() => limparFormulario()}>Limpar</Button>
           </div>
         </form>
         </div>
@@ -82,8 +130,8 @@ const Bateria = () => {
                             <tr key={index}>
                                 <td>{bateria._id}</td>
                                 <td>{bateria.nome}</td>
-                                <td><Button className="btn btn-edit"><FaEdit/></Button></td>
-                                <td><Button className="btn btn-delete"><FaTrash /></Button></td>
+                                <td><Button className="btn btn-edit" onClick={()=>carregarDadosBateria(bateria._id)}><FaEdit/></Button></td>
+                                <td><Button className="btn btn-delete" onClick={()=>deleteBateria(bateria._id)}><FaTrash /></Button></td>
                             </tr>
                         ))}
                                            

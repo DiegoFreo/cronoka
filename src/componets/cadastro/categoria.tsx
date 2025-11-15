@@ -11,8 +11,8 @@ interface CategoriaProps {
 const Categoria = () => {
   const { register, handleSubmit, reset } = useForm();
   const [categorias, setCategorias] = useState<CategoriaProps[]>([]);
-  const [idCategoria, setIdCategoria] = useState("");
-  const [dsCategoria, setDsCategoria] = useState("");
+  const [idCategoria, setIdCategoria] = useState<string | null>(null);
+  const [dsCategoria, setDsCategoria] = useState<string>("");
 
   useEffect(() => {
     fetchCategorias();  
@@ -66,6 +66,7 @@ const Categoria = () => {
 }
 async function limpar() {
   setDsCategoria("");
+  setIdCategoria(null);
 }
 
   async function handleOnDelete(id:string){
