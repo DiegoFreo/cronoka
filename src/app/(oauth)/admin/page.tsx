@@ -36,7 +36,6 @@ export default function AdminPage() {
   const [countCategorias, setCountCategorias] = useState(0);
   const [countBaterias, setCountBaterias] = useState(0);
   const [countUsuario, setCountUsuario] = useState(0);
-  const [userAvatar, setUserAvatar] = useState('');
   const imgUser = useContext(AuthContext).users;
   const logout = useContext(AuthContext).logout;
   const [countProximosEventos, setCountProximosEventos] = useState(0);
@@ -46,8 +45,7 @@ export default function AdminPage() {
     buscaCategoria();
     buscaUsuario();
     buscaBateria();
-    buscaEventos();
-    //console.log(imgUser?.avatarUser);
+    buscaEventos();    
   }, []);
   // {logout} = useContext(AuthContext);
 
@@ -83,6 +81,7 @@ export default function AdminPage() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
         // Exemplo de chamada fictícia: 
         // const response = await api.get('/pilotos');
+        
         try {
             const response = await fetch("/api/piloto");
             if (!response.ok) {
@@ -118,8 +117,7 @@ export default function AdminPage() {
                 throw new Error('Erro ao buscar usuários');
             }
             const data = await response.json();
-            setCountUsuario(data.length);
-            
+            setCountUsuario(data.length);            
             
         } catch (error:any) {
             console.error("Erro ao buscar usuários:", error);
@@ -259,7 +257,7 @@ export default function AdminPage() {
               <Button className="bg-cronometro btn-corrida" onClick={()=>{logout()}}>Sair</Button>
               <img
                 alt="perfil"
-                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.svg"}
+                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.vg"}
                 className="mx-auto h-15 w-auto"
               />
             </div>
