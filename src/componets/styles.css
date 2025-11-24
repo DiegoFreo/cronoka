@@ -211,6 +211,12 @@
 .p-100{
     padding: 100px;
 }
+.pd-5{
+    padding-left: 5px;
+}
+.pe-5{
+    padding-right: 5px;
+}
 .m-10{
     margin: 10px;
 }
@@ -604,3 +610,27 @@
     padding: 10px;
     color: rgb(208, 212, 206);
 }
+.bgWrite{
+    background-color: #fff;
+}
+.borderRadius-5{
+    border-radius: 5px;
+}
+.colorfont-black{
+    color: #000;
+}
+
+/* alinhamentos */
+.align-left{
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+}
+.align-reigth{
+    display: flex;
+    align-items: flex-end;
+    align-content: flex-end;
+    justify-content: flex-end;
+}
+/* fim do alinhamento*/

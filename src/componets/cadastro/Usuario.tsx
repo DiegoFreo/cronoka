@@ -200,7 +200,7 @@ const Usuario = () => {
                         ) : (
                             <span className="ka-avatar-placeholder">Selecione uma imagem</span>
                         )}
-                        <input  type="text" className="ka-input w-100 input_oculta" id="avatarUser" onChange={handleChangeImage} name="avatarUser" accept="image/*" />
+                        <input  type="file" className="ka-input w-100 input_oculta" id="avatarUser" onChange={handleChangeImage} name="avatarUser" accept="image/*" />
                     </label>
                 </div>
                 

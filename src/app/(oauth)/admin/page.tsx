@@ -7,6 +7,7 @@ import Evento from "@/componets/cadastro/evento";
 import Categoria from "@/componets/cadastro/categoria";
 import Bateria from "@/componets/cadastro/Bateria";
 import Usuario from "@/componets/cadastro/Usuario";
+import ImportChips from "@/componets/import/importChips";
 import ConfiguracaoEventos from "@/componets/cadastro/ConfiguracaoEventos";
 import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
@@ -184,6 +185,11 @@ export default function AdminPage() {
     setTitleModal('Configuração de Eventos');
     setFormModal('configuracaoeventos');
   }
+  const handleImportChip = ()=>{
+    setIsOpen(!isOpen);
+    setTitleModal('Importação de Chips');
+    setFormModal('importchip');
+  }
 
   const handleFormModal = () => {
     if (formModal === 'piloto') {
@@ -221,6 +227,10 @@ export default function AdminPage() {
       else{
         buscaConfiguracaoEvento();
       }
+    }else if(formModal === 'importchip'){
+      if(isOpen){
+        return <ImportChips/>
+      }
     }
   }
   const router = useRouter();
@@ -245,7 +255,7 @@ export default function AdminPage() {
               <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
               <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
               <li onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
+              <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
               <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
               <li onClick={()=>{router.push("./admin/prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>

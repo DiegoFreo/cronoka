@@ -30,31 +30,8 @@ const Prova = ()=>{
         loadDados(); 
     },[]);
 
-    async function loadDados(){
-        //buscar os Eventos cadastrados
-        const responseEventos = await fetch("/api/evento");
-        if(!responseEventos.ok){
-            throw new Error("Erro ao buscar os eventos");
-        }
-        const dataEventos = await responseEventos.json();
-        setEventos(dataEventos);
 
-        //busca as Baterias cadastradas.
-        const responseBateria = await fetch("/api/bateria");
-        if(!responseBateria.ok){
-            throw new Error("Erro ao buscar as Baterias!");
-        }
-        const dataBaterias = await responseBateria.json();
-        setBaterias(dataBaterias);
-
-        //busca as categorias.
-        const responseCategoria = await fetch("/api/categoria");
-        if(!responseCategoria.ok){
-            throw new Error("Erro ao buscar as Categorias");
-        }
-        const dataCategorias = await responseCategoria.json();
-        setCategorias(dataCategorias);
-
+    async function loadPilotos(){
         //Buscar pilotos cadastrados
         const responsePilotos = await fetch("/api/piloto");
         if(!responsePilotos.ok){
@@ -64,21 +41,57 @@ const Prova = ()=>{
         setPilotos(dataPilotos);
     }
 
+    async function loadCategoria() {
+        //busca as categorias.
+        const responseCategoria = await fetch("/api/categoria");
+        if(!responseCategoria.ok){
+            throw new Error("Erro ao buscar as Categorias");
+        }
+        const dataCategorias = await responseCategoria.json();
+        setCategorias(dataCategorias);
+    }
+    async function loadBaterias(){
+        //busca as Baterias cadastradas.
+        const responseBateria = await fetch("/api/bateria");
+        if(!responseBateria.ok){
+            throw new Error("Erro ao buscar as Baterias!");
+        }
+        const dataBaterias = await responseBateria.json();
+        setBaterias(dataBaterias);
+    }
+
+    async function loadDados(){
+        //buscar os Eventos cadastrados
+        const responseEventos = await fetch("/api/evento");
+        if(!responseEventos.ok){
+            throw new Error("Erro ao buscar os eventos");
+        }
+        const dataEventos = await responseEventos.json();
+        setEventos(dataEventos);
+    }
+
     const handleChangeHoraEvento = (event: React.ChangeEvent<HTMLInputElement>) => {
+        
         setHoraEvento(event.target.value);
+        
+        
       }
 
     function handleCategoriaChange(e:any){
         setCategoriaSelecionada(e.target.value);
+        loadPilotos();
     }
 
     function handleEvento(e:any){
         const id = e.target.value;
          setEventoSelecionado(id);
+         loadBaterias();
+        alert("Carregando bateria!")
     }
 
     function handleBateriaChange(e:any){
-        setBateriaSelecionada(e.target.value)
+        setBateriaSelecionada(e.target.value);
+        loadCategoria();
     }
     function handleCompetidoresChange(e:any){
         const id = e.target.value;
@@ -145,7 +158,7 @@ const Prova = ()=>{
                             </Select>
                         </div>
                         <div className="w-100">
-                             <label htmlFor="data">Data da Prova:</label>
+                             <label htmlFor="data">Hora da Bateria:</label>
                             <input {...register("hora_bateria")} type="time" className="ka-input w-100 center" value={horaEvento} onChange={handleChangeHoraEvento} id="time"  name="time" required /> 
                         </div>
                         
@@ -153,7 +166,10 @@ const Prova = ()=>{
                 </div>
                 <div className="is-flex">
                     <div className="content-form-form w-100 p-10">
+                            <div className="is-flex">
                             <label htmlFor="observacao">Selecione os competidores</label>
+                            <input type="search" className="w-50 pd-5 bgWrite borderRadius-5 colorfont-black" placeholder="Search" />
+                            </div>
                             <Select multiple {...register('competidores')} className="ka-input w-100 h-40" onChange={handleCompetidoresChange} id="competidores" name="competidores" required >
                                 {pilotos.map((piloto, key)=>(
                                     <SelectItem key={key} value={piloto._id}>{piloto.numero_piloto} - {piloto.nome}</SelectItem>                            
