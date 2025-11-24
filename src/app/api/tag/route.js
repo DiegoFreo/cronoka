@@ -5,7 +5,7 @@ import { criarTag, atualizarTag, deletarTag } from  '../../controller/tagsContro
 
 export async function POST(request) {
     try{
-    await conectDb();
+    await conectDB();
     const dados = await request.json();
     const result = await criarTag(dados);
     return NextResponse.json(result.data || { error: result.error }, { status: result.status });
@@ -16,7 +16,7 @@ export async function POST(request) {
 }
 export async function GET() {
     try {
-        await conectDb();
+        await conectDB();
         const tags = await Tag.find();
         return NextResponse.json(tags); // ✅ retorno obrigatório
       } catch (error) {
@@ -25,7 +25,7 @@ export async function GET() {
 }
 export async function PUT(request) {
     try{
-    await conectDb();
+    await conectDB();
     const req = await request.json();
     req.params = { id: req.id };    
     const res = {
@@ -41,7 +41,7 @@ export async function PUT(request) {
 }
 export async function DELETE(request) {
     try{   
-    await conectDb();
+    await conectDB();
     const req = await request.json();
     req.params = { id: req.id };    
     const res = {
