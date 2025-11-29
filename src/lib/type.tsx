@@ -16,6 +16,7 @@ export interface Bateria{
 export interface Categoria{
     _id: string;
     nome: string;
+    pilotos: Piloto;
    // baterias: Bateria[];
 };
 export interface Evento{

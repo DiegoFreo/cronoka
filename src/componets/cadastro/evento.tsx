@@ -164,7 +164,6 @@ const Evento = () => {
         body: JSON.stringify(data),
       }     
     );
-    return;
 
       if (!response.ok) {
         throw new Error("Erro ao atualizar evento");

@@ -39,26 +39,30 @@ export default function corrida(){
     const[categoria, setCategoria] = useState<Categoria[]>([]);
     const [selectedBateria, setSelectedBateria] = useState<string>('');
     const [selectedCategoria, setSelectedCategoria] = useState<string>('');
+    const [selectedNomeBateria, setSelectedNomeBateria] = useState<string>('');
+    const [selectedNomeCategoria, setSelectedNomeCategoria] = useState<string>('');
     const synthRef = useRef<Tone.Synth | null>(null);
 
      useEffect(() => {
       // Carregar pilotos do servidor quando o componente for montado
-      loadPiloto(selectedBateria || '');
+      loadPiloto(selectedCategoria || '');
       loadBateria();
       loadCategoria();
     }, []);
 
     // carrega os pilotos do servidor
-    async function loadPiloto(idBateria: string){
+    async function loadPiloto(id: string){
       try {
         
-        const response = await fetch(`/api/bateria/${idBateria}`);
+        const response = await fetch(`/api/categoria/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch pilots');
         }
         //const data: Piloto[] = await response.json();
-        const {data: {pilotos} } = await response.json();
-        console.log("Pilotos carregados:", pilotos );
+       // const {data: {pilotos} } = await response.json();
+       const dataPiloto = await response.json();
+       const pilotos = dataPiloto.data?.pilotos || [];
+        console.log("Pilotos carregados:", dataPiloto.data?.pilotos || [] );
                 
         const formattedPilots = pilotos.map((p: Piloto, index: number) => ({
           _id: String(p._id),
@@ -177,7 +181,7 @@ export default function corrida(){
       setIsRaceRunning(false);
       setRaceTime(0);
       raceTimeRef.current = 0;
-     loadPiloto(selectedBateria); // Reload pilots from server
+     loadPiloto(selectedCategoria); // Reload pilots from server
 
     toast({ title: "Reseta Corrida", description: "Todos os dados do piloto e temporizadores foram reiniciados." });
   }, [toast]);
@@ -306,15 +310,16 @@ export default function corrida(){
   };
   const handleBateriaChange = (value: string) => {
     setSelectedBateria(value); 
-    loadPiloto(value || '');   
+    
   }
   const handleCategoriaChange = (value: string) => {
-    setSelectedCategoria(value);
+    setSelectedCategoria(value);  
+    loadPiloto(value);
   }
 
     return(
        <div className="flex flex-col min-h-screen bg-background text-foreground continer-corrida">
-        <Header />
+        <Header bateria={selectedNomeBateria} categoria={selectedNomeCategoria} />
         <main className="flex-grow container mx-auto px-2 py-4 md:px-4 md:py-6 space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 card">     
                 <Card className='bg-card shadow-lg border-red-500 border-2'>
@@ -331,8 +336,8 @@ export default function corrida(){
         <Select className="select-corrida w-100 border-2 border-red-500" value={selectedCategoria} onChangeCapture={(e) => handleCategoriaChange(e.currentTarget.value)} >
           <SelectItem value="">Selecione a Categoria</SelectItem>
           {categoria.map((cat, key) => (
-              <SelectItem key={key} value={cat.nome}>
-                {cat.nome} 
+              <SelectItem key={key} value={cat._id}>
+                {cat.nome}
               </SelectItem>
             ))}
         </Select>

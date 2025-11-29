@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import Modal from "@/componets/Modal";
 
 export default function ProvaPage() {
-  const[isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [titleModal, setTitleModal] = useState('');
   const [formModal, setFormModal] = useState('');
 
@@ -32,7 +32,7 @@ export default function ProvaPage() {
     }
   }
 
-    const router = useRouter();
+  const router = useRouter();
   return (
     <div className="continerdashboard">
        <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
@@ -57,8 +57,8 @@ export default function ProvaPage() {
               <li onClick={()=>{}} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
               <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
-              <li onClick={()=>{router.push("./admin/prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
-              <li onClick={()=>{router.push("./admin/corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
+              <li onClick={()=>{router.push("./prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
+              <li onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
             </ul>
           </div>
           <div className="continerdashboard-logout pt-4">

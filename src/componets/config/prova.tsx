@@ -41,6 +41,16 @@ const Prova = ()=>{
         setPilotos(dataPilotos);
     }
 
+    async function loadCompetidoresSelecionados(){
+        const response = await fetch(`/api/categoria/${categoriaSelecionada}`);
+        if(!response.ok){
+            throw new Error("Erro o buscar a categoria");
+        }
+        const DataPiloto = await response.json();
+        console.log(DataPiloto.data?.pilotos || []);
+        setCompetidoresSelecionados(DataPiloto.data?.pilotos || []);
+    }
+
     async function loadCategoria() {
         //busca as categorias.
         const responseCategoria = await fetch("/api/categoria");
@@ -49,6 +59,7 @@ const Prova = ()=>{
         }
         const dataCategorias = await responseCategoria.json();
         setCategorias(dataCategorias);
+        
     }
     async function loadBaterias(){
         //busca as Baterias cadastradas.
@@ -71,15 +82,13 @@ const Prova = ()=>{
     }
 
     const handleChangeHoraEvento = (event: React.ChangeEvent<HTMLInputElement>) => {
-        
         setHoraEvento(event.target.value);
-        
-        
       }
 
     function handleCategoriaChange(e:any){
         setCategoriaSelecionada(e.target.value);
         loadPilotos();
+        loadCompetidoresSelecionados();
     }
 
     function handleEvento(e:any){
@@ -115,6 +124,35 @@ const Prova = ()=>{
         return `${day}/${month}/${year}`;
    }
 
+   const onSaveProva = async(data: any)=>{
+       const piloto = competidoresSelecionados.map((index)=>index._id);
+        try{
+            
+            const response = await fetch(`/api/categoria/${categoriaSelecionada}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({pilotos:piloto})
+                }
+            );
+            
+            if(!response.ok) {
+                alert("Erro!");
+                return
+            }
+
+            alert("Dados atualizados!")
+        }catch(error:any){
+            alert("Erro ao atualizar evento: " + error.message);
+        }
+
+
+
+
+   }
+
 
   
    const onSubmit = async (data: any) => {
@@ -124,7 +162,7 @@ const Prova = ()=>{
 
     return(
         <div>
-            <form className="form-dashboard" onSubmit={handleSubmit(onSubmit)}>
+            <form className="form-dashboard" onSubmit={handleSubmit(onSaveProva )}>
                 <div className="is-flex">
                     <div className="content-form-form w-50 p-10">
                         <div className="w-100">
@@ -158,8 +196,8 @@ const Prova = ()=>{
                             </Select>
                         </div>
                         <div className="w-100">
-                             <label htmlFor="data">Hora da Bateria:</label>
-                            <input {...register("hora_bateria")} type="time" className="ka-input w-100 center" value={horaEvento} onChange={handleChangeHoraEvento} id="time"  name="time" required /> 
+                             <label htmlFor="hora_bateria">Hora da Bateria:</label>
+                            <input {...register("hora_bateria")} type="time" className="ka-input w-100 center" value={horaEvento} onChange={handleChangeHoraEvento} id="hora_bateria"  name="hora_bateria" required /> 
                         </div>
                         
                     </div>  
@@ -203,7 +241,7 @@ const Prova = ()=>{
                 
             </form>
             <div className="is-flex justify-end p-10">
-                    <button type="submit" className="btn btn-corrida" onClick={()=>{}}>Salvar Configuração</button>
+                    <button type="submit" className="btn btn-corrida" onClick={handleSubmit(onSaveProva)}>Salvar Configuração</button>
             </div>
         </div>    
     )

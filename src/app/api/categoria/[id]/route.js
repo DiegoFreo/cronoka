@@ -23,6 +23,21 @@ export async function PUT(request, { params }) {
   }
 }
 
+export async function GET(request, { params }) {
+  try {
+    await conectDB();
+    const { id } = params;
+    const categoria = await Categoria.findById(id).populate('pilotos');
+    if (!categoria) {
+      return NextResponse.json({ error: "Categoria não encontrada" }, { status: 404 });
+    }
+    return NextResponse.json({ data: categoria }, { status: 200 });
+  } catch (err) {
+    console.error("Erro ao buscar bateria:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
 export async function DELETE(request, { params }) {
   try {
     await conectDB();

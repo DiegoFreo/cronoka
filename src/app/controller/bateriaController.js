@@ -1,6 +1,5 @@
 import Bateria from '../model/bateria.js';
 import conectDB from '../../lib/mongodb';
-import { error } from 'console';
 
 // Criar uma nova bateria
 export async function criarBateria(data) {
