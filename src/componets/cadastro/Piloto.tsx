@@ -222,7 +222,7 @@ const Piloto = () => {
         <div className="is-flex">
         <div className="content-form-form  w-50">
             <form  className="w-100" onSubmit={handleSubmit(handleFormSubmit)} >
-                    <div className="w-100 is-flex fix">
+                    <div className="w-100 is-flex fix gap20">
                         <div className="w-100 ">
                             <label htmlFor="nome" >Nome:</label>
                             <input {...register('nome')} className="ka-input w-100" value={nmPiloto ?? ''} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required />
@@ -251,7 +251,7 @@ const Piloto = () => {
                             }
                         </div>                      
                     </div>
-                    <div className="w-100 is-flex fix">
+                    <div className="w-100 is-flex fix gap20">
                         <div className="w-100 ">
                             <label htmlFor="numero_piloto">Número Piloto:</label>
                             <input {...register('numero_piloto')} className="ka-input w-100" value={numeroPiloto ?? ''} onChange={handleChangeNumeroPiloto} type="text" id="numero_piloto" placeholder="Numero do piloto" name="numero_piloto" required />
@@ -265,7 +265,7 @@ const Piloto = () => {
                             <input {...register('telefone')} className="ka-input w-100"  type="text" value={telefone ?? ''} onChange={handleChangeTelefone} id="telefone" placeholder="Telefone" name="telefone" required />
                         </div>
                     </div>
-                     <div className="w-100 is-flex fix">
+                     <div className="w-100 is-flex fix gap20">
                          <div className="w-100 ">
                             <label htmlFor="nome_equipe">Nome da Equipe:</label>
                             <input {...register('nome_equipe')} className="ka-input w-100"  type="text" value={nomeEquipe ?? ''} onChange={handleChangeNomeEquipe} id="nome_equipe" placeholder="Nome da Equipe" name="nome_equipe" required />
@@ -280,7 +280,7 @@ const Piloto = () => {
                         </div>
                         
                      </div>
-                     <div className="w-100 is-flex fix">
+                     <div className="w-100 is-flex fix gap20">
                          <div className="w-100 ">
                             <label htmlFor="datanascimento">Data de Nascimento:</label>
                             <input {...register('datanascimento')} className="ka-input w-100"  type="text" value={dataNascimento ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
@@ -295,7 +295,7 @@ const Piloto = () => {
                         </div>
                         
                      </div>
-                <div className=" ka-modal-footer">
+                <div className=" ka-modal-footer gap20">
                     <Button className="btn btn-green" onClick={handleSubmit(handleFormSubmit)}>Salvar</Button>
                     <Button className="btn btn-corrida-reset"  onClick={()=>limparCanpos()}>Cancelar</Button>                       
                  

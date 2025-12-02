@@ -634,3 +634,6 @@
     justify-content: flex-end;
 }
 /* fim do alinhamento*/
+.gap20{
+    gap: 20px;
+}
