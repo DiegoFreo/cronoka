@@ -310,10 +310,20 @@ export default function corrida(){
   };
   const handleBateriaChange = (value: string) => {
     setSelectedBateria(value); 
+    bateria.filter((index)=>{
+      if(index._id === value){
+        setSelectedNomeBateria(index.nome);
+      }
+    })
     
   }
   const handleCategoriaChange = (value: string) => {
     setSelectedCategoria(value);  
+    categoria.filter((index)=>{
+      if(index._id === value){
+        setSelectedNomeCategoria(index.nome);
+      }
+    })
     loadPiloto(value);
   }
 

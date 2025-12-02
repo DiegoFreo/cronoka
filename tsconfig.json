@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/verifyToken.js", "src/componets/RequireAuth.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/verifyToken.js", "src/componets/RequireAuth.js", "src/componets/ui/SelectSearchable.js"],
   "exclude": ["node_modules"]
 }

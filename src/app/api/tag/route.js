@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import conectDB from '../../../lib/mongodb';
-import  Tag from  '../../model/tags';
-import { criarTag, atualizarTag, deletarTag } from  '../../controller/tagsController';   
+import  Tag from  '../../model/tag';
+import { criarTag, criarManyTag, atualizarTag, deletarTag } from  '../../controller/tagsController';   
 
 export async function POST(request) {
     try{
-    await conectDB();
-    const dados = await request.json();
-    const result = await criarTag(dados);
-    return NextResponse.json(result.data || { error: result.error }, { status: result.status });
-}    catch(err){
-    console.log(err)
-    return NextResponse.json({ error: err.message }, { status: 500 });
-    }
+   await conectDB();
+       const dados = await request.json();
+       const result = await criarManyTag(dados);
+       return NextResponse.json(result.data || { error: result.erro}, { status: result.status });
+   }    catch(err){
+       console.log(err)
+       return NextResponse.json({ error: err.message }, { status: 500 });
+       }
 }
 export async function GET() {
     try {

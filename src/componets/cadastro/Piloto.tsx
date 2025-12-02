@@ -4,6 +4,8 @@ import Button from "../ui/Buttom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { Select, SelectItem } from "../ui/select";
+import SelectSearchable from "../ui/SelectSearchable";
+import { set } from "mongoose";
 
 interface Piloto {
     _id: number;
@@ -22,7 +24,8 @@ interface Piloto {
 }
 interface TagsPiloto {
     _id: number;
-    tag: string;   
+    tag: string;  
+    num: string; 
 }
 
 const Piloto = () => {
@@ -44,6 +47,7 @@ const Piloto = () => {
 
     useEffect(() => {
         buscatPiloto();
+        buscaTags();
     }, []);
 
     const handleChangeNmPiloto = (e:any)=>{
@@ -97,6 +101,21 @@ const Piloto = () => {
             console.error("Erro ao buscar pilotos:", erro);
             alert("Erro ao buscar pilotos: " + erro.message);
         }
+    }
+    async function buscaTags() {
+        try {
+            const response = await fetch("/api/tag");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar tags');
+            }
+            const data = await response.json();
+            setTags(data);
+           
+        } catch (erro: any) {
+            console.error("Erro ao buscar tags:", erro);
+            alert("Erro ao buscar tags: " + erro.message);
+        }
+        
     }
     function carregarDadosPiloto(id: number) {
         piloto.forEach((Piloto) => {
@@ -208,8 +227,19 @@ const Piloto = () => {
                             <label htmlFor="nome" >Nome:</label>
                             <input {...register('nome')} className="ka-input w-100" value={nmPiloto ?? ''} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required />
                         </div> 
-                        <div className="w-100 ">
+                        <div className="w-100">
                             <label htmlFor="tag">Tag:</label>
+                            <SelectSearchable
+                                value={tagSelecionada}
+                                placeholder="Selecione uma Tag"
+                                options={tags.map((tag) => ({
+                                    value: tag.num,
+                                    label: tag.tag,
+                                }))}
+                                onSelect={setTagSelecionada}
+                            />
+
+                            {/*
                             <Select className="ka-seclect w-100" id="tag" value={tagSelecionada} onChange={handleChangeTags} >
                                 <option value="">Selecione uma Tag</option>
                                 {tags.map((tag) => (
@@ -217,7 +247,8 @@ const Piloto = () => {
                                         {tag.tag}
                                     </SelectItem>
                                 ))}
-                            </Select>
+                            </Select>*/
+                            }
                         </div>                      
                     </div>
                     <div className="w-100 is-flex fix">

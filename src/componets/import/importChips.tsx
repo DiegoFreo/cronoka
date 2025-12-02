@@ -1,7 +1,11 @@
 'use client'
-import React, {useState } from "react";
+import React, {useEffect, useState } from "react";
 import * as XLSX from 'xlsx';
 import {DadosChip} from '@/lib/importArquivos'
+import { Flag } from "lucide-react";
+import { Select, SelectItem } from "../ui/select";
+import { Evento } from "@/lib/type";
+import SelectSearchble from "../ui/SelectSearchable";
 
 /*
 interface DadosChip{
@@ -12,6 +16,8 @@ interface DadosChip{
 interface TagFormatada{
   num: string;
   tag: string;
+  flag?: boolean;
+  evento: string;
 }
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -20,14 +26,21 @@ const ImportChips = () =>{
     const [dados_chp, setDados_Chip] = useState<DadosChip[]>([]);
     const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
     const [chipFormatados, setChipsFormatados] = useState<TagFormatada[]>([]);
+    const [eventoSelecionado, setEventoSelecionado] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [mensagem, setMenmsagem] = useState('');
+    const [tagsImportadas, setTagsImportadas] = useState<TagFormatada[]>([]);
+    const [evento, setEvento] = useState<Evento[]>([]);
+
+    useEffect(()=>{
+      loadDados();
+    },[])
 
     const handleFileUpload =(e: React.ChangeEvent<HTMLInputElement>)=>{
         const file = e.target.files?.[0];
         setLinhasSelecionada([]);
         if(!file) return;
-
+        
         const reander = new FileReader();
 
         reander.onload = (event) =>{
@@ -45,6 +58,28 @@ const ImportChips = () =>{
         }
         reander.readAsBinaryString(file);
     }
+
+    async function loadDados(){
+        //buscar os Eventos cadastrados
+        const responseEventos = await fetch("/api/evento");
+        if(!responseEventos.ok){
+            throw new Error("Erro ao buscar os eventos");
+        }
+        const dataEventos = await responseEventos.json();
+        setEvento(dataEventos);
+    }
+    function handleEvento(e:any){
+        const id = e.target.value;
+         setEventoSelecionado(id);
+    }
+    function allEvento(){
+       const allevt = evento.map((evnt) => ({
+        value: evnt._id,
+        label: evnt.nome_evento,
+      }));
+      return allevt;
+    }
+
     const handleCheckboxChange = (index: number) => {
         if (linhasSelecionadas.includes(index)) {
             // Se já estava selecionado, remove da lista
@@ -80,15 +115,33 @@ const ImportChips = () =>{
         const CpForm = chips.map((cp)=>({
           tag:cp.Tag,
           num: cp.Num,
-        }))
+          flag: false,
+          evento: eventoSelecionado
+        }));
 
         setChipsFormatados(CpForm);
         
-        await delay(300);
+       const response = await fetch('/api/tag/',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(CpForm),
+    })
+    if(!response.ok){
+       throw new Error("Erro ao cadastrar tag");
+    }else{
+       alert("Tags cadastradas com sucesso!");
+       setDados_Chip([]);
+
+    }
+
         
         setLinhasSelecionada([]);
         //setDados_Chip([]);
         setLoading(false);
+        setMenmsagem('');
+
     }
    
 
@@ -97,16 +150,32 @@ const ImportChips = () =>{
     return (
       <div className="is-flex">
       {/* Input do Arquivo */}
-      <div className="w-50 align-left">
-        <label className="btn btn-green" htmlFor='arq'>Selecione o arquivo</label>
+      <div className="w-50">
+        <div className="w-100 align-left">
+        <label className="btn btn-green w-50" htmlFor='arq'>Buscar arquivo</label>
         <input className="input_oculta" name='arq' id="arq" type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
+        
       </div>
+     
+      
+        <div className="w-100 align-rigth">
+        <Select className="ka-seclect w-50" id="evento" value={eventoSelecionado} onChange={handleEvento} name="nome" required>
+            <SelectItem value="">Selecione a Prova</SelectItem>
+                {evento.map((evnt, key)=>(
+                  <SelectItem key={key} value={evnt._id}>{evnt.nome_evento}</SelectItem>                            
+                ))}
+          </Select>
+          
+      </div>
+
+      </div>
+      
 
       {/* Tabela de Pré-visualização */}
       {dados_chp.length > 0 && (
         <div className="w-100">        
           <div className="w-50">
-          <p>Selecione as linhas que deseja importar:</p>
+          <p>Selecione as linhas que deseja importar:</p>          
         </div>
         <div className="w-100">
         <div className="scrollbar"> 
@@ -118,8 +187,8 @@ const ImportChips = () =>{
                       checked={isMasterCheckBoxCheckd}
                       onChange={handleToggleAll}
                     /></th>
-                <th>Num (Excel)</th>
-                <th>Tags (Excel)</th>
+                <th>Num</th>
+                <th>Tags</th>
               </tr>
             </thead>
             <tbody>

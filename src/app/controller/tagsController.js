@@ -1,13 +1,26 @@
-import Tag from '../model/tags.js';
+import Tag from '../model/tag.js';
+import conectDB from '../../lib/mongodb';
 
 // Criar uma nova tag
-export async function criarTag(req, res) {
+export async function criarTag(dados) {
     try {
-        const novaTag = new Tag(req.body);
-        const resultado = await novaTag.save();
-        res.status(201).json(resultado);
+        await conectDB();
+            const novaTag = new Tag(dados);
+            await novaTag.save();
+            return { status: 201, data: novaTag };
     } catch (err) {
-        res.status(500).json({ erro: err.message });
+        return { status: 400, erro: err.message };
+    }
+}
+// Incluir varias tags
+export async function criarManyTag(dados) {
+    try {
+        await conectDB();
+            const tagsArray = Array.isArray(dados) ? dados : [dados];
+            const novaTag = await Tag.insertMany(tagsArray);
+            return { status: 201, data: novaTag };
+    } catch (err) {
+        return { status: 400, erro: err.message };
     }
 }
 // Listar todas as tags

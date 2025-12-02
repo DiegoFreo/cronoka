@@ -10,8 +10,7 @@ export type StatusPiloto = "NORMAL" | "PASSOU" | "ALERTA" | "SAIU" | "BURLOU";
 export interface Bateria{
     _id: string;
     nome: string;
-    eventos: Evento[];
-    pilotos: Piloto[];
+    categoria: Categoria[];
 };
 export interface Categoria{
     _id: string;
@@ -43,5 +42,4 @@ export interface Piloto{
     ultimaVoltaCompleta: number | null; //ultima volta completa em milesegundos
     posicao: number; //posição do piloto na corrida
     cor: string; //cor do piloto
-
 }
