@@ -37,11 +37,11 @@ const Piloto = () => {
     const [CPFPiloto, setCPFPiloto] = useState('');
     const [nomeEquipe, setNomeEquipe] = useState('');
     const [filiacao, setFiliacao] = useState('');
-    const [patrocinador, setPatrocinador] = useState('');
+    const [patrocinadores, setPatrocinadores] = useState('');
     const [telefone, setTelefone] = useState('');
-    const [dataNascimento, setDataNascimento] = useState('');
-    const [responsavel, setResponsavel] = useState('');
-    const [tipoSanguineo, setTipoSanguineo] = useState('');
+    const [dtNascimento, setdtNascimento] = useState<Date>(new Date());
+    const [responsavelPiloto, setResponsavelPiloto] = useState('');
+    const [tpSanguineo, settpSanguineo] = useState('');
     const [tags, setTags] = useState<TagsPiloto[]>([]);
     const [tagSelecionada, setTagSelecionada] = useState('');
 
@@ -66,19 +66,19 @@ const Piloto = () => {
             setFiliacao(e.target.value);
     }
     const handleChangePatrocinador = (e:any)=>{
-            setPatrocinador(e.target.value);
+            setPatrocinadores(e.target.value);
     }
     const handleChangeTelefone = (e:any)=>{
             setTelefone(e.target.value);
     }
     const handleChangeDataNascimento = (e:any)=>{
-            setDataNascimento(e.target.value);
+            setdtNascimento(e.target.value);
     }
     const handleChangeResponsavel = (e:any)=>{
-            setResponsavel(e.target.value);
+            setResponsavelPiloto(e.target.value);
     }
     const handleChangeTipoSanguineo = (e:any)=>{
-            setTipoSanguineo(e.target.value);
+            settpSanguineo(e.target.value);
     }
     const handleChangeTags = (e:any)=>{
             setTagSelecionada(e.target.value);
@@ -127,10 +127,10 @@ const Piloto = () => {
                 setTelefone(Piloto.telefone as string);
                 setNomeEquipe(Piloto.nome_equipe);
                 setFiliacao(Piloto.filiacao as string);
-                setPatrocinador(Piloto.patrocinador as string);
-                setDataNascimento(Piloto.dataNascimento as unknown as string);
-                setResponsavel(Piloto.responsavel as string);
-                setTipoSanguineo(Piloto.tipoSanguineo as string);
+                setPatrocinadores(Piloto.patrocinador as string);
+                setdtNascimento(Piloto.dataNascimento as unknown as Date);
+                setResponsavelPiloto(Piloto.responsavel as string);
+                settpSanguineo(Piloto.tipoSanguineo as string);
             }
         });
     }
@@ -176,6 +176,11 @@ const Piloto = () => {
             const fone = telefone;
             const nome_equipe = nomeEquipe;
             const fil = filiacao;
+            const dataNascimento = dtNascimento;
+            const patrocinador = patrocinadores;
+            const responsavel = responsavelPiloto;
+            const tipoSanguineo = tpSanguineo;
+            const tag = tagSelecionada;
             
            
         const response = await fetch(`/api/piloto/${idPiloto}`, {
@@ -183,7 +188,7 @@ const Piloto = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, numero_piloto, cpf, fone, nome_equipe, fil }),
+            body: JSON.stringify({ nome, numero_piloto, cpf, fone, nome_equipe, fil, dataNascimento, patrocinador, responsavel, tipoSanguineo, tag }),
         });
 
         if (!response.ok) {
@@ -276,22 +281,22 @@ const Piloto = () => {
                         </div>
                          <div className="w-100 ">
                             <label htmlFor="patrocinador">Patrocinador:</label>
-                            <input {...register('patrocinador')} className="ka-input w-100"  type="text" value={patrocinador ?? ''} onChange={handleChangePatrocinador} id="patrocinador" placeholder="Patrocinador" name="patrocinador" required />
+                            <input {...register('patrocinador')} className="ka-input w-100"  type="text" value={patrocinadores ?? ''} onChange={handleChangePatrocinador} id="patrocinador" placeholder="Patrocinador" name="patrocinador" required />
                         </div>
                         
                      </div>
                      <div className="w-100 is-flex fix gap20">
                          <div className="w-100 ">
                             <label htmlFor="datanascimento">Data de Nascimento:</label>
-                            <input {...register('datanascimento')} className="ka-input w-100"  type="text" value={dataNascimento ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
+                            <input {...register('datanascimento')} className="ka-input w-100"  type="text" value={dtNascimento.toDateString() ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
                         </div>
                         <div className="w-100 ">
                             <label htmlFor="responsavel">Responsavel:</label>
-                            <input {...register('responsavel')} className="ka-input w-100"  type="text" value={responsavel ?? ''} onChange={handleChangeResponsavel} id="responsavel" placeholder="Responsavel" name="responsavel" required />
+                            <input {...register('responsavel')} className="ka-input w-100"  type="text" value={responsavelPiloto ?? ''} onChange={handleChangeResponsavel} id="responsavel" placeholder="Responsavel" name="responsavel" required />
                         </div>
                          <div className="w-100 ">
                             <label htmlFor="tiposanguineo">Tipo Sanguíneo:</label>
-                            <input {...register('tiposanguineo')} className="ka-input w-100"  type="text" value={tipoSanguineo ?? ''} onChange={handleChangeTipoSanguineo} id="tiposanguineo" placeholder="Tipo Sanguíneo" name="tiposanguineo" required />
+                            <input {...register('tiposanguineo')} className="ka-input w-100"  type="text" value={tpSanguineo ?? ''} onChange={handleChangeTipoSanguineo} id="tiposanguineo" placeholder="Tipo Sanguíneo" name="tiposanguineo" required />
                         </div>
                         
                      </div>

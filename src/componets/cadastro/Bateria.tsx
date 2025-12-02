@@ -13,10 +13,14 @@ const Bateria = () => {
   const [baterias, setBaterias] = useState<BateriaProps[]>([]);
   const [idBateria, setIdBateria] = useState<string | null>(null);
   const [nomeBateria, setNomeBateria] = useState('');
+  const [horaEvento, setHoraEvento] = useState<string>("");
 
   const handleChangeNomeBateria = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNomeBateria(e.target.value);
   };  
+  const handleChangeHoraEvento = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHoraEvento(event.target.value);
+  }
   
   const carregarDadosBateria = (id: string) => {
     const bateria = baterias.find(b => b._id === id);
@@ -106,6 +110,10 @@ async function deleteBateria(id: string) {
           <div className="w-100">
             <label htmlFor="nome">Nome da Bateria:</label>
             <input {...register('nome')} type="text" className="ka-input w-100" value={nomeBateria} onChange={handleChangeNomeBateria} id="nome" name="nome" required />
+          </div>
+          <div className="w-100">
+              <label htmlFor="hora_bateria">Hora da Bateria:</label>
+              <input {...register("hora_bateria")} type="time" className="ka-input w-100 center" value={horaEvento} onChange={handleChangeHoraEvento} id="hora_bateria"  name="hora_bateria" required /> 
           </div>
           <div className="ka-modal-footer">
             <Button className="btn btn-green" onClick={handleSubmit(onSubmit)}>Salvar</Button>
