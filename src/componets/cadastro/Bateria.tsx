@@ -2,10 +2,12 @@ import React, {useEffect, useState} from "react";
 import Button from "../ui/Buttom";
 import { useForm } from "react-hook-form";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { set } from "mongoose";
 
 interface BateriaProps {
   _id: string;
   nome: string;
+  hora_bateria: string;
 }
 
 const Bateria = () => {
@@ -27,11 +29,13 @@ const Bateria = () => {
     if (bateria) {
       setIdBateria(bateria._id);
       setNomeBateria(bateria.nome);
+      setHoraEvento(bateria.hora_bateria || '');
     }
   };
   const limparFormulario = () => {  
     setIdBateria(null);
     setNomeBateria('');
+    setHoraEvento('');
   };
 
   useEffect(() => {
@@ -61,7 +65,7 @@ const Bateria = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({nome: nomeBateria, hora_bateria: horaEvento}),
         });
         alert("Bateria atualizada com sucesso!");
         if (!response.ok) {

@@ -3,9 +3,7 @@ import { useForm } from "react-hook-form";
 import { Select, SelectItem } from "../ui/select";
 import {Evento, Piloto, Categoria, Bateria} from '@/lib/type';
 import { FaTrash } from "react-icons/fa";
-import { Motherboard } from "react-bootstrap-icons";
-import { Bayon } from "next/font/google";
-import { error } from "console";
+import Button from "../ui/Buttom";
 
 interface ProvaFormData {
     eventoid: string;
@@ -28,6 +26,7 @@ const Prova = ()=>{
 
     useEffect(()=>{
         loadDados(); 
+        
     },[]);
 
 
@@ -40,17 +39,45 @@ const Prova = ()=>{
         const dataPilotos = await responsePilotos.json();
         setPilotos(dataPilotos);
     }
-
+    
     async function loadCompetidoresSelecionados(){
         const response = await fetch(`/api/categoria/${categoriaSelecionada}`);
         if(!response.ok){
             throw new Error("Erro o buscar a categoria");
         }
         const DataPiloto = await response.json();
-        console.log(DataPiloto.data?.pilotos || []);
         setCompetidoresSelecionados(DataPiloto.data?.pilotos || []);
     }
-
+    const BateriaSelected= (id:string)=>{
+        const bateria = baterias.find((bat)=> {
+            if(bat._id === id){
+                setHoraEvento(bat.hora_bateria);
+            }
+            
+        });
+    }
+    async function DeletepilotoCategoria(id:string){
+        alert("Erro ao remover piloto!"+ categoriaSelecionada + " - " + id);
+        try{
+            const response = await fetch(`/api/categoria/${categoriaSelecionada}/pilotos`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({pilotos:id})
+                }
+            );
+            if(!response.ok) {
+                alert("Erro ao remover piloto!");
+                return
+            }
+            alert("Piloto removido com sucesso!")
+        }catch(error:any){
+            alert("Erro ao remover piloto: " + error.message);
+        }
+        
+    }
     async function loadCategoria() {
         //busca as categorias.
         const responseCategoria = await fetch("/api/categoria");
@@ -95,11 +122,11 @@ const Prova = ()=>{
         const id = e.target.value;
          setEventoSelecionado(id);
          loadBaterias();
-        alert("Carregando bateria!")
     }
 
     function handleBateriaChange(e:any){
         setBateriaSelecionada(e.target.value);
+        BateriaSelected(e.target.value);
         loadCategoria();
     }
     function handleCompetidoresChange(e:any){
@@ -229,7 +256,7 @@ const Prova = ()=>{
                                     <tr key={key}>
                                         <td >{piloto.numero_piloto}</td>
                                         <td >{piloto.nome}</td>
-                                        <td ><FaTrash className="center" /></td>
+                                        <td ><Button className="btn btn-green" onClick={()=>{DeletepilotoCategoria(piloto._id)}}><FaTrash className="center" /></Button> </td>
                                     </tr>                           
                                 ))}
                             </tbody>
@@ -241,7 +268,7 @@ const Prova = ()=>{
                 
             </form>
             <div className="is-flex justify-end p-10">
-                    <button type="submit" className="btn btn-corrida" onClick={handleSubmit(onSaveProva)}>Salvar Configuração</button>
+                <button type="submit" className="btn btn-corrida" onClick={handleSubmit(onSaveProva)}>Salvar Configuração</button>
             </div>
         </div>    
     )

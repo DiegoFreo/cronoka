@@ -11,6 +11,7 @@ export interface Bateria{
     _id: string;
     nome: string;
     categoria: Categoria[];
+    hora_bateria: string;
 };
 export interface Categoria{
     _id: string;
