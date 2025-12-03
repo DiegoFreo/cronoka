@@ -10,7 +10,6 @@ import { Card, CardContent } from '@/componets/ui/card';
 import {Header} from "@/componets/Header";
 import Button from "@/componets/ui/Buttom";
 import {PlayCircle, RotateCcwIcon, PauseCircle} from "lucide-react";
-import "@/componets/stylescorrida.css";
 import { Select, SelectItem } from '@/componets/ui/select';
 
 
@@ -53,7 +52,6 @@ export default function corrida(){
     // carrega os pilotos do servidor
     async function loadPiloto(id: string){
       try {
-        
         const response = await fetch(`/api/categoria/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch pilots');
@@ -294,13 +292,18 @@ export default function corrida(){
   };
 
    const toggleRace = () => {
-    if (!isRaceRunning && Tone.context.state !== 'running') {
-      Tone.start().then(() => {
+      if (!isRaceRunning && Tone.context.state !== 'running' && pilots.length > 0) {
+        Tone.start().then(() => {
          if (synthRef.current && Tone.context.state === 'running') {
              synthRef.current.triggerAttackRelease("C5", "8n", Tone.now() + 0.1); // Test sound
          }
       });
+    }else if (!isRaceRunning && pilots.length === 0) {
+      toast({ title: "No Pilots", description: "Load pilots before starting the race.", variant: "destructive" });
+      return;
     }
+    
+
     setIsRaceRunning(!isRaceRunning);
     if (!isRaceRunning) {
       toast({ title: "Race Started!", description: "O cronômetro está funcionando agora." });
@@ -308,6 +311,7 @@ export default function corrida(){
       toast({ title: "Race Paused", description: "O cronômetro está pausado." });
     }
   };
+
   const handleBateriaChange = (value: string) => {
     setSelectedBateria(value); 
     bateria.filter((index)=>{
