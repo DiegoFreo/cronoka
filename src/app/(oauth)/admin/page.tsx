@@ -50,6 +50,15 @@ export default function AdminPage() {
   }, []);
   // {logout} = useContext(AuthContext);
 
+  function FormatData(data:string){
+        const date = new Date(data);
+        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${day}/${month}/${year}`;
+   }
+
   async function buscaEventos() {
         try {
             const response = await fetch("/api/evento");
@@ -63,10 +72,8 @@ export default function AdminPage() {
                    const dataInicio = new Date(evento.data_inicio);
                    const dataFim = new Date(evento.data_fim);
                    const hoje = new Date();
-                   if (hoje >= dataInicio && hoje <= dataFim) {
+                   if (hoje.getMonth() >= dataInicio.getMonth() && hoje.getFullYear() <= dataFim.getFullYear() && hoje.getDate() <= dataFim.getDate()) {
                     setCountProximosEventos(countProximosEventos + 1);
-                    alert(`Evento em andamento: ${dataInicio}`);      
-                    
                   }
                                   
                 });
@@ -250,7 +257,7 @@ export default function AdminPage() {
           </div>
           <div className="continerdashboard-menu pt-2">
             <ul>
-              <li onClick={handleOpenModalPiloto} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
+              <li onClick={()=>{router.push("./admin/competidor")}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
               <li onClick={handleOpenModalUsuario} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
               <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
               <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>

@@ -8,7 +8,7 @@ import SelectSearchable from "../ui/SelectSearchable";
 import { set } from "mongoose";
 
 interface Piloto {
-    _id: number;
+    _id: string;
     nome: string;
     numero_piloto: string;
     cpf: string;
@@ -22,16 +22,21 @@ interface Piloto {
     //categoriaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' },
     tag: string[];   
 }
+interface Categoria {
+    _id: string;
+    nome: string;
+}
+
 interface TagsPiloto {
-    _id: number;
+    _id: string;
     tag: string;  
-    num: string; 
+    num: number; 
 }
 
 const Piloto = () => {
     const { register, handleSubmit, reset} = useForm();
     const [piloto, setPiloto] = useState<Piloto[]>([]);
-    const [idPiloto, setIdPiloto] = useState<number | null>(null);
+    const [idPiloto, setIdPiloto] = useState<string | null>(null);
     const [nmPiloto, setNmPiloto] = useState('');
     const [numeroPiloto, setNumeroPiloto] = useState('');
     const [CPFPiloto, setCPFPiloto] = useState('');
@@ -44,11 +49,24 @@ const Piloto = () => {
     const [tpSanguineo, settpSanguineo] = useState('');
     const [tags, setTags] = useState<TagsPiloto[]>([]);
     const [tagSelecionada, setTagSelecionada] = useState('');
+    const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
+    const [categoria, setCategoria] = useState<Categoria[]>([]);
 
     useEffect(() => {
         buscatPiloto();
         buscaTags();
+        buscatCategoria();
     }, []);
+
+     const handleCheckboxChange = (index: number) => {
+        if (linhasSelecionadas.includes(index)) {
+            // Se já estava selecionado, remove da lista
+            setLinhasSelecionada(linhasSelecionadas.filter((i) => i !== index));
+        } else {
+            // Se não estava, adiciona na lista
+            setLinhasSelecionada([...linhasSelecionadas, index]);
+        }
+    };
 
     const handleChangeNmPiloto = (e:any)=>{
             setNmPiloto(e.target.value);
@@ -84,6 +102,23 @@ const Piloto = () => {
             setTagSelecionada(e.target.value);
     }
     
+    async function buscatCategoria() {
+        // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
+        // Exemplo de chamada fictícia: 
+        // const response = await api.get('/pilotos');
+        try {
+            const response = await fetch("/api/categoria");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar categorias');
+            }
+            const data = await response.json();
+            setCategoria(data);
+           
+        } catch (erro: any) {
+            console.error("Erro ao buscar categorias:", erro);
+            alert("Erro ao buscar categorias: " + erro.message);
+        }
+    }
 
     async function buscatPiloto() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
@@ -117,7 +152,7 @@ const Piloto = () => {
         }
         
     }
-    function carregarDadosPiloto(id: number) {
+    function carregarDadosPiloto(id: string) {
         piloto.forEach((Piloto) => {
             if (Piloto._id === id) {
                 setIdPiloto(Piloto._id);
@@ -141,7 +176,7 @@ const Piloto = () => {
         setNumeroPiloto('');
         setCPFPiloto('');
     }
-    async function excluirPiloto(id: number) {
+    async function excluirPiloto(id: string) {
         // Aqui você pode fazer uma chamada à API para excluir o piloto
         // Exemplo de chamada fictícia: 
         // await api.delete(`/pilotos/${id}`); 
@@ -239,7 +274,7 @@ const Piloto = () => {
                                 placeholder="Selecione uma Tag"
                                 options={tags.map((tag) => ({
                                     value: tag.num,
-                                    label: tag.tag,
+                                    label: tag.num > 9 ? '00' + tag.num : '000' + tag.num,
                                 }))}
                                 onSelect={setTagSelecionada}
                             />
@@ -313,18 +348,15 @@ const Piloto = () => {
                         <thead>
                             <tr><th colSpan={4} className="ka-table-title" >Tabela Competidores</th></tr>
                                 <tr>
+                                    <th>Flag</th>
                                     <th>Nome</th>
-                                    <th>Número Piloto</th>
-                                    <th colSpan={2}>Editar/Excluir</th>
                                 </tr>
                         </thead>
                         <tbody>
-                            {piloto.map((piloto, index) => (
-                                <tr key={index}>    
-                                <td>{piloto.nome}</td>
-                                <td>{piloto.numero_piloto}</td>
-                                <td><button className="component-button-black" onClick={()=>carregarDadosPiloto(piloto._id)}  ><FaEdit /></button></td>
-                                <td><button className="component-button-black" onClick={()=>excluirPiloto(piloto._id)} ><FaTrash /></button></td>
+                            {categoria.map((cat, index) => (
+                                <tr key={index}>  
+                                <td><input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={linhasSelecionadas.includes(index)} /></td>  
+                                <td>{cat.nome}</td>
                                 </tr>
                             ))}        
                             

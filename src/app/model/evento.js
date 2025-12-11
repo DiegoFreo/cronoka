@@ -8,7 +8,6 @@ const EventoSchema = new mongoose.Schema({
     local_evento: { type: String, required: false },
     descricao_evento: { type: String, required: false },
     baterias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Bateria' }],
-    //categorias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' }],
 }, { timestamps: true });
 
 export default mongoose.models.Evento || mongoose.model('Evento', EventoSchema);

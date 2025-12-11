@@ -104,6 +104,15 @@
 }
 /* Fim DropDownMenu */
 /* contenter */
+.content-top{
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(3, 3, 3);
+    color: rgb(208, 212, 206);
+}
 .content{
     width: 100%;
     height: 100vh;
@@ -201,6 +210,10 @@
 .p-70{
     padding: 70px;
 }
+.py-10{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 .p-80{
     padding: 80px;
 }
@@ -216,6 +229,12 @@
 }
 .pe-5{
     padding-right: 5px;
+}
+.pd-10{
+    padding-left: 10px;
+}
+.pe-10{
+    padding-right: 10px;
 }
 .m-10{
     margin: 10px;
@@ -566,7 +585,7 @@
     border-bottom: 2px solid rgb(255, 0, 0);
 }
 .scrollbar{
-    height: 70vh;
+    height: 60vh;
     overflow: auto;
     border: 2px solid rgb(255, 0, 0);
     border-radius: 10px;
@@ -581,6 +600,12 @@
 .ka-table-title{
     border-bottom: 1px solid #fff;
     text-align: center;
+}
+.ka-table thead tr{
+    background-color: rgba(255, 255, 255, 0.2);
+}   
+.ka-table-select{
+    background-color: rgba(255, 255, 255, 0.2);
 }
 .avatar-preview{
     width: 120px;

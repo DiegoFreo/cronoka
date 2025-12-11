@@ -11,7 +11,7 @@ const PilotoSchema = new mongoose.Schema({
     telefone: { type: String, required: false },
     responsavel: { type: String, required: false },
     tipoSanguineo: { type: String, required: false },
-    //categoriaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' },
+    categorias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' }],
     tag: { type:[String], default: []}
 }, { timestamps: true });
 

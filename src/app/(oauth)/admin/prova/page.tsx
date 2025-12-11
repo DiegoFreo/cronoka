@@ -63,9 +63,7 @@ useEffect(() => {
                    if (hoje >= dataInicio && hoje <= dataFim) {
                     setCountProximosEventos(countProximosEventos + 1);
                     alert(`Evento em andamento: ${dataInicio}`);      
-                    
-                  }
-                                  
+                  }           
                 });
             }
             
@@ -254,7 +252,7 @@ useEffect(() => {
           </div>
           <div className="continerdashboard-menu">
            <ul>
-                <li onClick={handleOpenModalPiloto} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
+                <li onClick={()=>{router.push("./competidor")}} className="flex flex-row items-center"><User  className="pr-2"/>Competidores</li>
                 <li onClick={handleOpenModalUsuario} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
                 <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
                 <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
