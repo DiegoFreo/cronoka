@@ -7,3 +7,4 @@ const ConfiguracaoBateriaSchema = new mongoose.Schema({
     classificacao_quantidade_voltas: { type: Boolean, required: false},
     duracao_minutos: { type: Number, required: true },
 }, { timestamps: true });
+export default mongoose.models.ConfiguracaoBateria || mongoose.model('ConfiguracaoBateria', ConfiguracaoBateriaSchema);

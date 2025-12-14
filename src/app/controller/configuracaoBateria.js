@@ -1,9 +1,9 @@
-import ConfiguracaoBateriaSchema from "@/app/model/configuracao_bateria.js";
+import ConfiguracaoBateria from "@/app/model/configuracao_bateria.js";
 import Bateria from "@/app/model/bateria.js";
 
 export const criarConfiguracaoBateria = async (req, res) => {
     try {
-        const novaConfiguracao = new ConfiguracaoBateriaSchema(req.body);
+        const novaConfiguracao = new ConfiguracaoBateria(req.body);
         await novaConfiguracao.save();
 
         // Atualiza a bateria associada com a nova configuração
