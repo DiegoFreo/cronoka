@@ -1,5 +1,5 @@
-import ConfiguracaoBateriaSchema from "../model/configuracoa_bateria.js";
-import Bateria from "../model/bateria.js";
+import ConfiguracaoBateriaSchema from "@/app/model/configuracao_bateria.js";
+import Bateria from "@/app/model/bateria.js";
 
 export const criarConfiguracaoBateria = async (req, res) => {
     try {
