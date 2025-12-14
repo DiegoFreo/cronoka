@@ -23,7 +23,7 @@
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.525.0",
     "mongoose": "^8.19.1",
-    "next": "^15.3.3",
+    "next": "15.3.8",
     "nookies": "^2.5.2",
     "react": "19.1.0",
     "react-bootstrap-icons": "^1.11.6",
