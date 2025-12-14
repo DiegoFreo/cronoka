@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import conectDB from '../../../lib/mongodb';
+import conectDB from '../../../../lib/mongodb';
 import {listarConfiguracoesBateria, atualizarConfiguracaoBateria, deletarConfiguracaoBateria } from  '@/app/controller/configuracaoBateria.js';  
 
 export async function GET() {
