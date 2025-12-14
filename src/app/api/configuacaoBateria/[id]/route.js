@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import conectDB from '../../../../lib/mongodb';
-import {listarConfiguracoesBateria, atualizarConfiguracaoBateria, deletarConfiguracaoBateria } from  '../../../controller/configuracaoBateria.js';  
+import {listarConfiguracoesBateria, atualizarConfiguracaoBateria, deletarConfiguracaoBateria } from  '@/controller/configuracaoBateria.js';  
 
 export async function GET() {
   try {
