@@ -10,7 +10,6 @@ import '@/componets/stylescorrida.css';
 import '@/componets/dashboard.css';
 import '@/componets/styles.css';
 import Modal from "../Modal";
-import { Pi } from "lucide-react";
 
 
 export default function CompetidorAll() {
@@ -19,6 +18,7 @@ export default function CompetidorAll() {
     const { register, handleSubmit, reset } = useForm();
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [titleModal, setTitleModal] = React.useState<string>('');
+    const [idPilotoSelect, setIdPilotoSelect] = React.useState<string>('');
 
     
 
@@ -50,9 +50,23 @@ export default function CompetidorAll() {
         setTitleModal('Adicionar Competidor');
         setIsOpen(true);
     }
+    
+   const carregarDadosPiloto = (id: string) => {
+        piloto.forEach((P) => {
+            if (P._id === id) {
+                setIdPilotoSelect(P._id);
+                setTitleModal('Editar Competidor');
+                setIsOpen(true);
+            }
+        });
+    }
+
+
     function handleFormModal() {
         if(isOpen && titleModal === 'Adicionar Competidor'){
             return <Piloto />;
+        }else if(isOpen && titleModal === 'Editar Competidor'){
+            return <Piloto _id={idPilotoSelect} />;
         }
     }
 
@@ -97,7 +111,7 @@ export default function CompetidorAll() {
                                  <tr key={index} className={nmPiloto === piloto.nome ? "ka-table-select": ""}>    
                                  <td>{piloto.nome}</td>
                                  <td>{piloto.numero_piloto}</td>
-                                 <td><button className="component-button-black" onClick={()=>{}}  ><FaEdit /></button></td>
+                                 <td><button className="component-button-black" onClick={()=>{carregarDadosPiloto(piloto._id)}}  ><FaEdit /></button></td>
                                  <td><button className="component-button-black" onClick={()=>{}} ><FaTrash /></button></td>
                                  </tr>
                              ))}        

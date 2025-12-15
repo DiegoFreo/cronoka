@@ -13,12 +13,12 @@ interface Piloto {
     numero_piloto: string;
     cpf: string;
     nome_equipe: string;
-    filiacao:  String;
-    patrocinador:  String;   
+    filiacao:  string;
+    patrocinador:  string;   
     dataNascimento: Date;
-    telefone: String;
-    responsavel:  String; 
-    tipoSanguineo:  String;
+    telefone: string;
+    responsavel:  string; 
+    tipoSanguineo:  string;
     //categoriaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' },
     tag: string[];   
 }
@@ -32,30 +32,33 @@ interface TagsPiloto {
     tag: string;  
     num: number; 
 }
+interface PilotoProps {
+    _id?: string;
+}
 
-const Piloto = () => {
+const Piloto = ({ _id }: PilotoProps) => {
     const { register, handleSubmit, reset} = useForm();
     const [piloto, setPiloto] = useState<Piloto[]>([]);
     const [idPiloto, setIdPiloto] = useState<string | null>(null);
-    const [nmPiloto, setNmPiloto] = useState('');
-    const [numeroPiloto, setNumeroPiloto] = useState('');
-    const [CPFPiloto, setCPFPiloto] = useState('');
-    const [nomeEquipe, setNomeEquipe] = useState('');
+    const [nmPiloto, setNmPiloto] = useState<string>('');
+    const [numeroPiloto, setNumeroPiloto] = useState<string>('');
+    const [CPFPiloto, setCPFPiloto] = useState<string>('');
+    const [nomeEquipe, setNomeEquipe] = useState<string>('');
     const [filiacao, setFiliacao] = useState('');
-    const [patrocinadores, setPatrocinadores] = useState('');
-    const [telefone, setTelefone] = useState('');
+    const [patrocinadores, setPatrocinadores] = useState<string>('');
+    const [telefone, setTelefone] = useState<string>('');
     const [dtNascimento, setdtNascimento] = useState<Date>(new Date());
-    const [responsavelPiloto, setResponsavelPiloto] = useState('');
-    const [tpSanguineo, settpSanguineo] = useState('');
+    const [responsavelPiloto, setResponsavelPiloto] = useState<string>('');
+    const [tpSanguineo, settpSanguineo] = useState<string>('');
     const [tags, setTags] = useState<TagsPiloto[]>([]);
-    const [tagSelecionada, setTagSelecionada] = useState('');
+    const [tagSelecionada, setTagSelecionada] = useState<string>('');
     const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
     const [categoria, setCategoria] = useState<Categoria[]>([]);
 
     useEffect(() => {
         buscatPiloto();
         buscaTags();
-        buscatCategoria();
+        buscatCategoria(); 
     }, []);
 
      const handleCheckboxChange = (index: number) => {
@@ -131,7 +134,7 @@ const Piloto = () => {
             }
             const data = await response.json();
             setPiloto(data);
-           
+            pilotoSelecionado(data as Piloto[]);
         } catch (erro: any) {
             console.error("Erro ao buscar pilotos:", erro);
             alert("Erro ao buscar pilotos: " + erro.message);
@@ -152,25 +155,45 @@ const Piloto = () => {
         }
         
     }
-    function carregarDadosPiloto(id: string) {
+    function pilotoSelecionado(p: Piloto[]) {
+        p.forEach((Piloto) => {            
+            if (Piloto._id === _id) {
+                setIdPiloto(Piloto._id);
+                setNmPiloto(Piloto.nome);
+                setNumeroPiloto(Piloto.numero_piloto);
+                setCPFPiloto(Piloto.cpf);
+                setTelefone(Piloto.telefone);
+                setNomeEquipe(Piloto.nome_equipe);
+                setFiliacao(Piloto.filiacao);
+                setPatrocinadores(Piloto.patrocinador );
+                setdtNascimento(Piloto.dataNascimento);
+                setResponsavelPiloto(Piloto.responsavel);
+                settpSanguineo(Piloto.tipoSanguineo);
+            }
+        })
+       
+    }
+    async function carregarDadosPiloto(id: string) {    
         piloto.forEach((Piloto) => {
             if (Piloto._id === id) {
                 setIdPiloto(Piloto._id);
                 setNmPiloto(Piloto.nome);
                 setNumeroPiloto(Piloto.numero_piloto);
                 setCPFPiloto(Piloto.cpf);
-                setTelefone(Piloto.telefone as string);
+                setTelefone(Piloto.telefone);
                 setNomeEquipe(Piloto.nome_equipe);
                 setFiliacao(Piloto.filiacao as string);
                 setPatrocinadores(Piloto.patrocinador as string);
                 setdtNascimento(Piloto.dataNascimento as unknown as Date);
                 setResponsavelPiloto(Piloto.responsavel as string);
                 settpSanguineo(Piloto.tipoSanguineo as string);
+                
             }
+            
         });
+       
     }
     function limparCanpos(){
-        
         setIdPiloto(null);
         setNmPiloto('');    
         setNumeroPiloto('');
@@ -323,7 +346,7 @@ const Piloto = () => {
                      <div className="w-100 is-flex fix gap20">
                          <div className="w-100 ">
                             <label htmlFor="datanascimento">Data de Nascimento:</label>
-                            <input {...register('datanascimento')} className="ka-input w-100"  type="text" value={dtNascimento.toDateString() ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
+                            <input {...register('datanascimento')} className="ka-input w-100"  type="date" value={dtNascimento?.toISOString().split('T')[0] ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
                         </div>
                         <div className="w-100 ">
                             <label htmlFor="responsavel">Responsavel:</label>
