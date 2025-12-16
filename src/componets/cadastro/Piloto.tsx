@@ -369,7 +369,7 @@ const Piloto = ({ _id }: PilotoProps) => {
                 <div className="scrollbar">                
                     <table border={1} className="ka-table">
                         <thead>
-                            <tr><th colSpan={4} className="ka-table-title" >Tabela Competidores</th></tr>
+                            <tr><th colSpan={4} className="ka-table-title" >Tabela Categoria</th></tr>
                                 <tr>
                                     <th>Flag</th>
                                     <th>Nome</th>
