@@ -13,11 +13,20 @@ interface DadosChip{
     Tag: string;
 }
 */
-interface TagFormatada{
-  num: string;
-  tag: string;
-  flag?: boolean;
-  evento: string;
+interface eventos{
+    _id: string,
+    nome_evento: string,
+    data_inicio: Date,
+    data_fim: Date, 
+    hora_evento: string,
+    local_evento: string,
+    descricao_evento:string
+}
+interface tagFormatada{
+  num: string,
+  tag: string,
+  flag: boolean,
+  evento: eventos[]
 }
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -25,12 +34,12 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const ImportChips = () =>{
     const [dados_chp, setDados_Chip] = useState<DadosChip[]>([]);
     const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
-    const [chipFormatados, setChipsFormatados] = useState<TagFormatada[]>([]);
+    const [chipFormatados, setChipsFormatados] = useState<tagFormatada[]>([]);
     const [eventoSelecionado, setEventoSelecionado] = useState<string>("");
     const [loading, setLoading] = useState(false);
     const [mensagem, setMenmsagem] = useState('');
-    const [tagsImportadas, setTagsImportadas] = useState<TagFormatada[]>([]);
-    const [evento, setEvento] = useState<Evento[]>([]);
+    const [tagsImportadas, setTagsImportadas] = useState<tagFormatada[]>([]);
+    const [evento, setEvento] = useState<eventos[]>([]);
 
     useEffect(()=>{
       loadDados();
@@ -101,6 +110,7 @@ const ImportChips = () =>{
        
     }
     const handleSalvaChips = async()=>{
+      try{
       
         if(linhasSelecionadas.length === 0){
           return
@@ -112,16 +122,16 @@ const ImportChips = () =>{
           linhasSelecionadas.includes(index)
         );
 
-        const CpForm = chips.map((cp)=>({
-          tag:cp.Tag,
-          num: cp.Num,
-          flag: false,
-          evento: eventoSelecionado
-        }));
+        const evtSelect = evento.find((ev)=>ev._id = eventoSelecionado)  
 
-        setChipsFormatados(CpForm);
+        const CpForm = chips.map((cp)=>({
+          num: cp.Num,
+          tag: cp.Tag,
+          flag: false,
+          evento: evtSelect,    
+        }))
         
-       const response = await fetch('/api/tag/',{
+       const response = await fetch('api/tag/',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -141,6 +151,12 @@ const ImportChips = () =>{
         //setDados_Chip([]);
         setLoading(false);
         setMenmsagem('');
+        }
+        catch(erro){
+          alert("erro ao cadastrar as tags "+erro)
+          setLoading(false);
+          setMenmsagem('');
+        }
 
     }
    
@@ -156,8 +172,6 @@ const ImportChips = () =>{
         <input className="input_oculta" name='arq' id="arq" type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
         
       </div>
-     
-      
         <div className="w-100 align-rigth">
         <Select className="ka-seclect w-50" id="evento" value={eventoSelecionado} onChange={handleEvento} name="nome" required>
             <SelectItem value="">Selecione a Prova</SelectItem>

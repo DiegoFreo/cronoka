@@ -1,11 +1,9 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import Button from "../ui/Buttom";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { Select, SelectItem } from "../ui/select";
 import SelectSearchable from "../ui/SelectSearchable";
-import { set } from "mongoose";
+import Categoria from "./categoria";
 
 interface Piloto {
     _id: string;
@@ -15,18 +13,18 @@ interface Piloto {
     nome_equipe: string;
     filiacao:  string;
     patrocinador:  string;   
-    dataNascimento: Date;
+    dataNascimento: string;
     telefone: string;
     responsavel:  string; 
     tipoSanguineo:  string;
     //categoriaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' },
     tag: string[];   
 }
-interface Categoria {
+interface Categorias {
     _id: string;
     nome: string;
+    pilotos?: Piloto[];
 }
-
 interface TagsPiloto {
     _id: string;
     tag: string;  
@@ -39,21 +37,24 @@ interface PilotoProps {
 const Piloto = ({ _id }: PilotoProps) => {
     const { register, handleSubmit, reset} = useForm();
     const [piloto, setPiloto] = useState<Piloto[]>([]);
-    const [idPiloto, setIdPiloto] = useState<string | null>(null);
+    const [pilotosSelecionado, setPilotosSelecionado] = useState([]);
+    const [categoriasPiloto, setCategoriasPiloto] = useState<Categorias[]>([]);
+    const [idPiloto, setIdPiloto] = useState<string>('');
     const [nmPiloto, setNmPiloto] = useState<string>('');
     const [numeroPiloto, setNumeroPiloto] = useState<string>('');
     const [CPFPiloto, setCPFPiloto] = useState<string>('');
     const [nomeEquipe, setNomeEquipe] = useState<string>('');
-    const [filiacao, setFiliacao] = useState('');
+    const [filiacaod, setFiliacao] = useState('');
     const [patrocinadores, setPatrocinadores] = useState<string>('');
     const [telefone, setTelefone] = useState<string>('');
-    const [dtNascimento, setdtNascimento] = useState<Date>(new Date());
+    const [dtNascimento, setdtNascimento] = useState<string>('');
     const [responsavelPiloto, setResponsavelPiloto] = useState<string>('');
     const [tpSanguineo, settpSanguineo] = useState<string>('');
     const [tags, setTags] = useState<TagsPiloto[]>([]);
     const [tagSelecionada, setTagSelecionada] = useState<string>('');
     const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
-    const [categoria, setCategoria] = useState<Categoria[]>([]);
+    const [categoridasSelecionadas, setCategoriasSelecionad] = useState<string[]>([]);
+    const [categoria, setCategoria] = useState<Categorias[]>([]);
 
     useEffect(() => {
         buscatPiloto();
@@ -65,10 +66,26 @@ const Piloto = ({ _id }: PilotoProps) => {
         if (linhasSelecionadas.includes(index)) {
             // Se já estava selecionado, remove da lista
             setLinhasSelecionada(linhasSelecionadas.filter((i) => i !== index));
+            categoria.map((cat,ind)=>{
+                if(ind === index){
+                   setCategoriasSelecionad(categoridasSelecionadas.filter(c=>c == cat._id));
+                }
+            });
+            
         } else {
             // Se não estava, adiciona na lista
             setLinhasSelecionada([...linhasSelecionadas, index]);
+            categoria.map((cat, i)=>{
+                if(i === index){
+                    setCategoriasPiloto([...categoriasPiloto, cat])
+                    setCategoriasSelecionad([...categoridasSelecionadas, cat._id])
+                }                
+            })
+            
+            
+           console.log(categoridasSelecionadas);
         }
+        
     };
 
     const handleChangeNmPiloto = (e:any)=>{
@@ -103,6 +120,7 @@ const Piloto = ({ _id }: PilotoProps) => {
     }
     const handleChangeTags = (e:any)=>{
             setTagSelecionada(e.target.value);
+            
     }
     
     async function buscatCategoria() {
@@ -115,14 +133,25 @@ const Piloto = ({ _id }: PilotoProps) => {
                 throw new Error('Erro ao buscar categorias');
             }
             const data = await response.json();
+            
             setCategoria(data);
-           
+            
         } catch (erro: any) {
             console.error("Erro ao buscar categorias:", erro);
             alert("Erro ao buscar categorias: " + erro.message);
         }
+        handleCategoriaPiloto();
     }
-
+    async function handleCategoriaPiloto() {
+        try {
+            categoria.map((cat)=>{
+                alert("Teste")
+            })
+        } catch (erro: any) {
+            console.error("Erro ao associar categoria ao piloto:", erro);
+            alert("Erro ao associar categoria ao piloto: " + erro.message);
+        }
+    }
     async function buscatPiloto() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
         // Exemplo de chamada fictícia: 
@@ -135,6 +164,7 @@ const Piloto = ({ _id }: PilotoProps) => {
             const data = await response.json();
             setPiloto(data);
             pilotoSelecionado(data as Piloto[]);
+
         } catch (erro: any) {
             console.error("Erro ao buscar pilotos:", erro);
             alert("Erro ao buscar pilotos: " + erro.message);
@@ -153,8 +183,8 @@ const Piloto = ({ _id }: PilotoProps) => {
             console.error("Erro ao buscar tags:", erro);
             alert("Erro ao buscar tags: " + erro.message);
         }
-        
     }
+    
     function pilotoSelecionado(p: Piloto[]) {
         p.forEach((Piloto) => {            
             if (Piloto._id === _id) {
@@ -166,35 +196,16 @@ const Piloto = ({ _id }: PilotoProps) => {
                 setNomeEquipe(Piloto.nome_equipe);
                 setFiliacao(Piloto.filiacao);
                 setPatrocinadores(Piloto.patrocinador );
-                setdtNascimento(Piloto.dataNascimento);
+                const datfimFormatada = new Date(Piloto.dataNascimento);
+                setdtNascimento(datfimFormatada.toISOString().split('T')[0]);
                 setResponsavelPiloto(Piloto.responsavel);
                 settpSanguineo(Piloto.tipoSanguineo);
             }
         })
        
-    }
-    async function carregarDadosPiloto(id: string) {    
-        piloto.forEach((Piloto) => {
-            if (Piloto._id === id) {
-                setIdPiloto(Piloto._id);
-                setNmPiloto(Piloto.nome);
-                setNumeroPiloto(Piloto.numero_piloto);
-                setCPFPiloto(Piloto.cpf);
-                setTelefone(Piloto.telefone);
-                setNomeEquipe(Piloto.nome_equipe);
-                setFiliacao(Piloto.filiacao as string);
-                setPatrocinadores(Piloto.patrocinador as string);
-                setdtNascimento(Piloto.dataNascimento as unknown as Date);
-                setResponsavelPiloto(Piloto.responsavel as string);
-                settpSanguineo(Piloto.tipoSanguineo as string);
-                
-            }
-            
-        });
-       
-    }
+    }    
     function limparCanpos(){
-        setIdPiloto(null);
+        setIdPiloto('');
         setNmPiloto('');    
         setNumeroPiloto('');
         setCPFPiloto('');
@@ -217,36 +228,38 @@ const Piloto = ({ _id }: PilotoProps) => {
             alert("Erro ao excluir piloto: " + erro.message);
         }
     }
-
+    
 
     async function handleFormSubmit(data: any) {
        
         // Aqui você pode fazer uma chamada à API para salvar os dados do piloto
         // Exemplo de chamada fictícia: 
         // await api.post('/pilotos', { nome, npiloto, cpf });
-                
+       
         try{
             
         if(piloto.map(p=> p._id === idPiloto).includes(true)){
             const nome = nmPiloto;
             const numero_piloto = numeroPiloto;
             const cpf = CPFPiloto;
-            const fone = telefone;
             const nome_equipe = nomeEquipe;
-            const fil = filiacao;
+            const filiacao = filiacaod;
             const dataNascimento = dtNascimento;
             const patrocinador = patrocinadores;
             const responsavel = responsavelPiloto;
             const tipoSanguineo = tpSanguineo;
             const tag = tagSelecionada;
-            
+
+        
+        alert("Categorias Selecionadas: " + linhasSelecionadas);
            
         const response = await fetch(`/api/piloto/${idPiloto}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, numero_piloto, cpf, fone, nome_equipe, fil, dataNascimento, patrocinador, responsavel, tipoSanguineo, tag }),
+            
+            body: JSON.stringify({ nome, numero_piloto, cpf, telefone, nome_equipe, filiacao, dataNascimento, patrocinador, responsavel, tipoSanguineo, tag }),
         });
 
         if (!response.ok) {
@@ -301,17 +314,6 @@ const Piloto = ({ _id }: PilotoProps) => {
                                 }))}
                                 onSelect={setTagSelecionada}
                             />
-
-                            {/*
-                            <Select className="ka-seclect w-100" id="tag" value={tagSelecionada} onChange={handleChangeTags} >
-                                <option value="">Selecione uma Tag</option>
-                                {tags.map((tag) => (
-                                    <SelectItem key={tag._id} value={tag.tag}>
-                                        {tag.tag}
-                                    </SelectItem>
-                                ))}
-                            </Select>*/
-                            }
                         </div>                      
                     </div>
                     <div className="w-100 is-flex fix gap20">
@@ -335,7 +337,7 @@ const Piloto = ({ _id }: PilotoProps) => {
                         </div>
                         <div className="w-100 ">
                             <label htmlFor="filiacao">Filiação:</label>
-                            <input {...register('filiacao')} className="ka-input w-100"  type="text" value={filiacao ?? ''} onChange={handleChangeFiliacao} id="filiacao" placeholder="Filiação" name="filiacao" required />
+                            <input {...register('filiacao')} className="ka-input w-100"  type="text" value={filiacaod ?? ''} onChange={handleChangeFiliacao} id="filiacao" placeholder="Filiação" name="filiacao" required />
                         </div>
                          <div className="w-100 ">
                             <label htmlFor="patrocinador">Patrocinador:</label>
@@ -346,7 +348,7 @@ const Piloto = ({ _id }: PilotoProps) => {
                      <div className="w-100 is-flex fix gap20">
                          <div className="w-100 ">
                             <label htmlFor="datanascimento">Data de Nascimento:</label>
-                            <input {...register('datanascimento')} className="ka-input w-100"  type="date" value={dtNascimento?.toISOString().split('T')[0] ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
+                            <input {...register('datanascimento')} className="ka-input w-100"  type="date" value={dtNascimento ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
                         </div>
                         <div className="w-100 ">
                             <label htmlFor="responsavel">Responsavel:</label>
@@ -377,12 +379,18 @@ const Piloto = ({ _id }: PilotoProps) => {
                         </thead>
                         <tbody>
                             {categoria.map((cat, index) => (
-                                <tr key={index}>  
-                                <td><input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={linhasSelecionadas.includes(index)} /></td>  
+                                <tr key={cat._id}>  
+                                
+                                <td>
+                                {cat._id === _id ? (<input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={true} />)  : (
+                                        <input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={linhasSelecionadas.includes(index) } />
+                                        
+                                    )}
+                                
+                                </td>
                                 <td>{cat.nome}</td>
                                 </tr>
-                            ))}        
-                            
+                            ))}                           
                         </tbody>    
                     </table>
                 </div>

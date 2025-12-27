@@ -9,7 +9,7 @@ export async function POST(request) {
        const dados = await request.json();
        const result = await criarManyTag(dados);
        return NextResponse.json(result.data || { error: result.erro}, { status: result.status });
-   }    catch(err){
+    }catch(err){
        console.log(err)
        return NextResponse.json({ error: err.message }, { status: 500 });
        }

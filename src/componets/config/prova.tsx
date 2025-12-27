@@ -38,9 +38,11 @@ const Prova = ()=>{
         }
         const dataPilotos = await responsePilotos.json();
         setPilotos(dataPilotos);
+        competidoresSelecionados;
     }
     
     async function loadCompetidoresSelecionados(){
+        alert("Carregando competidores da categoria: " + categoriaSelecionada);
         const response = await fetch(`/api/categoria/${categoriaSelecionada}`);
         if(!response.ok){
             throw new Error("Erro o buscar a categoria");
@@ -174,9 +176,6 @@ const Prova = ()=>{
         }catch(error:any){
             alert("Erro ao atualizar evento: " + error.message);
         }
-
-
-
 
    }
 

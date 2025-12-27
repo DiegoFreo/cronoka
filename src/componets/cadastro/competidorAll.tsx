@@ -10,6 +10,7 @@ import '@/componets/stylescorrida.css';
 import '@/componets/dashboard.css';
 import '@/componets/styles.css';
 import Modal from "../Modal";
+import { set } from "mongoose";
 
 
 export default function CompetidorAll() {
@@ -19,9 +20,6 @@ export default function CompetidorAll() {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [titleModal, setTitleModal] = React.useState<string>('');
     const [idPilotoSelect, setIdPilotoSelect] = React.useState<string>('');
-
-    
-
     const [nmPiloto, setNmPiloto] = React.useState<string>('');
 
     useEffect(() => {
@@ -57,6 +55,7 @@ export default function CompetidorAll() {
                 setIdPilotoSelect(P._id);
                 setTitleModal('Editar Competidor');
                 setIsOpen(true);
+                setNmPiloto('');
             }
         });
     }
@@ -93,6 +92,7 @@ export default function CompetidorAll() {
                             label: piloto.nome || '',
                         }))}
                         onSelect={setNmPiloto}
+
                     />
                 </div>            
                 <div className="scrollbar">                

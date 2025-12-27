@@ -49,7 +49,7 @@ const SelectSearchable = ({ options, placeholder, onSelect, value }) => {
         onChange={handleChange}
         onFocus={() => setIsOpen(true)}
         onBlur={() => setTimeout(() => setIsOpen(false), 200)} // Pequeno atraso para permitir o click
-        className=" ka-seclect block me-10 w-50 rounded-md border border-gray-300 bg-white px-5 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className=" ka-seclect block me-10 w-100 rounded-md border border-gray-300 bg-white px-5 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
       
       {/* 2. Lista suspensa de resultados (Renderização Condicional) */}

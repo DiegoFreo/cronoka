@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { conectDB } from "../../../../lib/mongodb";
+import { conectDB } from "../../../../../lib/mongodb";
 import Categoria from "@/app/model/categoria";
 
 export async function PUT(request, { params }) {

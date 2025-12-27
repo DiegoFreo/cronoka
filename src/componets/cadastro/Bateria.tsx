@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import Button from "../ui/Buttom";
 import { useForm } from "react-hook-form";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { set } from "mongoose";
 
 interface BateriaProps {
   _id: string;
@@ -65,13 +64,15 @@ const Bateria = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({nome: nomeBateria, hora_bateria: horaEvento}),
+          body: JSON.stringify({nome: nomeBateria, hora_inicio: horaEvento}),
         });
         alert("Bateria atualizada com sucesso!");
         if (!response.ok) {
           throw new Error('Erro ao atualizar bateria');
         }
       } else {
+        var nome = data.nome;
+        var hora_inicio = data.hora_inicio;
       const response = await fetch("api/bateria", {
         method: "POST",
         headers: {
@@ -79,10 +80,11 @@ const Bateria = () => {
         },
         body: JSON.stringify(data),
       });
-      alert("Bateria cadastrada com sucesso!");
+      
       if (!response.ok) {
         throw new Error('Erro ao cadastrar bateria');
       }
+      alert("Bateria cadastrada com sucesso!");
     }
       limparFormulario(); // Limpa o formulário após o envio
       fetchBaterias(); // Atualiza a lista de baterias
@@ -117,7 +119,7 @@ async function deleteBateria(id: string) {
           </div>
           <div className="w-100">
               <label htmlFor="hora_bateria">Hora da Bateria:</label>
-              <input {...register("hora_bateria")} type="time" className="ka-input w-100 center" value={horaEvento} onChange={handleChangeHoraEvento} id="hora_bateria"  name="hora_bateria" required /> 
+              <input {...register("hora_inicio")} type="time" className="ka-input w-100 center" value={horaEvento} onChange={handleChangeHoraEvento} id="hora_inicio"  name="hora_inicio" required /> 
           </div>
           <div className="ka-modal-footer">
             <Button className="btn btn-green" onClick={handleSubmit(onSubmit)}>Salvar</Button>
