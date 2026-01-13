@@ -11,7 +11,7 @@ import ImportChips from "@/componets/import/importChips";
 import ConfiguracaoEventos from "@/componets/cadastro/ConfiguracaoEventos";
 import { Card, CardContent } from "@/componets/ui/card";
 import Button from "@/componets/ui/Buttom";
-import {UserPen, User, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal, Flag, BadgeDollarSign, Pi} from "lucide-react";
+import {UserPen, User, Home, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal, Flag, BadgeDollarSign, Pi} from "lucide-react";
 import '@/componets/dashboard.css';
 import '@/componets/styles.css';
 import { useRouter } from "next/navigation";
@@ -257,6 +257,7 @@ export default function AdminPage() {
           </div>
           <div className="continerdashboard-menu pt-2">
             <ul>
+              <li onClick={()=>{router.push("")}} className="flex flex-row items-center btn active"><Home className="pr-2"/>Home</li>
               <li onClick={()=>{router.push("./admin/competidor")}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
               <li onClick={handleOpenModalUsuario} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
               <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>

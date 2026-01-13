@@ -22,6 +22,21 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+export async function GET(request, { params }) {
+  try {
+    await conectDB();
+    const { id } = await params;
+    const PilotoEncontrada = await Piloto.findById(id).populate('categorias');
+
+    if (!PilotoEncontrada) {
+      return NextResponse.json({ error: "Piloto não encontrada" }, { status: 404 });
+    }
+    return NextResponse.json({ data: PilotoEncontrada }, { status: 200 });
+  } catch (err) {
+    console.error("Erro ao buscar piloto:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
 
 export async function DELETE(request, { params }) {
   try {

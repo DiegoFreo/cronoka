@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import Button from "../ui/Buttom";
 import { useForm } from "react-hook-form";
 import SelectSearchable from "../ui/SelectSearchable";
-import Categoria from "./categoria";
+//import Categoria from "./categoria";
+import { Pi } from "lucide-react";
+import { Categoria } from "@/lib/type";
 
 interface Piloto {
     _id: string;
@@ -17,7 +19,7 @@ interface Piloto {
     telefone: string;
     responsavel:  string; 
     tipoSanguineo:  string;
-    //categoriaId: { type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' },
+    categoria: Categorias[];
     tag: string[];   
 }
 interface Categorias {
@@ -85,9 +87,9 @@ const Piloto = ({ _id }: PilotoProps) => {
             
            console.log(categoridasSelecionadas);
         }
-        
     };
 
+    
     const handleChangeNmPiloto = (e:any)=>{
             setNmPiloto(e.target.value);
     }
@@ -135,18 +137,25 @@ const Piloto = ({ _id }: PilotoProps) => {
             const data = await response.json();
             
             setCategoria(data);
+            handleCategoriaPiloto();
             
         } catch (erro: any) {
             console.error("Erro ao buscar categorias:", erro);
             alert("Erro ao buscar categorias: " + erro.message);
         }
-        handleCategoriaPiloto();
+        
     }
     async function handleCategoriaPiloto() {
         try {
-            categoria.map((cat)=>{
-                alert("Teste")
-            })
+            const response = await fetch(`/api/piloto/${_id}`);
+            if (!response.ok) {
+                throw new Error('Erro ao buscar categorias do piloto');
+            }
+            const data = await response.json();
+            const categoriaId: Categorias[] = data;
+            setCategoriasPiloto(categoriaId);
+            console.log(categoriaId);
+           
         } catch (erro: any) {
             console.error("Erro ao associar categoria ao piloto:", erro);
             alert("Erro ao associar categoria ao piloto: " + erro.message);
@@ -200,6 +209,7 @@ const Piloto = ({ _id }: PilotoProps) => {
                 setdtNascimento(datfimFormatada.toISOString().split('T')[0]);
                 setResponsavelPiloto(Piloto.responsavel);
                 settpSanguineo(Piloto.tipoSanguineo);
+                setCategoriasPiloto(Piloto.categoria || []);
             }
         })
        
@@ -248,6 +258,7 @@ const Piloto = ({ _id }: PilotoProps) => {
             const patrocinador = patrocinadores;
             const responsavel = responsavelPiloto;
             const tipoSanguineo = tpSanguineo;
+            const categorias = categoridasSelecionadas;
             const tag = tagSelecionada;
 
         
@@ -259,7 +270,7 @@ const Piloto = ({ _id }: PilotoProps) => {
                 'Content-Type': 'application/json',
             },
             
-            body: JSON.stringify({ nome, numero_piloto, cpf, telefone, nome_equipe, filiacao, dataNascimento, patrocinador, responsavel, tipoSanguineo, tag }),
+            body: JSON.stringify({ nome, numero_piloto, cpf, telefone, nome_equipe, filiacao, dataNascimento, patrocinador, responsavel, tipoSanguineo, categorias,  tag }),
         });
 
         if (!response.ok) {
@@ -382,8 +393,9 @@ const Piloto = ({ _id }: PilotoProps) => {
                                 <tr key={cat._id}>  
                                 
                                 <td>
-                                {cat._id === _id ? (<input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={true} />)  : (
-                                        <input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={linhasSelecionadas.includes(index) } />
+                                {cat._id === _id ? (
+                                    <input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={true} />)  : (
+                                    <input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={linhasSelecionadas.includes(index) } />
                                         
                                     )}
                                 

@@ -9,7 +9,7 @@ import Usuario from "@/componets/cadastro/Usuario";
 import ImportChips from "@/componets/import/importChips";
 import ConfiguracaoEventos from "@/componets/cadastro/ConfiguracaoEventos";
 import { Card, CardContent } from "@/componets/ui/card";
-import { Medal, FolderTree, User, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, Flag, ClipboardList, Settings, UserPen } from "lucide-react";
+import { Medal, FolderTree, User, Home, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, Flag, ClipboardList, Settings, UserPen } from "lucide-react";
 import '@/componets/stylescorrida.css';
 import '@/componets/dashboard.css';
 import '@/componets/styles.css';
@@ -252,7 +252,8 @@ useEffect(() => {
           </div>
           <div className="continerdashboard-menu">
            <ul>
-                <li onClick={()=>{router.push("./competidor")}} className="flex flex-row items-center"><User  className="pr-2"/>Competidores</li>
+                <li onClick={()=>{router.push("./")}} className="flex flex-row items-center btn"><Home className="pr-2"/>Home</li>
+                <li onClick={()=>{router.push("./competidor")}} className="flex flex-row items-center btn"><User  className="pr-2"/>Competidores</li>
                 <li onClick={handleOpenModalUsuario} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
                 <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
                 <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
@@ -260,7 +261,7 @@ useEffect(() => {
                 <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
                 <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
                 <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
-                <li onClick={()=>{router.push("./prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
+                <li onClick={()=>{router.push("./prova")}} className="flex flex-row items-center btn active"><Settings className="pr-2" />Configurações</li>
                 <li onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
             </ul>
           </div>

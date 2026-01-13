@@ -2,8 +2,7 @@ import React, {useState, useEffect} from "react";
 import Button from "../ui/Buttom";
 import { set, useForm } from "react-hook-form";
 import { FaTrash, FaEdit } from "react-icons/fa";
-import { format } from "path";
-import { json } from "stream/consumers";
+
 
 interface EventoProps {
   _id: string;
@@ -185,7 +184,7 @@ const Evento = () => {
         {/* Formulário de cadastro de evento */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="w-100">
-            <label htmlFor="nome_evento">Nome do Evento:</label>
+            <label htmlFor="nome_evento">Nome do Prova:</label>
             <input className="ka-input w-100" type="text" id="nome_evento" {...register("nome_evento")} value={nomeEvento} onChange={handleChangeNomeEvento} required />
           </div>
           <div className="w-100">
