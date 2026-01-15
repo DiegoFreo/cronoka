@@ -6,6 +6,7 @@ import SelectSearchable from "../ui/SelectSearchable";
 //import Categoria from "./categoria";
 import { Pi } from "lucide-react";
 import { Categoria } from "@/lib/type";
+import { set } from "mongoose";
 
 interface Piloto {
     _id: string;
@@ -55,37 +56,36 @@ const Piloto = ({ _id }: PilotoProps) => {
     const [tags, setTags] = useState<TagsPiloto[]>([]);
     const [tagSelecionada, setTagSelecionada] = useState<string>('');
     const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
-    const [categoridasSelecionadas, setCategoriasSelecionad] = useState<string[]>([]);
+    const [categoriasSelecionadas, setCategoriasSelecionad] = useState<string[]>([]);
     const [categoria, setCategoria] = useState<Categorias[]>([]);
 
     useEffect(() => {
+        buscatCategoria(); 
+        buscarCategoriaPiloto()
         buscatPiloto();
         buscaTags();
-        buscatCategoria(); 
     }, []);
 
      const handleCheckboxChange = (index: number) => {
         if (linhasSelecionadas.includes(index)) {
             // Se já estava selecionado, remove da lista
             setLinhasSelecionada(linhasSelecionadas.filter((i) => i !== index));
-            categoria.map((cat,ind)=>{
-                if(ind === index){
-                   setCategoriasSelecionad(categoridasSelecionadas.filter(c=>c == cat._id));
-                }
-            });
-            
+            alert("Categorias Removida: " + categoria[index].nome);
+            setCategoriasSelecionad(categoriasSelecionadas.filter((catId) => catId !== categoria[index]._id));
+
         } else {
             // Se não estava, adiciona na lista
             setLinhasSelecionada([...linhasSelecionadas, index]);
             categoria.map((cat, i)=>{
                 if(i === index){
-                    setCategoriasPiloto([...categoriasPiloto, cat])
-                    setCategoriasSelecionad([...categoridasSelecionadas, cat._id])
+                    //setCategoriasPiloto([...categoriasPiloto, cat])
+                    setCategoriasSelecionad([...categoriasSelecionadas, cat._id])
+                    
                 }                
             })
             
             
-           console.log(categoridasSelecionadas);
+           //console.log(categoriasSelecionadas);
         }
     };
 
@@ -124,6 +124,19 @@ const Piloto = ({ _id }: PilotoProps) => {
             setTagSelecionada(e.target.value);
             
     }
+    async function buscarCategoriaPiloto() {
+        try {
+            const response = await fetch(`/api/piloto/${_id}`);
+            if (!response.ok) {
+                throw new Error('Erro ao buscar categorias do piloto');
+            }
+            const data = await response.json();
+            setCategoriasPiloto(data.data.categorias);        
+        } catch (erro: any) {
+            console.error("Erro ao buscar categorias do piloto:", erro);
+            alert("Erro ao buscar categorias do piloto: " + erro.message);
+        } 
+    }
     
     async function buscatCategoria() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
@@ -135,26 +148,44 @@ const Piloto = ({ _id }: PilotoProps) => {
                 throw new Error('Erro ao buscar categorias');
             }
             const data = await response.json();
-            
             setCategoria(data);
-            handleCategoriaPiloto();
-            
+                        
         } catch (erro: any) {
             console.error("Erro ao buscar categorias:", erro);
             alert("Erro ao buscar categorias: " + erro.message);
         }
         
     }
+   useEffect(() => {
+        if (categoria.length > 0 || categoriasPiloto.length === 0) {
+            handleCategoriaPiloto();
+            categoriasPiloto.forEach((catPiloto) => {
+                categoria.forEach((cat, index) => {
+                    if (catPiloto._id === cat._id) {
+                        if (!linhasSelecionadas.includes(index)) {
+                            setLinhasSelecionada((prevSelected) => [...prevSelected, index]);
+                            setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                        }
+                        //setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                        console.log("Categorias do Piloto no useEffect: " + cat.nome);
+                    }
+                });
+            });
+           
+        }
+   }, [categoria, categoriasPiloto]);
+
     async function handleCategoriaPiloto() {
         try {
-            const response = await fetch(`/api/piloto/${_id}`);
-            if (!response.ok) {
-                throw new Error('Erro ao buscar categorias do piloto');
-            }
-            const data = await response.json();
-            const categoriaId: Categorias[] = data;
-            setCategoriasPiloto(categoriaId);
-            console.log(categoriaId);
+            categoria.filter((cat) => {
+                categoriasPiloto.forEach((catPiloto) => {
+                    if (cat._id === catPiloto._id) {
+                        setLinhasSelecionada((prevSelected) => [...prevSelected, categoria.indexOf(cat)]);
+                        //setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                        console.log("Categorias do Piloto: " + cat.nome);
+                    }
+                });
+            });
            
         } catch (erro: any) {
             console.error("Erro ao associar categoria ao piloto:", erro);
@@ -258,7 +289,7 @@ const Piloto = ({ _id }: PilotoProps) => {
             const patrocinador = patrocinadores;
             const responsavel = responsavelPiloto;
             const tipoSanguineo = tpSanguineo;
-            const categorias = categoridasSelecionadas;
+            const categorias = categoriasSelecionadas;
             const tag = tagSelecionada;
 
         
