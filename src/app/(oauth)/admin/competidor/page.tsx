@@ -32,11 +32,21 @@ interface EventoProps {
 export default function AdminPage() {
   const imgUser = useContext(AuthContext).users;
   const logout = useContext(AuthContext).logout;
+  const[isOpen, setIsOpen] = useState(false);
+  const [formModal, setFormModal] = useState('');
+  const [titleModal, setTitleModal] = useState('');
+
 
   useEffect(() => {
     buscaPiloto();
   }, []);
   // {logout} = useContext(AuthContext);
+
+  const handleImportChip = ()=>{
+    setIsOpen(!isOpen);
+    setTitleModal('Importação de Chips');
+    setFormModal('importchip');
+  }
 
   async function buscaPiloto() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
@@ -54,12 +64,31 @@ export default function AdminPage() {
             console.error("Erro ao buscar pilotos:", erro);
             alert("Erro ao buscar pilotos: " + erro.message);
         }
-    }  
+    } 
+    
+    const handleFormModal = () => {
+    if (formModal === 'piloto') {
+      if(isOpen){
+      return <Piloto />;
+      }else{
+        buscaPiloto()
+      }
+    }else if (formModal === 'evento') {
+      return <Evento />;
+    }else if(formModal === 'importchip'){
+      if(isOpen){
+        return <ImportChips/>
+      }
+    }
+  }
   
   const router = useRouter();
 
   return (
       <div className="continerdashboard">
+        <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
+            {handleFormModal() }
+        </Modal>
        
         <div className="continerdashboard-left">
           <div className="continerdashboard-logo">
@@ -77,7 +106,7 @@ export default function AdminPage() {
               <li onClick={()=>{}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
+              <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
               <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
               <li onClick={()=>{router.push("./prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
