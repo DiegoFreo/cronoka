@@ -343,7 +343,7 @@ const Piloto = ({ _id }: PilotoProps) => {
                     <div className="w-100 is-flex fix gap20">
                         <div className="w-100 ">
                             <label htmlFor="nome" >Nome:</label>
-                            <input {...register('nome')} className="ka-input w-100" value={nmPiloto ?? ''} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required />
+                            <input {...register('nome')} className="ka-input w-100" value={nmPiloto ?? ''} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required ={true} />
                         </div> 
                         <div className="w-100">
                             <label htmlFor="tag">Tag:</label>

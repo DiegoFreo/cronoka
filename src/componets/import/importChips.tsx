@@ -174,7 +174,7 @@ const ImportChips = () =>{
       </div>
         <div className="w-100 align-rigth">
         <Select className="ka-seclect w-50" id="evento" value={eventoSelecionado} onChange={handleEvento} name="nome" required>
-            <SelectItem value="">Selecione a Prova</SelectItem>
+            <SelectItem value="">Selecione o Evento</SelectItem>
                 {evento.map((evnt, key)=>(
                   <SelectItem key={key} value={evnt._id}>{evnt.nome_evento}</SelectItem>                            
                 ))}

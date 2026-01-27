@@ -259,12 +259,12 @@ export default function AdminPage() {
             <ul>
               <li onClick={()=>{router.push("")}} className="flex flex-row items-center btn active"><Home className="pr-2"/>Home</li>
               <li onClick={()=>{router.push("./admin/competidor")}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
-              <li onClick={handleOpenModalUsuario} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
+              <li onClick={()=>{router.push("./admin/usuario")}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
               <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
               <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
               <li onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
               <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
-              <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
+              <li onClick={()=>{router.push("./admin/relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
               <li onClick={()=>{router.push("./admin/prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
               <li onClick={()=>{router.push("./admin/corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
@@ -283,7 +283,7 @@ export default function AdminPage() {
         </div>
         
         <div className="continerdashboard-right gap-4">
-          <Card className="w-45 mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
+          <Card className=" mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
             <CardContent className="flex flex-col items-center justify-center">  
               <h2 className="text-2xl  font-bold mb-4">Administrador</h2>
             </CardContent>
@@ -295,14 +295,14 @@ export default function AdminPage() {
               <p className="font-color-red">Total - {countUsuario}</p>
             </CardContent>
           </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalPiloto}>
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalPiloto}>
             <CardContent className="flex flex-col items-center justify-center">
               <User className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Competidor</h2>
                <p className="font-color-red">Total - {countCompetidores}</p>
             </CardContent>
           </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalEvento}>
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalEvento}>
             <CardContent className="flex flex-col items-center justify-center">             
               <Trophy className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Eventos</h2>
@@ -316,14 +316,14 @@ export default function AdminPage() {
               <p className="font-color-red">Total - {countCategorias}</p>
             </CardContent>
           </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalBateria}>
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalBateria}>
             <CardContent className="flex flex-col items-center justify-center">
               <Flag className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Bateria</h2>              
               <p className="font-color-red">Total - {countBaterias}</p>
             </CardContent>
           </Card>
-          <Card className="w-45  p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
             <CardContent className="flex flex-col items-center justify-center">
               <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Licenças</h2>              

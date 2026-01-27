@@ -5,12 +5,14 @@ import { useForm } from "react-hook-form";
 import SelectSearchable from "@/componets/ui/SelectSearchable";
 import Button from "@/componets/ui/Buttom";
 import Piloto from "./Piloto";
+import importarCompetidores from "@/componets/import/importCompetidores";
 
 import '@/componets/stylescorrida.css';
 import '@/componets/dashboard.css';
 import '@/componets/styles.css';
 import Modal from "../Modal";
 import { set } from "mongoose";
+import ImportCompetidores from "@/componets/import/importCompetidores";
 
 
 export default function CompetidorAll() {
@@ -48,6 +50,10 @@ export default function CompetidorAll() {
         setTitleModal('Adicionar Competidor');
         setIsOpen(true);
     }
+    const hendleImportarCompetidor = () => {
+        setTitleModal('Importar Competidores');
+        setIsOpen(true);
+    }
     
    const carregarDadosPiloto = (id: string) => {
         piloto.forEach((P) => {
@@ -66,6 +72,8 @@ export default function CompetidorAll() {
             return <Piloto />;
         }else if(isOpen && titleModal === 'Editar Competidor'){
             return <Piloto _id={idPilotoSelect} />;
+        }else if(isOpen && titleModal === 'Importar Competidores'){
+            return <ImportCompetidores />;
         }
     }
 
@@ -99,9 +107,11 @@ export default function CompetidorAll() {
                      <table border={1} className="ka-table">
                          <thead>                             
                                  <tr>
+                                    <th>Número</th>
                                      <th>Nome</th>
-                                     <th>Número Piloto</th>
-                                     <th colSpan={2}>Editar/Excluir</th>
+                                     <th>Chip</th>
+                                     <th>Editar</th>
+                                     <th>Excluir</th>
                                  </tr>
                          </thead>
                          <tbody>
@@ -109,8 +119,9 @@ export default function CompetidorAll() {
                                 piloto.nome.includes(nmPiloto || '') && 
 
                                  <tr key={index} className={nmPiloto === piloto.nome ? "ka-table-select": ""}>    
+                                 <td>{piloto.numero_piloto}</td>  
                                  <td>{piloto.nome}</td>
-                                 <td>{piloto.numero_piloto}</td>
+                                 <td>{piloto.tag}</td>       
                                  <td><button className="component-button-black" onClick={()=>{carregarDadosPiloto(piloto._id)}}  ><FaEdit /></button></td>
                                  <td><button className="component-button-black" onClick={()=>{}} ><FaTrash /></button></td>
                                  </tr>
@@ -121,8 +132,9 @@ export default function CompetidorAll() {
                      
                 </div> 
             </div>
-            <div className="align-reigth">           
-            <Button className="mt-4 btn-green " onClick={()=>{hendleAdicionarCompetidor()}}>Adicionar Competidor</Button>
+            <div className="align-reigth"> 
+            <Button className="mt-4 btn-green mr-20" onClick={()=>{hendleImportarCompetidor()}}>Importar Competidores</Button>          
+            <Button className="mt-4 btn-green mr-20" onClick={()=>{hendleAdicionarCompetidor()}}>Adicionar Competidor</Button>
             </div>
         </div>
         

@@ -7,4 +7,9 @@ export interface dadosEvento{
     categoria: string[];
     bategia: string[];
 }
+export interface DadosCompetidor{
+    Nome: string;
+    Categoria: string[];
+    Chip: string[];
+}
 
