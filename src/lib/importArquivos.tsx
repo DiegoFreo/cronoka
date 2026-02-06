@@ -9,7 +9,8 @@ export interface dadosEvento{
 }
 export interface DadosCompetidor{
     Nome: string;
-    Categoria: string[];
+    Nº: string;
+    Categoria: string;
     Chip: string[];
 }
 

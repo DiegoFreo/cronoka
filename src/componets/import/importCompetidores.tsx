@@ -1,13 +1,16 @@
 import React,{useState, useEffect} from "react";
 import * as XLSX from 'xlsx';
 import {DadosCompetidor} from '@/lib/importArquivos';
-import { set } from "mongoose";
 import Button from "../ui/Buttom";
+import { Categoria } from "@/lib/type";
 
 
 const ImportCompetidores = () =>{
     const [dadosCompetidor, setDadosCompetidor] = useState<DadosCompetidor[]>([]);
     const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
+    const [categoriasDisponiveis, setCategoriasDisponiveis] = useState<Categoria[]>([]);
+
+
 
     const handleCheckboxChange = (index: number) => {
         if (linhasSelecionadas.includes(index)) {
@@ -30,7 +33,7 @@ const ImportCompetidores = () =>{
             const workSheepName = workBook.SheetNames[0];
             const workSheet = workBook.Sheets[workSheepName];
             const dadosJson:DadosCompetidor[] = XLSX.utils.sheet_to_json(workSheet);
-            console.log('dados Brutos: ', dadosJson );
+            console.log('dados Brutos: ', dadosJson);
             setDadosCompetidor(dadosJson);
             setLinhasSelecionada([]);
         }
@@ -46,13 +49,25 @@ const ImportCompetidores = () =>{
        }
        
     }
+    const handleImportar = async()=>{
+        try{
+        const competidoresParaImportar = linhasSelecionadas.map((index) => dadosCompetidor[index]);
+           console.log('Competidores para importar: ', competidoresParaImportar[0].Categoria);
+
+
+        }catch(erro:any){
+            console.error("Erro ao importar competidores: ", erro);
+            alert("Erro ao importar competidores: " + erro.message);
+        }
+
+    }
      const isMasterCheckBoxCheckd = dadosCompetidor.length > 0 && linhasSelecionadas.length === dadosCompetidor.length
     return(
         <div>
             <div className="flex justify-start items-center mb-4">
                 <label className="btn btn-green mb-10" htmlFor='arq'>Buscar arquivo</label>
                 <input className="input_oculta" name='arq' id="arq" type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
-                <Button className="btn btn-green ml-10 mb-10" onClick={()=>{}}>Importar</Button>
+                <Button className="btn btn-green ml-10 mb-10" onClick={()=>{handleImportar()}}>Importar</Button>
             </div>
             
             {/* Tabela de Pré-visualização */}
@@ -65,9 +80,10 @@ const ImportCompetidores = () =>{
                         checked={isMasterCheckBoxCheckd}
                         onChange={handleToggleAll}
                         /> Todos</th>
-                        <th className="border px-4 py-2">Competidor</th>
-                        <th className="border px-4 py-2">Categoria</th>
-                        <th className="border px-4 py-2">Chips</th>
+                        <th className=" px-4 py-2">Nº</th>
+                        <th className=" px-4 py-2">Competidor</th>
+                        <th className=" px-4 py-2">Categoria</th>
+                        <th className="px-4 py-2">Chips</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,9 +97,10 @@ const ImportCompetidores = () =>{
                                 onChange={() => handleCheckboxChange(index)}
                                 />
                             </td>
-                            <td className="border px-4 py-2">{competidor.Nome}</td>
-                            <td className="border px-4 py-2">{competidor.Categoria}</td>
-                            <td className="border px-4 py-2">{competidor.Chip}</td>
+                            <td className="px-4 py-2">{competidor.Nº}</td>
+                            <td className="px-4 py-2 align-left">{competidor.Nome}</td>                            
+                            <td className="px-4 py-2">{competidor.Categoria}</td>
+                            <td className="px-4 py-2">{competidor.Chip}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -6,4 +6,5 @@ const TagSchema = new mongoose.Schema({
     flag:{type: Boolean, required: true, default: false},
     evento: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Evento' }],
 }, { timestamps: true });
+
 export default mongoose.models.Tag || mongoose.model('Tag', TagSchema);

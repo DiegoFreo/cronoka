@@ -1,10 +1,10 @@
 'use client';
 import React from "react";
-import  Usuario from "@/componets/cadastro/Usuario";
+import  UsuariosAll from "@/componets/cadastro/UsuariosAll";
 
 export default function UsuarioLayout() {
     return (
-        <Usuario />
+        <UsuariosAll usuarios={[]} />
     );
 
 }

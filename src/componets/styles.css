@@ -394,7 +394,10 @@
     width: 100%;
     gap: 20;
 }
-
+.w-full{
+    width: 100%;
+    gap: 20;
+}
 /* Fim Espacamento */
 
 /* box sign in */
