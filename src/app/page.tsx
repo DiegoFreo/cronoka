@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <>
      <div className="content-center content-gap-20 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="box-sign-in p-20 ">
+        <div className="box-sign-in p-20 sm:mx-auto sm:w-full sm:max-w-sm">
           
         <div className="sm:mx-auto sm:w-full flex-col flex sm:max-w-sm img-center">
           <img
@@ -45,7 +45,7 @@ export default function Home() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form action="#" method='POST'  className="space-y-6" onSubmit={handleSubmit(handleSingIn)} >
             <div>
-              <label htmlFor="emailUser" className="block text-sm/6 font-medium text-white">
+              <label htmlFor="emailUser" className="block text-sm/6 w-full font-medium text-white">
                 Email:
               </label>
               <div className="mt-2">

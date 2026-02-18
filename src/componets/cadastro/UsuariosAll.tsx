@@ -21,6 +21,7 @@ const UsuariosAll: React.FC<UsuariosAllProps> = ({ usuarios }) => {
      const[isOpen, setIsOpen] = useState<boolean>(false);
      const[titleModal, setTitleModal] = useState<string>('');
      const[formModal, setFormModal] = useState<string>('');
+     const [imgUsuario, setImgUsuario] = useState<string>('');
 
         useEffect(()=>{
 
@@ -35,6 +36,7 @@ const UsuariosAll: React.FC<UsuariosAllProps> = ({ usuarios }) => {
             }
             const data = await response.json();
             setUsuariosFiltrados(data);
+            setImgUsuario(data.length > 0 ? data[0].avatarUser : '');
         }catch(erro:any){
             console.error("Erro ao buscar usuarios: ", erro);
             alert("Erro ao buscar usuarios: " + erro.message);

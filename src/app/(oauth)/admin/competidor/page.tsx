@@ -35,10 +35,12 @@ export default function AdminPage() {
   const[isOpen, setIsOpen] = useState(false);
   const [formModal, setFormModal] = useState('');
   const [titleModal, setTitleModal] = useState('');
+  const [imgUsuario, setImgUsuario] = useState<string>('');
 
 
   useEffect(() => {
     buscaPiloto();
+    buscaUsuario();
   }, []);
   // {logout} = useContext(AuthContext);
 
@@ -65,6 +67,21 @@ export default function AdminPage() {
             alert("Erro ao buscar pilotos: " + erro.message);
         }
     } 
+     const buscaUsuario = async () => {
+        try {
+            const response = await fetch("/api/usuario");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar usuários');
+            }
+            const data = await response.json();
+            setImgUsuario(data.length > 0 ? data[0].avatarUser : '');
+                      
+            
+        } catch (error:any) {
+            console.error("Erro ao buscar usuários:", error);
+            alert("Erro ao buscar usuários: " + error.message);
+        }
+    };
     
     const handleFormModal = () => {
     if (formModal === 'piloto') {
@@ -103,9 +120,9 @@ export default function AdminPage() {
               <li onClick={()=>{router.push("./")}} className="flex flex-row items-center btn"><Home className="pr-2"/>Home</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn active"><User  className="pr-2"/>Competidores</li>
               <li onClick={()=>{router.push('./usuario')}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
+              <li onClick={()=>{router.push("./categoria")}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
+              <li onClick={()=>{router.push("./bateria")}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
+              <li onClick={()=>{router.push("./evento")}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
               <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />Chip</li>
               <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
@@ -118,7 +135,7 @@ export default function AdminPage() {
               <Button className="bg-cronometro btn-corrida" onClick={()=>{logout()}}>Sair</Button>
               <img
                 alt="perfil"
-                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.vg"}
+                src= {imgUsuario ? imgUsuario : "./logoka.svg"}
                 className="mx-auto h-15 w-auto"
               />
             </div>

@@ -68,12 +68,21 @@ export default function CompetidorAll() {
 
 
     function handleFormModal() {
-        if(isOpen && titleModal === 'Adicionar Competidor'){
+        if(titleModal === 'Adicionar Competidor'){
+            if(isOpen){
             return <Piloto />;
+            }else{
+                buscatPiloto();
+            }
+
         }else if(isOpen && titleModal === 'Editar Competidor'){
             return <Piloto _id={idPilotoSelect} />;
-        }else if(isOpen && titleModal === 'Importar Competidores'){
+        }else if(titleModal === 'Importar Competidores'){
+            if(isOpen){
             return <ImportCompetidores />;
+            }else{
+                buscatPiloto();
+            }
         }
     }
 

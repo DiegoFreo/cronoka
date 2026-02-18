@@ -1,8 +1,4 @@
 'use client';
-import {RequireAuth} from "@/componets/RequireAuth";
-import "@/componets/stylescorrida.css";
-import '@/componets/dashboard.css';
-import "@/componets/styles.css";
 import React,{useState, useEffect, useContext} from "react";
 import { AuthContext } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/componets/ui/card";
@@ -10,6 +6,7 @@ import CompetidorAll from "@/componets/cadastro/competidorAll";
 import Modal from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
 import Evento from "@/componets/cadastro/evento";
+import CategoriaAll from "@/componets/cadastro/categoriaAll";
 import Categoria from "@/componets/cadastro/categoria";
 import Bateria from "@/componets/cadastro/Bateria";
 import Usuario from "@/componets/cadastro/Usuario";
@@ -17,6 +14,7 @@ import ImportChips from "@/componets/import/importChips";
 import ConfiguracaoEventos from "@/componets/cadastro/ConfiguracaoEventos";
 import Button from "@/componets/ui/Buttom";
 import {UserPen, User, Home, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, ChartSpline, ChartNoAxesColumn, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal, Flag, BadgeDollarSign, Pi} from "lucide-react";
+
 //import '@/componets/styles.css';
 import { useRouter } from "next/navigation";
 import { Time } from "tone/build/esm/core/type/Units";
@@ -31,13 +29,9 @@ interface EventoProps {
 }
 
 
-export default function CronometristaLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
 
-const imgUser = useContext(AuthContext).users;
+export default function AdminPage() {
+  const imgUser = useContext(AuthContext).users;
   const logout = useContext(AuthContext).logout;
   const[isOpen, setIsOpen] = useState(false);
   const [formModal, setFormModal] = useState('');
@@ -76,9 +70,9 @@ const imgUser = useContext(AuthContext).users;
     } 
     
     const handleFormModal = () => {
-    if (formModal === 'piloto') {
+    if (formModal === 'categoria') {
       if(isOpen){
-      return <Piloto />;
+      return <Categoria />;
       }else{
         buscaPiloto()
       }
@@ -90,6 +84,7 @@ const imgUser = useContext(AuthContext).users;
       }
     }
   }
+  
   const buscaUsuario = async () => {
         try {
             const response = await fetch("/api/usuario");
@@ -105,12 +100,10 @@ const imgUser = useContext(AuthContext).users;
             alert("Erro ao buscar usuários: " + error.message);
         }
     };
-  
+
   const router = useRouter();
 
-
   return (
-    <RequireAuth>  
       <div className="continerdashboard">
         <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
             {handleFormModal() }
@@ -127,12 +120,12 @@ const imgUser = useContext(AuthContext).users;
           <div className="continerdashboard-menu pt-2">
             <ul>
               <li onClick={()=>{router.push("./")}} className="flex flex-row items-center btn"><Home className="pr-2"/>Home</li>
-              <li onClick={()=>{router.push("./competidor")}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
-              <li onClick={()=>{router.push("./usuario")}} className="flex flex-row items-center btn active"><UserPen  className="pr-2"/>Usuário</li>
-              <li onClick={()=>{router.push("./categoria")}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
-              <li onClick={()=>{router.push("./bateria")}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
-              <li onClick={()=>{router.push("./evento")}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
-              <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
+              <li onClick={()=>{}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
+              <li onClick={()=>{router.push('./usuario')}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
+              <li onClick={()=>{}} className="flex flex-row items-center btn active"><Tag className="pr-2"/>Categoria</li>
+              <li onClick={()=>{}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
+              <li onClick={()=>{}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
+              <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />Chip</li>
               <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
               <li onClick={()=>{router.push("./prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
@@ -150,8 +143,7 @@ const imgUser = useContext(AuthContext).users;
             </div>
           </div>
         </div>
-            {children}
+          <CategoriaAll />        
       </div>
-    </RequireAuth>
   );
 }

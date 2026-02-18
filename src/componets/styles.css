@@ -1,3 +1,4 @@
+
 *{margin: 0; padding: 0; }
 
 .component-button-text{
@@ -266,6 +267,18 @@
 .m-100{
     margin: 100px;
 }
+.mt-1{
+    margin-top: 1px;
+}
+.mt-2{
+    margin-top: 2px;
+}
+.mt-3{
+    margin-top: 3px;
+}
+.mt-4{
+    margin-top: 4px;
+}
 .mt-10{
     margin-top: 10px;
 }
@@ -402,8 +415,8 @@
 
 /* box sign in */
 .box-sign-in{
-    width: 30%;
-    background-color: rgba(25, 27, 24,0.8);
+    width: 40%;
+    background-color: rgba(25, 27, 24,0.8) !important;
     border-radius: 10px;
     color: rgb(208, 212, 206);
 }

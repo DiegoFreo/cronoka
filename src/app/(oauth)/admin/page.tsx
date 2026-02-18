@@ -38,6 +38,7 @@ export default function AdminPage() {
   const [countBaterias, setCountBaterias] = useState(0);
   const [countUsuario, setCountUsuario] = useState(0);
   const imgUser = useContext(AuthContext).users;
+  const [imgUsuario, setImgUsuario] = useState<string>('');
   const logout = useContext(AuthContext).logout;
   const [countProximosEventos, setCountProximosEventos] = useState(0);
 
@@ -125,7 +126,9 @@ export default function AdminPage() {
                 throw new Error('Erro ao buscar usuários');
             }
             const data = await response.json();
-            setCountUsuario(data.length);            
+            setCountUsuario(data.length);  
+            setImgUsuario(data.length > 0 ? data[0].avatarUser : '');
+                      
             
         } catch (error:any) {
             console.error("Erro ao buscar usuários:", error);
@@ -252,7 +255,7 @@ export default function AdminPage() {
             <img
               alt="logo"
               src="./FPMX-logo.png"
-              className="mx-auto h-15 w-auto"
+              className="mx-auto h-40 w-auto"
             />
           </div>
           <div className="continerdashboard-menu pt-2">
@@ -260,7 +263,7 @@ export default function AdminPage() {
               <li onClick={()=>{router.push("")}} className="flex flex-row items-center btn active"><Home className="pr-2"/>Home</li>
               <li onClick={()=>{router.push("./admin/competidor")}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
               <li onClick={()=>{router.push("./admin/usuario")}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
-              <li onClick={handleOpenModalCategoria} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
+              <li onClick={()=>{router.push("./admin/categoria")}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
               <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
               <li onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
               <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
@@ -275,62 +278,62 @@ export default function AdminPage() {
               <Button className="bg-cronometro btn-corrida" onClick={()=>{logout()}}>Sair</Button>
               <img
                 alt="perfil"
-                src= {imgUser?.avatarUser ? imgUser?.avatarUser : "./logoka.vg"}
-                className="mx-auto h-15 w-auto"
+                src= {imgUsuario ? imgUsuario : "./logoka.svg"}
+                className="mx-auto h-auto w-auto"
               />
             </div>
           </div>
         </div>
         
-        <div className="continerdashboard-right gap-4">
+        <div className="continerdashboard-right gap-4 flex-wrap justify-start">
           <Card className=" mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
             <CardContent className="flex flex-col items-center justify-center">  
               <h2 className="text-2xl  font-bold mb-4">Administrador</h2>
             </CardContent>
           </Card>
-          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalUsuario}>
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30 card-size-heigth" onClick={handleOpenModalUsuario}>
             <CardContent className="flex flex-col items-center justify-center" >              
               <UserPen className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Usuário</h2>
               <p className="font-color-red">Total - {countUsuario}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalPiloto}>
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30 card-size-heigth" onClick={handleOpenModalPiloto}>
             <CardContent className="flex flex-col items-center justify-center">
               <User className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Competidor</h2>
                <p className="font-color-red">Total - {countCompetidores}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalEvento}>
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30 card-size-heigth " onClick={handleOpenModalEvento}>
             <CardContent className="flex flex-col items-center justify-center">             
               <Trophy className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Eventos</h2>
               <p className="font-color-red">Total - {countEventos}</p>
             </CardContent>
           </Card>
-           <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalCategoria}>
+           <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30 card-size-heigth" onClick={handleOpenModalCategoria}>
             <CardContent className="flex flex-col items-center justify-center">
               <FolderTree className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Categoria</h2>            
               <p className="font-color-red">Total - {countCategorias}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30" onClick={handleOpenModalBateria}>
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30 card-size-heigth" onClick={handleOpenModalBateria}>
             <CardContent className="flex flex-col items-center justify-center">
               <Flag className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Bateria</h2>              
               <p className="font-color-red">Total - {countBaterias}</p>
             </CardContent>
           </Card>
-          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30 card-size-heigth" onClick={handleConfiguracaoEventos}>
             <CardContent className="flex flex-col items-center justify-center">
               <BadgeDollarSign className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Licenças</h2>              
               <p className="font-color-red">Total - 0</p>
             </CardContent>
           </Card>
-          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30">
+          <Card className="w-45 p-10 mt-4 continerdashboard-border btn bg-tranparente-30 card-size-heigth" onClick={()=>{router.push("./admin/relatorio")}}>
             <CardContent className="flex flex-col items-center justify-center">
               <MapPin className="w-20 h-20 mb-2 mt-2 font-bold" />
               <h2 className="text-2xl font-bold text-center mb-4">Proximo Evento</h2>              

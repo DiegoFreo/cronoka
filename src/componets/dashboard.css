@@ -1,3 +1,4 @@
+
 :root {
   --background: 200 16% 18%; /* Dark Gray */
   --foreground: 0 0% 90%; /* Light Gray for text */
@@ -29,6 +30,7 @@
     display: flex;
     justify-content: center;
     min-height: 10px;
+    max-height: 10%;
     width: 100%;
     padding: 10px;
 }
@@ -61,6 +63,18 @@
     padding: 10px;
     height: 85vh;
 }
+.continerdashboard-left-img{
+    width: 80%;
+    height: 80vh;
+    margin-bottom: 10px;
+    background-color: rgb(25, 27, 24);
+    padding: 3px;
+    background-image: url('../../public/FPMX-logo.png');
+    background-size: calc(50% - 10px) calc(50% - 10px);
+    background-repeat: no-repeat;
+    background-position: bottom ;
+    background-color: rgb(3, 3, 3);
+}   
 .continerdashboard-right{
     display: flex;
     flex-direction: row;
@@ -68,15 +82,12 @@
     margin-top: 3px;
     justify-content: space-between;
     width: 80%;
-    height: 80vh;
+    /*height: 80vh;*/
     padding: 10px;
-    background-image: url('../../public/FPMX-logo.png');
-    background-size: calc(50% - 10px) calc(50% - 10px);
-    background-repeat: no-repeat;
-    background-position: bottom ;
-    background-color: rgb(3, 3, 3);
+    
     gap: 20;
 }
+
 .continerdashboard-prova{
     display: flex;
     flex-direction: row;
@@ -170,3 +181,9 @@
 .bg-tranparente-80{
     background-color: rgba(3, 3, 3, 0.8);
 }
+
+.card-size-heigth{
+    height: max-content;
+    padding: 5px;
+}
+

@@ -1,14 +1,56 @@
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect, use} from "react";
 import * as XLSX from 'xlsx';
 import {DadosCompetidor} from '@/lib/importArquivos';
 import Button from "../ui/Buttom";
 import { Categoria } from "@/lib/type";
 
+interface ImportCategoriasProps {
+    categorias: Categoria[];
+    onImportar: (competidores: DadosCompetidor[]) => void;
+}
+type CategoriaSeparada = {
+    _id?: string;
+    nome: string;
+}
+interface Piloto {
+    nome: string;
+    numero_piloto: string;
+    cpf?: string;
+    nome_equipe?: string;
+    filiacao?:  string;
+    patrocinador?:  string;   
+    dataNascimento?: string;
+    telefone?: string;
+    responsavel?:  string; 
+    tipoSanguineo?:  string;
+    categorias: CategoriaSeparada[] | Categoria[] | undefined;
+    tag: string[];   
+}
 
 const ImportCompetidores = () =>{
     const [dadosCompetidor, setDadosCompetidor] = useState<DadosCompetidor[]>([]);
     const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
     const [categoriasDisponiveis, setCategoriasDisponiveis] = useState<Categoria[]>([]);
+
+
+    // Função para buscar categorias (simulação)
+  const fetchCategorias = async () => {
+    try {
+      const response = await fetch("/api/categoria");
+      if (!response.ok) {
+        throw new Error('Erro ao buscar categorias');
+      }
+      const data = await response.json();
+      setCategoriasDisponiveis(data);
+    } catch (error:any) {
+      console.error("Erro ao buscar categorias:", error);
+      alert("Erro ao buscar categorias: " + error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategorias();
+    }, []);
 
 
 
@@ -52,15 +94,88 @@ const ImportCompetidores = () =>{
     const handleImportar = async()=>{
         try{
         const competidoresParaImportar = linhasSelecionadas.map((index) => dadosCompetidor[index]);
-           console.log('Competidores para importar: ', competidoresParaImportar[0].Categoria);
+          const competidoresComCategoria = competidoresParaImportar.map((competidor) => {
+            const categoriaSeparada:CategoriaSeparada[] = separaCategoria(competidor.Categoria);
+            const categoriaEncontrada = categoriasDisponiveis.filter((cat) => categoriaSeparada.some(c => c.nome === cat.nome));
 
+            if (!categoriaEncontrada || categoriaEncontrada.length === 0) {
+                //throw new Error(`Categoria "${categoriaSeparada}" não encontrada para o competidor "${competidor.Nome}".`);
+                alert(`Categoria "${categoriaSeparada.filter(c => !categoriasDisponiveis.some(cat => cat.nome === c.nome))}" não encontrada para o competidor "${competidor.Nome}".`);
+            }
+                
+            
+            return { ...competidor, categorias: categoriaEncontrada}; // Adiciona o ID da categoria ao competidor
+        });
 
+        cadastrarCompetidores(competidoresComCategoria);
+        
         }catch(erro:any){
             console.error("Erro ao importar competidores: ", erro);
             alert("Erro ao importar competidores: " + erro.message);
         }
 
     }
+    function separaCategoria(categoria: string): CategoriaSeparada[] {
+        const categoriaseparada = categoria.split(';').map(cat => cat.trim()).filter(cat => cat !== "");
+        return categoriaseparada.map(c => ({ nome: c })) || []; // Retorna as categorias separadas por vírgula
+    }
+    
+    async function cadastrarCompetidores(competidores: any[]) {
+        try {
+
+            const categ:Piloto[] = competidores.map((c:DadosCompetidor) =>({
+                nome: c.Nome,
+                numero_piloto: c.Nº,
+                nome_equipe:  undefined,
+                filiacao:  undefined,
+                patrocinador: c.PATROCINADORES || undefined,
+                cpf: undefined,
+                dataNascimento: undefined,
+                telefone: undefined,
+                responsavel: undefined,
+                tipoSanguineo:undefined,
+                categorias: c.categorias,
+                tag: c.Chip,
+            }));
+
+            console.log('Competidores a serem cadastrados: ', categ);
+
+                categ.forEach(async(c:Piloto) => {
+                const response = await fetch('/api/piloto', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({  
+                        nome: c.nome,
+                        numero_piloto: c.numero_piloto,
+                        nome_equipe:  c.nome_equipe,
+                        filiacao:  c.filiacao,
+                        patrocinador: c.patrocinador,
+                        dataNascimento: c.dataNascimento,
+                        telefone: c.telefone,
+                        responsavel: c.responsavel,
+                        tipoSanguineo: c.tipoSanguineo,
+                        categorias: c.categorias,
+                        tag: c.tag
+                    }), // Envia apenas competidores com categorias válidas
+                });
+                if (!response.ok) {
+                    const detalheErro = await response.text();
+                    throw new Error(`Erro do Servidor: ${detalheErro}`);
+                }
+            
+                const data = await response.json();
+                });
+                console.log('Competidores cadastrados com sucesso:', categ);
+                alert('Competidores cadastrados com sucesso! ');
+        
+        } catch (error:any) {
+            console.error('Erro ao cadastrar competidores:', error);
+            alert('Erro ao cadastrar competidores: ' + error.message);
+        }
+    }
+
      const isMasterCheckBoxCheckd = dadosCompetidor.length > 0 && linhasSelecionadas.length === dadosCompetidor.length
     return(
         <div>
