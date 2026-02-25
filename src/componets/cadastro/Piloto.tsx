@@ -37,10 +37,10 @@ interface PilotoProps {
     _id?: string;
 }
 
-const Piloto = ({ _id }: PilotoProps) => {
+const Piloto = ({_id}: PilotoProps) => {
     const { register, handleSubmit, reset} = useForm();
-    const [piloto, setPiloto] = useState<Piloto[]>([]);
-    const [pilotosSelecionado, setPilotosSelecionado] = useState([]);
+    const [Piloto, setPiloto] = useState<Piloto[]>([]);
+    const [pilotosSelecionado, setPilotosSelecionado] = useState<Piloto | null>(null);
     const [categoriasPiloto, setCategoriasPiloto] = useState<Categorias[]>([]);
     const [idPiloto, setIdPiloto] = useState<string>('');
     const [nmPiloto, setNmPiloto] = useState<string>('');
@@ -54,17 +54,19 @@ const Piloto = ({ _id }: PilotoProps) => {
     const [responsavelPiloto, setResponsavelPiloto] = useState<string>('');
     const [tpSanguineo, settpSanguineo] = useState<string>('');
     const [tags, setTags] = useState<TagsPiloto[]>([]);
-    const [tagSelecionada, setTagSelecionada] = useState<string>('');
+    const [tagSelecionada, setTagSelecionada] = useState<string[]>([]);
     const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
     const [categoriasSelecionadas, setCategoriasSelecionad] = useState<string[]>([]);
     const [categoria, setCategoria] = useState<Categorias[]>([]);
 
     useEffect(() => {
-        buscatCategoria(); 
-        buscarCategoriaPiloto()
-        buscatPiloto();
+        buscatCategoria();
+       // buscatPiloto();
+        buscarCategoriaPiloto();
         buscaTags();
     }, []);
+
+
 
      const handleCheckboxChange = (index: number) => {
         if (linhasSelecionadas.includes(index)) {
@@ -131,7 +133,26 @@ const Piloto = ({ _id }: PilotoProps) => {
                 throw new Error('Erro ao buscar categorias do piloto');
             }
             const data = await response.json();
-            setCategoriasPiloto(data.data.categorias);        
+
+            setCategoriasPiloto(data.data.categorias);  
+            setPiloto(data.data); 
+            setNmPiloto(data.data.nome);
+            setNumeroPiloto(data.data.numero_piloto);
+            setCPFPiloto(data.data.cpf);
+            setTelefone(data.data.telefone);
+            setNomeEquipe(data.data.nome_equipe);
+            setFiliacao(data.data.filiacao);
+            setPatrocinadores(data.data.patrocinador);
+            const datfimFormatada = new Date(data.data.dataNascimento);
+            if (!isNaN(datfimFormatada.getTime())) {
+                setdtNascimento(datfimFormatada.toISOString().split('T')[0]);
+            }
+           //setdtNascimento(datfimFormatada.toISOString().split('T')[0]);
+            setResponsavelPiloto(data.data.responsavel);
+            settpSanguineo(data.data.tipoSanguineo);
+            setTagSelecionada(data.data.tag || '');
+
+            
         } catch (erro: any) {
             console.error("Erro ao buscar categorias do piloto:", erro);
             alert("Erro ao buscar categorias do piloto: " + erro.message);
@@ -149,6 +170,8 @@ const Piloto = ({ _id }: PilotoProps) => {
             }
             const data = await response.json();
             setCategoria(data);
+           
+           //console.log("Piloto encontrado: ", pilotosSelecionado?.nome);
                         
         } catch (erro: any) {
             console.error("Erro ao buscar categorias:", erro);
@@ -166,8 +189,7 @@ const Piloto = ({ _id }: PilotoProps) => {
                             setLinhasSelecionada((prevSelected) => [...prevSelected, index]);
                             setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
                         }
-                        //setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
-                        console.log("Categorias do Piloto no useEffect: " + cat.nome);
+                        setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
                     }
                 });
             });
@@ -181,8 +203,8 @@ const Piloto = ({ _id }: PilotoProps) => {
                 categoriasPiloto.forEach((catPiloto) => {
                     if (cat._id === catPiloto._id) {
                         setLinhasSelecionada((prevSelected) => [...prevSelected, categoria.indexOf(cat)]);
-                        //setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
-                        console.log("Categorias do Piloto: " + cat.nome);
+                        setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                        //console.log("Categorias do Piloto: " + cat.nome);
                     }
                 });
             });
@@ -203,11 +225,11 @@ const Piloto = ({ _id }: PilotoProps) => {
             }
             const data = await response.json();
             setPiloto(data);
-            pilotoSelecionado(data as Piloto[]);
+            //pilotoSelecionado(data as Piloto[]);
 
         } catch (erro: any) {
-            console.error("Erro ao buscar pilotos:", erro);
-            alert("Erro ao buscar pilotos: " + erro.message);
+            console.error("Erro ao buscar pilotos: ttt", erro);
+            alert("Erro ao buscar pilotos: ttt" + erro.message);
         }
     }
     async function buscaTags() {
@@ -224,26 +246,31 @@ const Piloto = ({ _id }: PilotoProps) => {
             alert("Erro ao buscar tags: " + erro.message);
         }
     }
+
     
-    function pilotoSelecionado(p: Piloto[]) {
-        p.forEach((Piloto) => {            
-            if (Piloto._id === _id) {
-                setIdPiloto(Piloto._id);
-                setNmPiloto(Piloto.nome);
-                setNumeroPiloto(Piloto.numero_piloto);
-                setCPFPiloto(Piloto.cpf);
-                setTelefone(Piloto.telefone);
-                setNomeEquipe(Piloto.nome_equipe);
-                setFiliacao(Piloto.filiacao);
-                setPatrocinadores(Piloto.patrocinador );
-                const datfimFormatada = new Date(Piloto.dataNascimento);
-                setdtNascimento(datfimFormatada.toISOString().split('T')[0]);
-                setResponsavelPiloto(Piloto.responsavel);
-                settpSanguineo(Piloto.tipoSanguineo);
-                setCategoriasPiloto(Piloto.categoria || []);
-            }
-        })
-       
+    
+    function pilotoSelecionado() {
+        if (!Array.isArray(Piloto)) {
+            console.error("Erro: 'piloto' não é um array válido!", Piloto);
+            return;
+        }
+        const piloto = Piloto.find((p) => p._id === _id);
+        if (piloto) {
+                setIdPiloto(piloto._id);
+            setNmPiloto(piloto.nome);
+            setNumeroPiloto(piloto.numero_piloto);
+            setCPFPiloto(piloto.cpf);
+            setTelefone(piloto.telefone);
+            setNomeEquipe(piloto.nome_equipe);
+            setFiliacao(piloto.filiacao);
+            setPatrocinadores(piloto.patrocinador);
+            const datnasc = new Date(piloto.dataNascimento);
+            setdtNascimento(datnasc.toISOString().split('T')[0]);
+            setResponsavelPiloto(piloto.responsavel);
+            settpSanguineo(piloto.tipoSanguineo);
+            setCategoriasPiloto(piloto.categoria || []);
+            setTagSelecionada(piloto.tag || []);
+        }       
     }    
     function limparCanpos(){
         setIdPiloto('');
@@ -279,7 +306,7 @@ const Piloto = ({ _id }: PilotoProps) => {
        
         try{
             
-        if(piloto.map(p=> p._id === idPiloto).includes(true)){
+        if(Piloto.map(p=> p._id === idPiloto).includes(true)){
             const nome = nmPiloto;
             const numero_piloto = numeroPiloto;
             const cpf = CPFPiloto;
@@ -348,7 +375,7 @@ const Piloto = ({ _id }: PilotoProps) => {
                         <div className="w-100">
                             <label htmlFor="tag">Tag:</label>
                             <SelectSearchable
-                                value={tagSelecionada}
+                                value={tagSelecionada[0] || ''} // Exibe a primeira tag selecionada ou uma string vazia se não houver
                                 placeholder="Selecione uma Tag"
                                 options={tags.map((tag) => ({
                                     value: tag.num,

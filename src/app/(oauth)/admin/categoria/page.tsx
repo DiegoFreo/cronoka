@@ -120,7 +120,7 @@ export default function AdminPage() {
           <div className="continerdashboard-menu pt-2">
             <ul>
               <li onClick={()=>{router.push("./")}} className="flex flex-row items-center btn"><Home className="pr-2"/>Home</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
+              <li onClick={()=>{router.push('./competidor')}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
               <li onClick={()=>{router.push('./usuario')}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn active"><Tag className="pr-2"/>Categoria</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>

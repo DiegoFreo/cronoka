@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
 import { Card, CardContent } from "@/componets/ui/card";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash, FaAngleUp, FaAngleDown } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import SelectSearchable from "@/componets/ui/SelectSearchable";
 import Button from "@/componets/ui/Buttom";
 import Piloto from "./Piloto";
 import importarCompetidores from "@/componets/import/importCompetidores";
-
 import '@/componets/stylescorrida.css';
 import '@/componets/dashboard.css';
 import '@/componets/styles.css';
 import Modal from "../Modal";
-import { set } from "mongoose";
 import ImportCompetidores from "@/componets/import/importCompetidores";
 
 
@@ -23,11 +21,30 @@ export default function CompetidorAll() {
     const [titleModal, setTitleModal] = React.useState<string>('');
     const [idPilotoSelect, setIdPilotoSelect] = React.useState<string>('');
     const [nmPiloto, setNmPiloto] = React.useState<string>('');
+    const [sortConfig, setSortConfig] = React.useState<{ key: string; direction: 'ascending' | 'descending' } | null>(null);
 
     useEffect(() => {
         buscatPiloto();
     }, []);
     
+
+    const handleSort = (key: string) => {
+        let direction: 'ascending' | 'descending' = 'ascending';
+        if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+            direction = 'descending';
+        }
+        setSortConfig({ key, direction });
+        const sortedPilotos = [...piloto].sort((a, b) => {
+            if (a[key] < b[key]) {
+                return direction === 'ascending' ? -1 : 1;
+            }
+            if (a[key] > b[key]) {
+                return direction === 'ascending' ? 1 : -1;
+            }
+            return 0;
+        });
+        setPiloto(sortedPilotos);
+    };
 
      async function buscatPiloto() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
@@ -86,16 +103,18 @@ export default function CompetidorAll() {
         }
     }
 
+    
+
     return (
         <div className="continerdashboard-all gap-4">
             <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
                  {handleFormModal() }
             </Modal>
 
-            <div className="content-top w-100 gap-4">
-                <Card className="w-45 mt-2 p-10 continerdashboard-title" >
+            <div className="content-top w-100 gap-4 p-10">
+                 <Card className=" mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
                     <CardContent className="flex flex-col items-center justify-center">  
-                    <h2 className="text-2xl  font-bold mb-4">Competidores</h2>
+                    <h2 className="text-2xl  font-bold mb-4 p-10">Competidores</h2>
                     </CardContent>
                 </Card>
             </div> 
@@ -116,9 +135,9 @@ export default function CompetidorAll() {
                      <table border={1} className="ka-table">
                          <thead>                             
                                  <tr>
-                                    <th>Número</th>
-                                     <th>Nome</th>
-                                     <th>Chip</th>
+                                    <th onClick={() => handleSort('numero_piloto')} className="cursor-pointer">Número { sortConfig?.direction === 'ascending' && sortConfig.key === 'numero_piloto' ? <FaAngleUp className="inline-block ml-1" /> : <FaAngleDown className="inline-block ml-1" /> } </th>
+                                     <th onClick={() => handleSort('nome')} className="cursor-pointer">Nome { sortConfig?.direction === 'ascending' && sortConfig.key === 'nome' ? <FaAngleUp className="inline-block ml-1" /> : <FaAngleDown className="inline-block ml-1" /> } </th>
+                                     <th onClick={() => handleSort('tag')} className="cursor-pointer">Chip {sortConfig?.direction === 'ascending' && sortConfig.key === 'tag' ? <FaAngleUp className="inline-block ml-1" /> : <FaAngleDown className="inline-block ml-1" /> } </th>
                                      <th>Editar</th>
                                      <th>Excluir</th>
                                  </tr>
