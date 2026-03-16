@@ -4,6 +4,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 import Modal from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
 import Evento from "@/componets/cadastro/evento";
+import ConfigEventos from "@/componets/cadastro/configEventos";
 import Categoria from "@/componets/cadastro/categoria";
 import Bateria from "@/componets/cadastro/Bateria";
 import Usuario from "@/componets/cadastro/Usuario";
@@ -209,7 +210,7 @@ export default function AdminPage() {
         buscaPiloto()
       }
     }else if (formModal === 'evento') {
-      return <Evento />;
+      return <ConfigEventos />;
     }else if (formModal === 'usuario') {
       if(isOpen){
       return <Usuario />;
@@ -246,33 +247,32 @@ export default function AdminPage() {
   const router = useRouter();
   
   return (
-      <div className="continerdashboard">
+    <div className="continerdashboard">
         <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
-          {handleFormModal() }
+            {handleFormModal() }
         </Modal>
+       
         <div className="continerdashboard-left">
           <div className="continerdashboard-logo">
             <img
               alt="logo"
-              src="./FPMX-logo.png"
-              className="mx-auto h-40 w-auto"
+              src="../FPMX-logo.png"
+              className="mx-auto h-15 w-auto"
             />
           </div>
           <div className="continerdashboard-menu pt-2">
             <ul>
-              <li onClick={()=>{router.push("")}} className="flex flex-row items-center btn active"><Home className="pr-2"/>Home</li>
-              <li onClick={()=>{router.push("./admin/competidor")}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
-              <li onClick={()=>{router.push("./admin/usuario")}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
-              <li onClick={()=>{router.push("./admin/categoria")}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
-              <li onClick={handleOpenModalBateria} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
-              <li onClick={handleOpenModalEvento} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos Gerais</li>
+              <li onClick={()=>{router.push("../admin")} } className='flex flex-row items-center btn active'><Home className="pr-2"/>Home</li>
+              <li onClick={()=>{router.push("../admin/competidor")}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
+              <li onClick={()=>{router.push("../admin/usuario")}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
+              <li onClick={()=>{router.push("../admin/categoria")}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
+              <li onClick={()=>{router.push("../admin/bateria")}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
+              <li onClick={()=>{router.push("../admin/evento")}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
               <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
-              <li onClick={()=>{router.push("./admin/relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Ranking</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Campeonato</li>
+              <li onClick={()=>{router.push("../admin/relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
-              <li onClick={()=>{router.push("./admin/prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
-              <li onClick={()=>{router.push("./admin/corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
+              <li onClick={()=>{router.push("../admin/prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
+              <li onClick={() => window.open("../admin/corrida", "_blank")} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
             </ul>
           </div>
           <div className="continerdashboard-logout pt-4">
@@ -280,8 +280,8 @@ export default function AdminPage() {
               <Button className="bg-cronometro btn-corrida" onClick={()=>{logout()}}>Sair</Button>
               <img
                 alt="perfil"
-                src= {imgUsuario ? imgUsuario : "./logoka.svg"}
-                className="mx-auto h-auto w-auto"
+                src= {imgUsuario ? imgUsuario : "../logoka.svg"}
+                className="mx-auto h-15 w-auto"
               />
             </div>
           </div>
@@ -343,6 +343,6 @@ export default function AdminPage() {
             </CardContent>
           </Card>
         </div>
-      </div>
+        </div>
   );
 }

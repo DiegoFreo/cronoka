@@ -14,7 +14,6 @@ export async function PUT(request, { params }) {
     if (!Atualizada) {
       return NextResponse.json({ error: "Bateria não encontrada" }, { status: 404 });
     }
-
     return NextResponse.json({ data: Atualizada }, { status: 200 });
 
   } catch (err) {
@@ -26,12 +25,12 @@ export async function PUT(request, { params }) {
 export async function GET(request, { params }) {
   try {
     await conectDB();
-    const { id } = params;
-    const bateria = await Bateria.findById(id).populate('pilotos');
-    if (!bateria) {
+    const { id } = await params;
+    const bateriaEncontrada = await Bateria.findById(id).populate('categorias');
+    if (!bateriaEncontrada) {
       return NextResponse.json({ error: "Bateria não encontrada" }, { status: 404 });
     }
-    return NextResponse.json({ data: bateria }, { status: 200 });
+    return NextResponse.json({ data: bateriaEncontrada }, { status: 200 });
   } catch (err) {
     console.error("Erro ao buscar bateria:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });

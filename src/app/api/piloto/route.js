@@ -14,6 +14,7 @@ export async function POST(request) {
     return NextResponse.json({ error: err.message }, { status: 500 });
     }
 }
+
 export async function GET() {
   try {
     await conectDB();
@@ -23,6 +24,7 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 }); // ✅ retorno no erro também
   }
 }
+
 
 export async function PUT(request) {
     try{

@@ -64,15 +64,15 @@ export default function CategoriaAll() {
     }
 
     return (
-        <div className="continerdashboard-all gap-4">
+        <div className="continerdashboard-all">
             <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
                  {handleFormModal() }
             </Modal>
 
             <div className="content-top w-100 gap-4">
-                <Card className="w-45 mt-2 p-10 continerdashboard-title" >
+                <Card className="mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
                     <CardContent className="flex flex-col items-center justify-center">  
-                    <h2 className="text-2xl  font-bold mb-4">Categorias</h2>
+                    <h2 className="text-2xl p-10 font-bold mb-4">Categorias</h2>
                     </CardContent>
                 </Card>
             </div> 
@@ -88,32 +88,32 @@ export default function CategoriaAll() {
                         onSelect={setNmCategoria}
 
                     />
-                </div>            
+                </div>     
+                       
                 <div className="scrollbar">                
                      <table border={1} className="ka-table">
-                         <thead>                             
+                        <thead>                             
                                  <tr>
                                     <th>Nome</th>
                                      <th>Editar</th>
                                      <th>Excluir</th>
                                  </tr>
-                         </thead>
-                         <tbody>
+                         </thead> 
+                          <tbody >
                              {categorias.map((categoria, index) => (
                                  <tr key={index} className={nmCategoria === categoria.nome ? "ka-table-select": ""}>    
-                                 <td>{categoria.nome}</td>    
-                                 <td><button className="component-button-black" onClick={()=>{}}  ><FaEdit /></button></td>
-                                 <td><button className="component-button-black" onClick={()=>{}} ><FaTrash /></button></td>
+                                    <td>{categoria.nome}</td>    
+                                    <td><button className="component-button-black" onClick={()=>{}}  ><FaEdit /></button></td>
+                                    <td><button className="component-button-black" onClick={()=>{}} ><FaTrash /></button></td>
                                  </tr>
                              ))}        
                              
-                         </tbody>    
+                         </tbody>  
                      </table>
                      
                 </div> 
             </div>
-            <div className="align-reigth"> 
-            <Button className="mt-4 btn-green mr-20" onClick={()=>{hendleImportarCategoria()}}>Replicar</Button>          
+            <div className="align-reigth">         
             <Button className="mt-4 btn-green mr-20" onClick={()=>{hendleAdicionarCategoria()}}>Adicionar Categoria</Button>
             </div>
         </div>

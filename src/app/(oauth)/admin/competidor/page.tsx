@@ -102,46 +102,6 @@ export default function AdminPage() {
   const router = useRouter();
 
   return (
-      <div className="continerdashboard">
-        <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
-            {handleFormModal() }
-        </Modal>
-       
-        <div className="continerdashboard-left">
-          <div className="continerdashboard-logo">
-            <img
-              alt="logo"
-              src="../FPMX-logo.png"
-              className="mx-auto h-15 w-auto"
-            />
-          </div>
-          <div className="continerdashboard-menu pt-2">
-            <ul>
-              <li onClick={()=>{router.push("./")}} className="flex flex-row items-center btn"><Home className="pr-2"/>Home</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn active"><User  className="pr-2"/>Competidores</li>
-              <li onClick={()=>{router.push('./usuario')}} className="flex flex-row items-center btn"><UserPen  className="pr-2"/>Usuário</li>
-              <li onClick={()=>{router.push("./categoria")}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
-              <li onClick={()=>{router.push("./bateria")}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
-              <li onClick={()=>{router.push("./evento")}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
-              <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />Chip</li>
-              <li onClick={()=>{router.push("./relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
-              <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
-              <li onClick={()=>{router.push("./prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
-              <li onClick={()=>{router.push("./corrida")}} className="flex flex-row items-center btn"><Medal className="pr-2" />Inciar Corrida</li>
-            </ul>
-          </div>
-          <div className="continerdashboard-logout pt-4">
-            <div className="continerdashboard-logout-perfill">
-              <Button className="bg-cronometro btn-corrida" onClick={()=>{logout()}}>Sair</Button>
-              <img
-                alt="perfil"
-                src= {imgUsuario ? imgUsuario : "./logoka.svg"}
-                className="mx-auto h-15 w-auto"
-              />
-            </div>
-          </div>
-        </div>
-          <CompetidorAll />        
-      </div>
+          <CompetidorAll />     
   );
 }

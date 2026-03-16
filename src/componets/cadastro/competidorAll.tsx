@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import SelectSearchable from "@/componets/ui/SelectSearchable";
 import Button from "@/componets/ui/Buttom";
 import Piloto from "./Piloto";
-import importarCompetidores from "@/componets/import/importCompetidores";
 import '@/componets/stylescorrida.css';
 import '@/componets/dashboard.css';
 import '@/componets/styles.css';
@@ -87,16 +86,15 @@ export default function CompetidorAll() {
     function handleFormModal() {
         if(titleModal === 'Adicionar Competidor'){
             if(isOpen){
-            return <Piloto />;
+                return <Piloto />;
             }else{
                 buscatPiloto();
             }
-
         }else if(isOpen && titleModal === 'Editar Competidor'){
             return <Piloto _id={idPilotoSelect} />;
         }else if(titleModal === 'Importar Competidores'){
             if(isOpen){
-            return <ImportCompetidores />;
+                return <ImportCompetidores />;
             }else{
                 buscatPiloto();
             }
@@ -130,10 +128,12 @@ export default function CompetidorAll() {
                         onSelect={setNmPiloto}
 
                     />
-                </div>            
-                <div className="scrollbar">                
+                </div>  
+                                
+                    <div >   
+
                      <table border={1} className="ka-table">
-                         <thead>                             
+                        <thead className="ka-table">                             
                                  <tr>
                                     <th onClick={() => handleSort('numero_piloto')} className="cursor-pointer">Número { sortConfig?.direction === 'ascending' && sortConfig.key === 'numero_piloto' ? <FaAngleUp className="inline-block ml-1" /> : <FaAngleDown className="inline-block ml-1" /> } </th>
                                      <th onClick={() => handleSort('nome')} className="cursor-pointer">Nome { sortConfig?.direction === 'ascending' && sortConfig.key === 'nome' ? <FaAngleUp className="inline-block ml-1" /> : <FaAngleDown className="inline-block ml-1" /> } </th>
@@ -141,8 +141,10 @@ export default function CompetidorAll() {
                                      <th>Editar</th>
                                      <th>Excluir</th>
                                  </tr>
-                         </thead>
-                         <tbody>
+                         </thead>  
+
+                         <tbody className="scrollbar ka-table">
+                            
                              {piloto.map((piloto, index) => (
                                 piloto.nome.includes(nmPiloto || '') && 
 
@@ -157,8 +159,8 @@ export default function CompetidorAll() {
                              
                          </tbody>    
                      </table>
-                     
-                </div> 
+                   </div>   
+                
             </div>
             <div className="align-reigth"> 
             <Button className="mt-4 btn-green mr-20" onClick={()=>{hendleImportarCompetidor()}}>Importar Competidores</Button>          

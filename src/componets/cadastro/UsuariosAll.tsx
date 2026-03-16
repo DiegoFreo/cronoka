@@ -101,7 +101,7 @@ const UsuariosAll: React.FC<UsuariosAllProps> = ({ usuarios }) => {
             </table>
         </div>
             <div className="align-reigth">       
-            <Button className="mt-4 btn-green mr-20" onClick={handleOpenModalUsuario}>Adicionar Competidor</Button>
+            <Button className="mt-4 btn-green mr-20" onClick={handleOpenModalUsuario}>Adicionar Usuário</Button>
             </div>
 
         </div>

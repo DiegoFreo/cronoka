@@ -30,7 +30,7 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
       console.log(`🧩 Usuário autenticado: nível ${decoded.nivelUser}`);
 
       // Aguarda um ciclo do event loop antes de redirecionar
-      setTimeout(() => {
+     setTimeout(() => {
         if (decoded.nivelUser === "A" && !window.location.pathname.startsWith("/admin")) {
           console.log("🔵 Redirecionando para /admin");
           router.push("/admin");

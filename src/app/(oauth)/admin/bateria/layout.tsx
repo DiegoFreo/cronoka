@@ -14,6 +14,7 @@ import { UserPen, User, Home, Trophy, FolderTree, MapPin, Tag, SquareCheckBig, C
 //import '@/componets/styles.css';
 import { useRouter } from "next/navigation";
 import { Time } from "tone/build/esm/core/type/Units";
+import { set } from "mongoose";
 
 interface EventoProps {
   nome_evento: string;
@@ -22,6 +23,13 @@ interface EventoProps {
   data_fim: Date;
   local_evento: string;
   hora_evento: Time;
+}
+interface UsuarioProps {
+  _id: string;
+  nome: string;
+  email: string;
+  nivelUser: string;
+  avatarUser: string;
 }
 
 
@@ -32,12 +40,13 @@ export default function appLayout({
 }>) {
   const imgUser = useContext(AuthContext).users;
   const logout = useContext(AuthContext).logout;
+  const [usuarios, setUsuarios] = useState<UsuarioProps[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [formModal, setFormModal] = useState('');
   const [titleModal, setTitleModal] = useState('');
   const [imgUsuario, setImgUsuario] = useState<string>('');
-  
+ /* 
   useEffect(() => {
     
     if (imgUser && imgUser.avatarUser) {
@@ -45,7 +54,7 @@ export default function appLayout({
       
     }
     console.log("Imagem do usuário:", imgUser);
-  }, [imgUser]);
+  }, [imgUser]);*/
   useEffect(() => {
     buscaPiloto();
     buscaUsuario();
@@ -94,12 +103,21 @@ export default function appLayout({
         throw new Error('Erro ao buscar usuários');
       }
       const data = await response.json();
+      setUsuarios(data);
+
     } catch (erro: any) {
       console.error("Erro ao buscar usuários:", erro);
       alert("Erro ao buscar usuários: " + erro.message);
     }
   }
-  
+
+ const imgUsuarioContext = useContext(AuthContext).users;
+  useEffect(() => {
+    if (imgUsuarioContext && imgUsuarioContext.avatarUser) {
+      setImgUsuario(imgUsuarioContext.avatarUser);
+    }
+    console.log("Imagem do usuário atualizada:", usuarios);
+  }, [imgUsuarioContext]);
   return (
     <RequireAuth> 
       <div className="continerdashboard">
@@ -120,8 +138,8 @@ export default function appLayout({
               <li onClick={()=>{router.push("../admin")} } className='flex flex-row items-center btn'><Home className="pr-2"/>Home</li>
               <li onClick={()=>{router.push("../admin/competidor")}} className="flex flex-row items-center btn "><User  className="pr-2"/>Competidores</li>
               <li onClick={()=>{router.push("../admin/usuario")}} className="flex flex-row items-center btn "><UserPen  className="pr-2"/>Usuário</li>
-              <li onClick={()=>{router.push("../admin/categoria")}} className="flex flex-row items-center btn active"><Tag className="pr-2"/>Categoria</li>
-              <li onClick={()=>{router.push("../admin/bateria")}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
+              <li onClick={()=>{router.push("../admin/categoria")}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
+              <li onClick={()=>{router.push("../admin/bateria")}} className="flex flex-row items-center btn active"><SquareCheckBig className="pr-2" />Bateria</li>
               <li onClick={()=>{router.push("../admin/evento")}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
               <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
               <li onClick={()=>{router.push("../admin/relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
@@ -141,9 +159,7 @@ export default function appLayout({
             </div>
           </div>
         </div>
-        <div className="continerdashboard-right gap-4 flex-wrap justify-starth">
             {children}
-          </div>
       </div> 
     </RequireAuth>
   );

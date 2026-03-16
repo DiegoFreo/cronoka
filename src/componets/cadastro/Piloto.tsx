@@ -37,7 +37,7 @@ interface PilotoProps {
     _id?: string;
 }
 
-const Piloto = ({_id}: PilotoProps) => {
+const Piloto = ( {_id}: PilotoProps ) => {
     const { register, handleSubmit, reset} = useForm();
     const [Piloto, setPiloto] = useState<Piloto[]>([]);
     const [pilotosSelecionado, setPilotosSelecionado] = useState<Piloto | null>(null);
@@ -60,9 +60,18 @@ const Piloto = ({_id}: PilotoProps) => {
     const [categoria, setCategoria] = useState<Categorias[]>([]);
 
     useEffect(() => {
-        buscatCategoria();
+
+        if(_id){
+            buscarCategoriaPiloto();
+            buscatCategoria();
+            pilotoSelecionado();
+        }else{
+            buscatCategoria();
+            limparCanpos();
+        }
+        
        // buscatPiloto();
-        buscarCategoriaPiloto();
+        
         buscaTags();
     }, []);
 
@@ -128,7 +137,9 @@ const Piloto = ({_id}: PilotoProps) => {
     }
     async function buscarCategoriaPiloto() {
         try {
-            const response = await fetch(`/api/piloto/${_id}`);
+                const response = await fetch(`/api/piloto/${_id}`);
+            
+            
             if (!response.ok) {
                 throw new Error('Erro ao buscar categorias do piloto');
             }
@@ -151,7 +162,7 @@ const Piloto = ({_id}: PilotoProps) => {
             setResponsavelPiloto(data.data.responsavel);
             settpSanguineo(data.data.tipoSanguineo);
             setTagSelecionada(data.data.tag || '');
-
+            
             
         } catch (erro: any) {
             console.error("Erro ao buscar categorias do piloto:", erro);
@@ -256,7 +267,7 @@ const Piloto = ({_id}: PilotoProps) => {
         }
         const piloto = Piloto.find((p) => p._id === _id);
         if (piloto) {
-                setIdPiloto(piloto._id);
+            setIdPiloto(piloto._id);
             setNmPiloto(piloto.nome);
             setNumeroPiloto(piloto.numero_piloto);
             setCPFPiloto(piloto.cpf);

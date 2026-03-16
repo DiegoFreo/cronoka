@@ -1,20 +1,90 @@
-import React, {useEffect, useState} from "react";
+import React, {use, useEffect, useState} from "react";
 import Button from "../ui/Buttom";
 import { useForm } from "react-hook-form";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import '@/componets/styles.css';
+import '@/componets/stylescorrida.css';
+import '@/componets/dashboard.css';
+import { Card, CardContent } from "../ui/card";
+import SelectSearchable from "../ui/SelectSearchable";
+import { set } from "mongoose";
 
 interface BateriaProps {
   _id: string;
   nome: string;
   hora_bateria: string;
 }
+interface CategoriaProps {
+  _id: string;
+  nome: string;
+}
+interface BateriaFormData {
+  _id?: string;
+}
 
-const Bateria = () => {
+const Bateria = ({_id}:BateriaFormData) => {
   const { register, handleSubmit, reset } = useForm();
   const [baterias, setBaterias] = useState<BateriaProps[]>([]);
+  const [categoriasBateria, setCategoriasBateria] = useState<CategoriaProps[]>([]);
+  const [categorias, setCategorias] = useState<CategoriaProps[]>([]);
+  const [catId, setCatId] = useState<string>('');
+  const [linhasSelecionadas, setLinhasSelecionadas]= useState<number[]>([]);
   const [idBateria, setIdBateria] = useState<string | null>(null);
   const [nomeBateria, setNomeBateria] = useState('');
   const [horaEvento, setHoraEvento] = useState<string>("");
+  const [categoriasSelecionadas, setCategoriasSelecionad] = useState<string[]>([]);
+  
+  useEffect(() => {   
+    if(_id){
+      fetchBaterias();
+    } 
+  }, []);
+ // Função para buscar baterias 
+  const fetchBaterias = async () => {
+    try {
+      const response = await fetch(`/api/bateria/${_id}`);
+      if (!response.ok) {
+        throw new Error('Erro ao buscar baterias');
+      }
+      const data = await response.json();
+      console.log("baterias", data);
+      setBaterias(data.data);
+      //data.map((bateria: BateriaProps) => {
+        setIdBateria(data.data._id);
+        setNomeBateria(data.data.nome);
+        setHoraEvento(data.data.hora_inicio || '');
+        setCategoriasBateria(data.data.categorias || []);
+      //});
+    } catch (error:any) {
+      console.error("Erro ao buscar baterias:", error);
+      alert("Erro ao buscar baterias: " + error.message);
+    }
+  };
+
+  const handleCheckboxChange = (index: number) => {
+
+        if (linhasSelecionadas.includes(index)) {
+            // Se já estava selecionado, remove da lista
+            setLinhasSelecionadas(linhasSelecionadas.filter((i) => i !== index));
+            alert("Categorias Removida: " + categorias[index].nome);
+            setCategoriasSelecionad(categoriasSelecionadas.filter((catId) => catId !== categorias[index]._id));
+
+        } else {
+            // Se não estava, adiciona na lista
+            setLinhasSelecionadas([...linhasSelecionadas, index]);
+            categorias.map((cat, i)=>{
+                if(i === index){
+                    //setCategoriasPiloto([...categoriasPiloto, cat])
+                    setCategoriasSelecionad([...categoriasSelecionadas, cat._id])
+                    
+                }                
+            })
+            
+            
+           //console.log(categoriasSelecionadas);
+        }
+    };
+
 
   const handleChangeNomeBateria = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNomeBateria(e.target.value);
@@ -25,55 +95,72 @@ const Bateria = () => {
   
   const carregarDadosBateria = (id: string) => {
     const bateria = baterias.find(b => b._id === id);
+    console.log("baterias", bateria);
     if (bateria) {
       setIdBateria(bateria._id);
       setNomeBateria(bateria.nome);
       setHoraEvento(bateria.hora_bateria || '');
     }
   };
+  useEffect(() => {
+        if(_id){
+            carregarDadosBateria(_id);
+        }else if(_id === ''){
+             limparFormulario();
+        }
+      }, [_id]);
+
   const limparFormulario = () => {  
     setIdBateria(null);
     setNomeBateria('');
     setHoraEvento('');
   };
 
+  
+  //Função para buscar categorias
   useEffect(() => {
-    fetchBaterias();
-  }, []);
-  // Função para buscar baterias
-  const fetchBaterias = async () => {
-    try {
-      const response = await fetch("/api/bateria");
-      if (!response.ok) {
-        throw new Error('Erro ao buscar baterias');
+    const fetchCategorias = async () => {
+      try {
+        const response = await fetch("/api/categoria");
+        if (!response.ok) {
+          throw new Error('Erro ao buscar categorias');
+        }
+        const data = await response.json();
+        setCategorias(data);
+        setIdBateria(data._id);
+        setNomeBateria(data.nome);
+        setHoraEvento(data.hora_bateria || '');
+      } catch (error:any) {
+        console.error("Erro ao buscar categorias:", error);
+        alert("Erro ao buscar categorias: " + error.message);
       }
-      const data = await response.json();
-      setBaterias(data);
-    } catch (error:any) {
-      console.error("Erro ao buscar baterias:", error);
-      alert("Erro ao buscar baterias: " + error.message);
-    }
-  };
+    };
+    fetchCategorias();
+  }, []);
+
+  
   // Função para lidar com o envio do formulário
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     try {
       if (idBateria) {
         // Atualiza uma bateria existente
-        const response = await fetch(`/api/bateria/${idBateria}`, {
+        const response = await fetch(`../api/bateria/${idBateria}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({nome: nomeBateria, hora_inicio: horaEvento}),
+          body: JSON.stringify({nome: nomeBateria, hora_inicio: horaEvento, categorias: categoriasSelecionadas}),
         });
         alert("Bateria atualizada com sucesso!");
         if (!response.ok) {
           throw new Error('Erro ao atualizar bateria');
         }
       } else {
-        var nome = data.nome;
-        var hora_inicio = data.hora_inicio;
-      const response = await fetch("api/bateria", {
+        const nmBateria = nomeBateria;
+        const hora_bateria = horaEvento;
+        const data = { nome: nmBateria, hora_inicio: hora_bateria, categorias: categoriasSelecionadas };
+        console.log("data", data);
+      const response = await fetch("../api/bateria", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +174,6 @@ const Bateria = () => {
       alert("Bateria cadastrada com sucesso!");
     }
       limparFormulario(); // Limpa o formulário após o envio
-      fetchBaterias(); // Atualiza a lista de baterias
     } catch (error:any) {
       console.error("Erro ao cadastrar bateria:", error);
       alert("Erro ao cadastrar bateria: " + error.message);
@@ -101,12 +187,43 @@ async function deleteBateria(id: string) {
       if (!response.ok) {
         throw new Error('Erro ao deletar bateria');
       }
-      fetchBaterias(); // Atualiza a lista de baterias após a exclusão
     } catch (error:any) {
       console.error("Erro ao deletar bateria:", error);
       alert("Erro ao deletar bateria: " + error.message);
     }
   }
+  useEffect(() => {
+    if(categorias.length > 0 && categoriasBateria.length > 0){
+        handleCategoriaPiloto();
+        categorias.forEach((cat) => {
+            categoriasBateria.forEach((catBateria) => {
+                if (cat._id === catBateria._id) {
+                    setLinhasSelecionadas((prevSelected) => [...prevSelected, categorias.indexOf(cat)]);
+                    setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                    //console.log("Categorias do Piloto: " + cat.nome);
+                }
+            });
+      });
+    }
+  }, [categorias, categoriasBateria]);
+
+  async function handleCategoriaPiloto() {
+        try {
+            categorias.filter((cat) => {
+                categoriasBateria.forEach((catBateria) => {
+                    if (cat._id === catBateria._id) {
+                        setLinhasSelecionadas((prevSelected) => [...prevSelected, categorias.indexOf(cat)]);
+                        setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                        //console.log("Categorias do Piloto: " + cat.nome);
+                    }
+                });
+            });
+           
+        } catch (erro: any) {
+            console.error("Erro ao associar categoria ao piloto:", erro);
+            alert("Erro ao associar categoria ao piloto: " + erro.message);
+        }
+    }
 
   return (
     <div className="is-flex"> 
@@ -133,21 +250,22 @@ async function deleteBateria(id: string) {
                     <thead>
                         <tr><th colSpan={4} className="ka-table-title" >Tabela Piloto</th></tr>
                             <tr>
-                              <th>ID</th>
+                              <th>flag</th>
                               <th>Nome</th>
-                              <th>Editar</th>
-                              <th>Excluir</th>
                             </tr>
                     </thead>
                     <tbody>
-                        {baterias.map((bateria, index) => (
-                            <tr key={index}>
-                                <td>{bateria._id}</td>
-                                <td>{bateria.nome}</td>
-                                <td><Button className="btn btn-edit" onClick={()=>carregarDadosBateria(bateria._id)}><FaEdit/></Button></td>
-                                <td><Button className="btn btn-delete" onClick={()=>deleteBateria(bateria._id)}><FaTrash /></Button></td>
-                            </tr>
-                        ))}
+                        {categorias.map((cat, index) => (
+                                <tr key={cat._id}>  
+                                <td>
+                                {cat._id === catId ? (
+                                    <input type="checkbox" onChange={() =>{handleCheckboxChange(index)}} checked={true} />)  : (
+                                    <input type="checkbox" onChange={() => {handleCheckboxChange(index)}} checked={linhasSelecionadas.includes(index)} />
+                                    )}
+                                </td>
+                                <td>{cat.nome}</td>
+                                </tr>
+                            ))}   
                                            
                                   
                     </tbody>    

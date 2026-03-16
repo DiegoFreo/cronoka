@@ -37,6 +37,8 @@ const Categoria = () => {
     }
   };
 
+  
+
   // Função para lidar com o envio do formulário
   async function handleFormSubmit(data: any) {
   try {
