@@ -1,40 +1,276 @@
-import React from "react";
+import React, {use, useEffect, useState} from "react";
+import { useForm } from "react-hook-form";
+import { Select, SelectItem } from "../ui/select";
+import {Evento, Piloto, Categoria, Bateria} from '@/lib/type';
+import { FaTrash } from "react-icons/fa";
 import Button from "../ui/Buttom";
 
+interface ProvaFormData {
+    eventoid: string;
+    bateria: string[];
+    categoria: string[];
+    competidores: string[];
+}
 
-const GerenciamentoProva=()=>{
+const Prova = ()=>{
+    const { register, handleSubmit } = useForm();
+    const [baterias, setBaterias] = useState<Bateria[]>([]);
+    const [bateriaSelecionada, setBateriaSelecionada] = useState<string>("");
+    const [categorias, setCategorias] = useState<Categoria[]>([]);
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState<string>("");
+    const [eventos, setEventos] = useState<Evento[]>([]);
+    const [eventoSelecionado, setEventoSelecionado] = useState<string>("");
+    const [pilotos, setPilotos] = useState<Piloto[]>([]);
+    const [competidoresSelecionados, setCompetidoresSelecionados] = useState<Piloto[]>([]);
+    const [horaEvento, setHoraEvento] = useState<string>("");
+
+    useEffect(()=>{
+        loadDados(); 
+        
+    },[]);
+
+
+    async function loadPilotos(){
+        //Buscar pilotos cadastrados
+        const responsePilotos = await fetch("/api/piloto");
+        if(!responsePilotos.ok){
+            throw new Error("Erro ao buscar os Competidores");
+        }
+        const dataPilotos = await responsePilotos.json();
+        setPilotos(dataPilotos);
+        competidoresSelecionados;
+    }
+    
+    async function loadCompetidoresSelecionados(){
+        alert("Carregando competidores da categoria: " + categoriaSelecionada);
+        const response = await fetch(`/api/categoria/${categoriaSelecionada}`);
+        if(!response.ok){
+            throw new Error("Erro o buscar a categoria");
+        }
+        const DataPiloto = await response.json();
+        setCompetidoresSelecionados(DataPiloto.data?.pilotos || []);
+    }
+    const BateriaSelected= (id:string)=>{
+        const bateria = baterias.find((bat)=> {
+            if(bat._id === id){
+                setHoraEvento(bat.hora_bateria);
+            }
+            
+        });
+    }
+    async function DeletepilotoCategoria(id:string){
+        alert("Erro ao remover piloto!"+ categoriaSelecionada + " - " + id);
+        try{
+            const response = await fetch(`/api/categoria/${categoriaSelecionada}/pilotos`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({pilotos:id})
+                }
+            );
+            if(!response.ok) {
+                alert("Erro ao remover piloto!");
+                return
+            }
+            alert("Piloto removido com sucesso!")
+        }catch(error:any){
+            alert("Erro ao remover piloto: " + error.message);
+        }
+        
+    }
+    async function loadCategoria() {
+        //busca as categorias.
+        const responseCategoria = await fetch("/api/categoria");
+        if(!responseCategoria.ok){
+            throw new Error("Erro ao buscar as Categorias");
+        }
+        const dataCategorias = await responseCategoria.json();
+        setCategorias(dataCategorias);
+        
+    }
+    async function loadBaterias(){
+        //busca as Baterias cadastradas.
+        const responseBateria = await fetch("/api/bateria");
+        if(!responseBateria.ok){
+            throw new Error("Erro ao buscar as Baterias!");
+        }
+        const dataBaterias = await responseBateria.json();
+        setBaterias(dataBaterias);
+    }
+
+    async function loadDados(){
+        //buscar os Eventos cadastrados
+        const responseEventos = await fetch("/api/evento");
+        if(!responseEventos.ok){
+            throw new Error("Erro ao buscar os eventos");
+        }
+        const dataEventos = await responseEventos.json();
+        setEventos(dataEventos);
+    }
+
+    const handleChangeHoraEvento = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setHoraEvento(event.target.value);
+      }
+
+    function handleCategoriaChange(e:any){
+        setCategoriaSelecionada(e.target.value);
+        loadPilotos();
+        loadCompetidoresSelecionados();
+    }
+
+    function handleEvento(e:any){
+        const id = e.target.value;
+         setEventoSelecionado(id);
+         loadBaterias();
+    }
+
+    function handleBateriaChange(e:any){
+        setBateriaSelecionada(e.target.value);
+        BateriaSelected(e.target.value);
+        loadCategoria();
+    }
+    function handleCompetidoresChange(e:any){
+        const id = e.target.value;
+      
+        const piloto = pilotos.filter((item)=>
+            item._id ==id
+        );
+        setCompetidoresSelecionados(prev => {
+            const novos = piloto.filter(p=> !prev.some(sel => sel._id == p._id));
+            return [...prev, ...novos];
+        });
+    }
+
+
+   function FormatData(data:string){
+        const date = new Date(data);
+        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${day}/${month}/${year}`;
+   }
+
+   const onSaveProva = async(data: any)=>{
+       const piloto = competidoresSelecionados.map((index)=>index._id);
+        try{
+            
+            const response = await fetch(`/api/categoria/${categoriaSelecionada}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({pilotos:piloto})
+                }
+            );
+            
+            if(!response.ok) {
+                alert("Erro!");
+                return
+            }
+
+            alert("Dados atualizados!")
+        }catch(error:any){
+            alert("Erro ao atualizar evento: " + error.message);
+        }
+
+   }
+
+
+  
+   const onSubmit = async (data: any) => {
+        // Lógica para lidar com os dados do formulário   
+        return<></>;
+    }
+
     return(
-        <div className="gerenciamento">        
-            <div className="content-gerenciamento">
-                <div className="gerenciamento-top">
-                    <div className="gerenciamento-box">
-                        <p>Próximos eventos</p>
-                        <p>(0)</p>
+        <div>
+            <form className="form-dashboard" onSubmit={handleSubmit(onSaveProva )}>
+                <div className="is-flex">
+                    <div className="content-form-form w-50 p-10">
+                        <div className="w-100">
+                            <label htmlFor="nome">Selecione a Prova:</label>
+                            <Select {...register('nome')} className="ka-input w-100" id="nome" value={eventoSelecionado} onChange={handleEvento} name="nome" required >
+                                <SelectItem value="">Selecione a Prova</SelectItem>
+                                {eventos.map((evnt, key)=>(
+                                    <SelectItem key={key} value={evnt._id}>{evnt.nome_evento} - {FormatData(evnt.data_inicio)}</SelectItem>                            
+                                ))}
+                            </Select>
+                        </div>
+                        <div className="w-100 mt-4">
+                            <label htmlFor="bateria">Selecione a Bateria:</label>
+                            <Select {...register('bateria')} className="ka-input w-100" id="bateria" value={bateriaSelecionada} onChange={handleBateriaChange} name="bateria" required >
+                                <SelectItem value="">Selecione a Bateria</SelectItem>
+                                {baterias.map((bat, key)=>(
+                                    <SelectItem key={key} value={bat._id}>{bat.nome}</SelectItem>                            
+                                ))}
+                            </Select>
+                            
+                        </div>
                     </div>
-                    <div className="gerenciamento-box">
-                       <p>Evetos próximos</p> 
-                       <p>(0)</p>
-                    </div>
-                    <div className="gerenciamento-box">
-                        <p>Eventos Finalizados</p>
-                        <p>(0)</p>
-                    </div>
+                    <div className="content-form-form  w-50 p-10">
+                        <div className="w-100">
+                            <label htmlFor="categoria">Selecione a Categoria</label>
+                            <Select {...register('categoria')} className="ka-input w-100" id="categoria" value={categoriaSelecionada} onChange={handleCategoriaChange} name="categoria" required >
+                                <SelectItem value="">Selecione a Categoria</SelectItem>
+                                {categorias.map((cat, key)=>(
+                                    <SelectItem key={key} value={cat._id}>{cat.nome}</SelectItem>                            
+                                ))}
+                            </Select>
+                        </div>
+                        <div className="w-100">
+                             <label htmlFor="hora_bateria">Hora da Bateria:</label>
+                            <input {...register("hora_bateria")} type="time" className="ka-input w-100 center" value={horaEvento} onChange={handleChangeHoraEvento} id="hora_bateria"  name="hora_bateria" required /> 
+                        </div>
+                        
+                    </div>  
                 </div>
-            </div>
-            <div className="gerencimanto-box-div">
-            <div className="gerenciamento-left">
+                <div className="is-flex">
+                    <div className="content-form-form w-100 p-10">
+                            <div className="is-flex">
+                            <label htmlFor="observacao">Selecione os competidores</label>
+                            <input type="search" className="w-50 pd-5 bgWrite borderRadius-5 colorfont-black" placeholder="Search" />
+                            </div>
+                            <Select multiple {...register('competidores')} className="ka-input w-100 h-40" onChange={handleCompetidoresChange} id="competidores" name="competidores" required >
+                                {pilotos.map((piloto, key)=>(
+                                    <SelectItem key={key} value={piloto._id}>{piloto.numero_piloto} - {piloto.nome}</SelectItem>                            
+                                ))}
+                            </Select>                     
+                    </div>
+                    <div className="content-form-form w-100 p-10">
+                        <div className="scrollba-evento">   
+                        <table className="ka-table">
+                            <thead>
+                                <tr>
+                                    <th >Número</th>
+                                    <th >Nome</th>
+                                    <th >Mover</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {competidoresSelecionados.map((piloto, key)=>(
+                                    <tr key={key}>
+                                        <td >{piloto.numero_piloto}</td>
+                                        <td >{piloto.nome}</td>
+                                        <td ><Button className="btn btn-green" onClick={()=>{DeletepilotoCategoria(piloto._id)}}><FaTrash className="center" /></Button> </td>
+                                    </tr>                           
+                                ))}
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
 
-            </div>
-            <div className="gerenciamento-rigth">
-                <div className="gerenciamnto-box-bottom">
-                    <h5>NOVO EVENTO</h5>
-                    <p>cria um novo evento</p>
-                    <Button className="gerenciamento-buttom" >Novo Evento</Button>
                 </div>
+                
+            </form>
+            <div className="is-flex justify-end p-10">
+                <button type="submit" className="btn btn-corrida" onClick={handleSubmit(onSaveProva)}>Salvar Configuração</button>
             </div>
-            </div>
-        </div>
+        </div>    
     )
 }
 
-export default GerenciamentoProva;
+export default Prova;

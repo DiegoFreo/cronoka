@@ -7,11 +7,11 @@ import { PilotDataTable } from '@/componets/corrida/TableDataPiloto';
 import { getPilotColor, formatMilliseconds } from '@/lib/utils';
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from '@/componets/ui/card';
-import {Header} from "@/componets/Header";
+import {Header} from "@/componets/Header-KAInformatica";
 import Button from "@/componets/ui/Buttom";
-import {PlayCircle, RotateCcwIcon, PauseCircle} from "lucide-react";
-import "@/componets/stylescorrida.css";
+import {PlayCircle, RotateCcwIcon, PauseCircle, Pi} from "lucide-react";
 import { Select, SelectItem } from '@/componets/ui/select';
+import { set } from 'mongoose';
 
 
 
@@ -34,27 +34,37 @@ export default function corrida(){
     const raceTimeRef = useRef<number>(0); // Ref to hold current race time for accurate lap capture
     const { toast } = useToast();
     const [idPiloto, setIdPiloto]= useState<string>('');
-    const[pilotos, setPilotos] = useState<Piloto[]>([]);
+    //const[pilotos, setPilotos] = useState<Piloto[]>([]);
     const[bateria, setBaterias] = useState<Bateria[]>([]);
     const[categoria, setCategoria] = useState<Categoria[]>([]);
+    const [selectedBateria, setSelectedBateria] = useState<string>('');
+    const [idBateriaSelect, setIdBateriaSelect] = useState<string>('');
+    const [selectedNomeBateria, setSelectedNomeBateria] = useState<string>('');
+    const [selectedNomeCategoria, setSelectedNomeCategoria] = useState<string[]>([]);
     const synthRef = useRef<Tone.Synth | null>(null);
 
      useEffect(() => {
       // Carregar pilotos do servidor quando o componente for montado
-      loadPiloto();
-      loadBateria();
       loadCategoria();
+      loadBateria();
+      //loadPiloto();
+      
     }, []);
 
     // carrega os pilotos do servidor
     async function loadPiloto(){
       try {
-        const response = await fetch("/api/piloto");
+        const response = await fetch(`/api/piloto`);
         if (!response.ok) {
           throw new Error('Failed to fetch pilots');
         }
-        const data: Piloto[] = await response.json();
-        const formattedPilots = data.map((p, index) => ({
+        //const data: Piloto[] = await response.json();
+       // const {data: {pilotos} } = await response.json();
+       const dataPiloto = await response.json();
+       const pilotos = dataPiloto;
+       console.log("Pilotos carregados:", dataPiloto );
+                
+        const formattedPilots = pilotos.map((p: Piloto, index: number) => ({
           _id: String(p._id),
           nome: p.nome,
           numero_piloto: p.numero_piloto,
@@ -68,8 +78,10 @@ export default function corrida(){
           posicao: 0,
           cor: getPilotColor(index),
         }));
+        
         setPilots(formattedPilots);
-        setPilotos(formattedPilots);
+        //console.log("Pilotos formatados para o estado:", pilotos);
+        //setPilotos(formattedPilots);
       }catch (error) {
         console.error("Falha ao carregar o piloto:", error);
         toast({ title: "Error", description: "Failed to load pilots from the server.", variant: "destructive" });
@@ -103,8 +115,31 @@ export default function corrida(){
         console.error("Falha ao carregar a categoria:", error);
         toast({ title: "Error", description: "Failed to load categoria from the server.", variant: "destructive" });
       }
-    }     
+    }    
+    
    
+    const listaPilotos = (id: string) => {
+      bateria.filter((index)=>{
+        if(index._id === id){
+          index.categorias.filter((cat)=>{
+            categoria.filter((indexCat)=>{
+              if(indexCat._id === ""+ cat){
+               pilots.filter((pil)=>{
+                if(pil.numero_piloto === Number(pil.numero_piloto)){
+                  pilots.filter((piloto)=>{
+                    if(piloto.numero_piloto === pil.numero_piloto){                      
+                      setPilots(prevPilots => [...prevPilots, piloto]);
+                    }
+                })
+              }
+            })
+          }
+        })
+      })
+    }
+    })
+  }
+
 
     useEffect(() => {
     // Inicialize Tone.Synth ao montar o componente após uma interação do usuário (simulada por um timeout aqui para auto-início) 
@@ -170,7 +205,7 @@ export default function corrida(){
       setIsRaceRunning(false);
       setRaceTime(0);
       raceTimeRef.current = 0;
-     loadPiloto(); // Reload pilots from server
+     //loadPiloto(); // Reload pilots from server
 
     toast({ title: "Reseta Corrida", description: "Todos os dados do piloto e temporizadores foram reiniciados." });
   }, [toast]);
@@ -210,16 +245,17 @@ export default function corrida(){
 
       const updatedPilots = prevPilots.map((pilot, index) => {
         if (index === targetPilotIndex) {
-          const rawLapTime = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // 60s to 120s
-          //const rawLapTime = Math.floor((raceTime)); // 30s to 90s
+          const rawLapTime = raceTimeRef.current - (pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : 0);
+          const ultimaVolta = rawLapTime;
+
           const newLap: voltas = {
             qtVoltas: pilot.voltas.length + 1,
             tempo: raceTime, // Overall race time at lap completion
-            tempoAtual: ultimaVolta, //rawLapTime, // Actual time for this specific lap
+            tempoAtual: rawLapTime, // Actual time for this specific lap ultimaVolta, //
             VoltaCompleta: Date.now(), // Timestamp of lap completion
           };
-          const newTotalTime = raceTime; //pilot.tempoTotal + rawLapTime;
-          const UTV = pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : 0;
+          const newTotalTime = pilot.tempoTotal + rawLapTime; //raceTime; 
+          const UTV = pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : rawLapTime;
           const newBestLapTime = pilot.melhorVolta === null || ultimaVolta < pilot.melhorVolta ? ultimaVolta : pilot.melhorVolta ; // Update best lap time if this lap is better
           
 
@@ -235,19 +271,39 @@ export default function corrida(){
             voltas: [...pilot.voltas, newLap],
             tempoTotal: newTotalTime,
             melhorVolta: newBestLapTime,
-            ultimaVolta: ultimaVolta,//raceTime - raceTimeRef.current, // Time for the last lap
+            ultimaVolta: ultimaVolta, //raceTime - raceTimeRef.current, // Time for the last lap
             status: 'PASSOU' as StatusPiloto,
             steutusUltamaVolta: Date.now(),
             ultimaVoltaCompleta: raceTimeRef.current, // Current race time, for next lap prediction
           };
         }
+        voltarApi(pilot.voltas[pilot.voltas.length -1]);
         return pilot;
       });
       return sortPiloto(updatedPilots);
     });
   }, [isRaceRunning, pilots, toast]);
-
-
+  
+  async function voltarApi(voltaData: voltas){
+    
+    try {
+      const response = await fetch('/api/volta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(voltaData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to save lap data');
+      }
+      const data = await response.json();
+      console.log('Lap data saved successfully:', data);
+    } catch (error) {
+      console.error('Error saving lap data:', error);
+    }
+  }
+  
 
     const sortPiloto = (pilotsToSort: Piloto[]): Piloto[] => {
     return [...pilotsToSort].sort((a, b) => {
@@ -260,13 +316,18 @@ export default function corrida(){
   };
 
    const toggleRace = () => {
-    if (!isRaceRunning && Tone.context.state !== 'running') {
-      Tone.start().then(() => {
+      if (!isRaceRunning && Tone.context.state !== 'running' && pilots.length > 0) {
+        Tone.start().then(() => {
          if (synthRef.current && Tone.context.state === 'running') {
              synthRef.current.triggerAttackRelease("C5", "8n", Tone.now() + 0.1); // Test sound
          }
       });
+    }else if (!isRaceRunning && pilots.length === 0) {
+      toast({ title: "No Pilots", description: "Load pilots before starting the race.", variant: "destructive" });
+      return;
     }
+    
+
     setIsRaceRunning(!isRaceRunning);
     if (!isRaceRunning) {
       toast({ title: "Race Started!", description: "O cronômetro está funcionando agora." });
@@ -275,9 +336,26 @@ export default function corrida(){
     }
   };
 
+  const handleBateriaChange = (value: string) => {
+    setSelectedBateria(value); 
+    bateria.filter((index)=>{
+      if(index._id === value){
+        setSelectedNomeBateria(index.nome);
+        setIdBateriaSelect(index._id);
+        listaPilotos(index._id);
+        setSelectedNomeCategoria(index.categorias.map((cat) => {
+          const categoriaEncontrada = categoria.find((c) => c._id === cat._id);
+          return categoriaEncontrada ? categoriaEncontrada.nome : '';
+        }));
+      }
+    })
+     loadPiloto();
+  }
+  
+
     return(
        <div className="flex flex-col min-h-screen bg-background text-foreground continer-corrida">
-        <Header />
+        <Header bateria={selectedNomeBateria} categoria={selectedNomeCategoria} />
         <main className="flex-grow container mx-auto px-2 py-4 md:px-4 md:py-6 space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 card">     
                 <Card className='bg-card shadow-lg border-red-500 border-2'>
@@ -291,18 +369,20 @@ export default function corrida(){
         
         <Button className="btn-corrida bg-cronometro " onClick={toggleRace}>{isRaceRunning ? <PauseCircle className="mr-2 h-5 w-5"/> :<PlayCircle className="mr-2 h-5 w-5"/> } {isRaceRunning ? 'Pausa': 'Início'}</Button>
         <Button className="btn-corrida-reset " onClick={resetRaceState}><RotateCcwIcon /> Resete</Button>
-        <Select className="select-corrida w-100 border-2 border-red-500" >
+        {/*
+        <Select className="select-corrida w-100 border-2 border-red-500" value={selectedCategoria} onChangeCapture={(e) => handleCategoriaChange(e.currentTarget.value)} >
           <SelectItem value="">Selecione a Categoria</SelectItem>
           {categoria.map((cat, key) => (
-              <SelectItem key={key} value={cat.nome}>
-                {cat.nome} 
+              <SelectItem key={key} value={cat._id}>
+                {cat.nome}
               </SelectItem>
             ))}
-        </Select>
-        <Select className="select-corrida w-100 border-2 border-red-500" >
+        </Select>*/
+        }
+        <Select className="select-corrida w-100 border-2 border-red-500"defaultValue={selectedBateria} onChange={(e) => handleBateriaChange(e.currentTarget.value)}>
           <SelectItem value="">Selecione a Bateria</SelectItem>
          {bateria.map((bat, key) => (
-            <SelectItem key={key} value={bat.nome}>
+            <SelectItem key={key} value={bat._id}>
               {bat.nome} 
             </SelectItem>
           ))}

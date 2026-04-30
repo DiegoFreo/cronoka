@@ -7,7 +7,9 @@ const EventoSchema = new mongoose.Schema({
     hora_evento: { type: String, required: true },
     local_evento: { type: String, required: false },
     descricao_evento: { type: String, required: false },
-    categorias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Categoria' }],
+    baterias: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Bateria' }],
 }, { timestamps: true });
 
-export default mongoose.models.Evento || mongoose.model('Evento', EventoSchema);
+const Evento = mongoose.models.Evento || mongoose.model('Evento', EventoSchema);
+
+export default Evento;

@@ -1,3 +1,4 @@
+
 *{margin: 0; padding: 0; }
 
 .component-button-text{
@@ -104,6 +105,15 @@
 }
 /* Fim DropDownMenu */
 /* contenter */
+.content-top{
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(3, 3, 3);
+    color: rgb(208, 212, 206);
+}
 .content{
     width: 100%;
     height: 100vh;
@@ -201,6 +211,10 @@
 .p-70{
     padding: 70px;
 }
+.py-10{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 .p-80{
     padding: 80px;
 }
@@ -210,6 +224,18 @@
 }
 .p-100{
     padding: 100px;
+}
+.pd-5{
+    padding-left: 5px;
+}
+.pe-5{
+    padding-right: 5px;
+}
+.pd-10{
+    padding-left: 10px;
+}
+.pe-10{
+    padding-right: 10px;
 }
 .m-10{
     margin: 10px;
@@ -240,6 +266,18 @@
 }
 .m-100{
     margin: 100px;
+}
+.mt-1{
+    margin-top: 1px;
+}
+.mt-2{
+    margin-top: 2px;
+}
+.mt-3{
+    margin-top: 3px;
+}
+.mt-4{
+    margin-top: 4px;
 }
 .mt-10{
     margin-top: 10px;
@@ -369,13 +407,16 @@
     width: 100%;
     gap: 20;
 }
-
+.w-full{
+    width: 100%;
+    gap: 20;
+}
 /* Fim Espacamento */
 
 /* box sign in */
 .box-sign-in{
-    width: 30%;
-    background-color: rgba(25, 27, 24,0.8);
+    width: 40%;
+    background-color: rgba(25, 27, 24,0.8) !important;
     border-radius: 10px;
     color: rgb(208, 212, 206);
 }
@@ -437,10 +478,23 @@
     width: 100%;
     border-top: 2px solid rgb(255, 0, 0);
 }
+.ka-borde-top{
+    border-top: 2px solid rgb(255, 0, 0);
+}
 /* Fim modal */
 /* ka-input */
 .ka-input  {
     padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #fff;
+    color: #000;
+}
+.ka-seclect{
+    padding: 13px;
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
@@ -544,13 +598,28 @@
     border-radius: 10px;
     box-shadow: 5px 5px 5px rgb(255, 0, 0);   
 }
-.ka-table th, .ka-table  td {
+.ka-table th, .ka-table  td, .ka-table tr th {
     padding: 8px;
     text-align: center;
     border-bottom: 2px solid rgb(255, 0, 0);
 }
 .scrollbar{
-    height: 70vh;
+    height: 40vh;
+    overflow: auto;
+    border: 2px solid rgb(255, 0, 0);
+    border-radius: 10px;
+}
+.contenter-scrollbar{
+    width: 100%;
+    height: 40vh;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}   
+
+.scrollba-evento{
+    height: 30vh;
     overflow: auto;
     border: 2px solid rgb(255, 0, 0);
     border-radius: 10px;
@@ -559,6 +628,12 @@
 .ka-table-title{
     border-bottom: 1px solid #fff;
     text-align: center;
+}
+.ka-table thead tr{
+    background-color: rgba(255, 255, 255, 0.2);
+}   
+.ka-table-select{
+    background-color: rgba(255, 255, 255, 0.2);
 }
 .avatar-preview{
     width: 120px;
@@ -587,4 +662,47 @@
     text-align: center;
     padding: 10px;
     color: rgb(208, 212, 206);
+}
+.bgWrite{
+    background-color: #fff;
+}
+.bgdark{
+    background-color: #000;
+}
+.bgRed{
+    background-color: rgb(252, 0, 0);
+}
+.bgRedHover:hover{
+    background-color: rgb(252, 0, 0);
+    color: rgb(208, 212, 206);
+}
+.bgRedHover{
+    background-color: transparent;
+    color: rgb(252, 0, 0);
+    border: 1px solid rgb(252, 0, 0);
+    cursor: pointer;
+}
+.borderRadius-5{
+    border-radius: 5px;
+}
+.colorfont-black{
+    color: #000;
+}
+
+/* alinhamentos */
+.align-left{
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+}
+.align-reigth{
+    display: flex;
+    align-items: flex-end;
+    align-content: flex-end;
+    justify-content: flex-end;
+}
+/* fim do alinhamento*/
+.gap20{
+    gap: 20px;
 }

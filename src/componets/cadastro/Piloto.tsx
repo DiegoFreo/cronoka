@@ -1,36 +1,106 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import Button from "../ui/Buttom";
-import { FaEdit, FaTrash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import SelectSearchable from "../ui/SelectSearchable";
+//import Categoria from "./categoria";
+import { Pi } from "lucide-react";
+import { Categoria } from "@/lib/type";
+import { set } from "mongoose";
 
 interface Piloto {
-    _id: number;
+    _id: string;
     nome: string;
     numero_piloto: string;
     cpf: string;
-    tag_rfid_1: string;
-    tag_rfid_2?: string;
-    tag_rfid_3?: string;
-    tag_rfid_4?: string;
+    nome_equipe: string;
+    filiacao:  string;
+    patrocinador:  string;   
+    dataNascimento: string;
+    telefone: string;
+    responsavel:  string; 
+    tipoSanguineo:  string;
+    categoria: Categorias[];
+    tag: string[];   
+}
+interface Categorias {
+    _id: string;
+    nome: string;
+    pilotos?: Piloto[];
+}
+interface TagsPiloto {
+    _id: string;
+    tag: string;  
+    num: number; 
+}
+interface PilotoProps {
+    _id?: string;
 }
 
-const Piloto = () => {
+const Piloto = ( {_id}: PilotoProps ) => {
     const { register, handleSubmit, reset} = useForm();
-    const [piloto, setPiloto] = useState<Piloto[]>([]);
-    const [idPiloto, setIdPiloto] = useState<number | null>(null);
-    const [nmPiloto, setNmPiloto] = useState('');
-    const [numeroPiloto, setNumeroPiloto] = useState('');
-    const [CPFPiloto, setCPFPiloto] = useState('');
-    const [tag1Piloto, setTag1Piloto] = useState('');
-    const [tag2Piloto, setTag2Piloto] = useState('');
-    const [tag3Piloto, setTag3Piloto] = useState('');
-    const [tag4Piloto, setTag4Piloto] = useState('');
+    const [Piloto, setPiloto] = useState<Piloto[]>([]);
+    const [pilotosSelecionado, setPilotosSelecionado] = useState<Piloto | null>(null);
+    const [categoriasPiloto, setCategoriasPiloto] = useState<Categorias[]>([]);
+    const [idPiloto, setIdPiloto] = useState<string>('');
+    const [nmPiloto, setNmPiloto] = useState<string>('');
+    const [numeroPiloto, setNumeroPiloto] = useState<string>('');
+    const [CPFPiloto, setCPFPiloto] = useState<string>('');
+    const [nomeEquipe, setNomeEquipe] = useState<string>('');
+    const [filiacaod, setFiliacao] = useState('');
+    const [patrocinadores, setPatrocinadores] = useState<string>('');
+    const [telefone, setTelefone] = useState<string>('');
+    const [dtNascimento, setdtNascimento] = useState<string>('');
+    const [responsavelPiloto, setResponsavelPiloto] = useState<string>('');
+    const [tpSanguineo, settpSanguineo] = useState<string>('');
+    const [tags, setTags] = useState<TagsPiloto[]>([]);
+    const [tagSelecionada, setTagSelecionada] = useState<string[]>([]);
+    const [linhasSelecionadas, setLinhasSelecionada] = useState<number[]>([]);
+    const [categoriasSelecionadas, setCategoriasSelecionad] = useState<string[]>([]);
+    const [categoria, setCategoria] = useState<Categorias[]>([]);
 
     useEffect(() => {
-        buscatPiloto();
+
+        if(_id){
+            buscarCategoriaPiloto();
+            buscatCategoria();
+            pilotoSelecionado();
+        }else{
+            buscatCategoria();
+            limparCanpos();
+        }
+        
+       // buscatPiloto();
+        
+        buscaTags();
     }, []);
 
+
+
+     const handleCheckboxChange = (index: number) => {
+        if (linhasSelecionadas.includes(index)) {
+            // Se já estava selecionado, remove da lista
+            setLinhasSelecionada(linhasSelecionadas.filter((i) => i !== index));
+            alert("Categorias Removida: " + categoria[index].nome);
+            setCategoriasSelecionad(categoriasSelecionadas.filter((catId) => catId !== categoria[index]._id));
+
+        } else {
+            // Se não estava, adiciona na lista
+            setLinhasSelecionada([...linhasSelecionadas, index]);
+            categoria.map((cat, i)=>{
+                if(i === index){
+                    //setCategoriasPiloto([...categoriasPiloto, cat])
+                    setCategoriasSelecionad([...categoriasSelecionadas, cat._id])
+                    
+                }                
+            })
+            
+            
+           //console.log(categoriasSelecionadas);
+        }
+    };
+
+    
     const handleChangeNmPiloto = (e:any)=>{
             setNmPiloto(e.target.value);
     }
@@ -40,19 +110,121 @@ const Piloto = () => {
     const handleChangeCPFPiloto = (e:any)=>{
             setCPFPiloto(e.target.value);
     }
-    const handleChangeTag1Piloto = (e:any)=>{
-            setTag1Piloto(e.target.value);
+    const handleChangeNomeEquipe = (e:any)=>{
+            setNomeEquipe(e.target.value);
     }
-    const handleChangeTag2Piloto = (e:any)=>{
-            setTag2Piloto(e.target.value);
+    const handleChangeFiliacao = (e:any)=>{
+            setFiliacao(e.target.value);
     }
-    const handleChangeTag3Piloto = (e:any)=>{
-            setTag3Piloto(e.target.value);
+    const handleChangePatrocinador = (e:any)=>{
+            setPatrocinadores(e.target.value);
     }
-    const handleChangeTag4Piloto= (e:any)=>{
-            setTag4Piloto(e.target.value);
+    const handleChangeTelefone = (e:any)=>{
+            setTelefone(e.target.value);
     }
+    const handleChangeDataNascimento = (e:any)=>{
+            setdtNascimento(e.target.value);
+    }
+    const handleChangeResponsavel = (e:any)=>{
+            setResponsavelPiloto(e.target.value);
+    }
+    const handleChangeTipoSanguineo = (e:any)=>{
+            settpSanguineo(e.target.value);
+    }
+    const handleChangeTags = (e:any)=>{
+            setTagSelecionada(e.target.value);
+            
+    }
+    async function buscarCategoriaPiloto() {
+        try {
+                const response = await fetch(`/api/piloto/${_id}`);
+            
+            
+            if (!response.ok) {
+                throw new Error('Erro ao buscar categorias do piloto');
+            }
+            const data = await response.json();
 
+            setCategoriasPiloto(data.data.categorias);  
+            setPiloto(data.data); 
+            setNmPiloto(data.data.nome);
+            setNumeroPiloto(data.data.numero_piloto);
+            setCPFPiloto(data.data.cpf);
+            setTelefone(data.data.telefone);
+            setNomeEquipe(data.data.nome_equipe);
+            setFiliacao(data.data.filiacao);
+            setPatrocinadores(data.data.patrocinador);
+            const datfimFormatada = new Date(data.data.dataNascimento);
+            if (!isNaN(datfimFormatada.getTime())) {
+                setdtNascimento(datfimFormatada.toISOString().split('T')[0]);
+            }
+           //setdtNascimento(datfimFormatada.toISOString().split('T')[0]);
+            setResponsavelPiloto(data.data.responsavel);
+            settpSanguineo(data.data.tipoSanguineo);
+            setTagSelecionada(data.data.tag || '');
+            
+            
+        } catch (erro: any) {
+            console.error("Erro ao buscar categorias do piloto:", erro);
+            alert("Erro ao buscar categorias do piloto: " + erro.message);
+        } 
+    }
+    
+    async function buscatCategoria() {
+        // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
+        // Exemplo de chamada fictícia: 
+        // const response = await api.get('/pilotos');
+        try {
+            const response = await fetch("/api/categoria");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar categorias');
+            }
+            const data = await response.json();
+            setCategoria(data);
+           
+           //console.log("Piloto encontrado: ", pilotosSelecionado?.nome);
+                        
+        } catch (erro: any) {
+            console.error("Erro ao buscar categorias:", erro);
+            alert("Erro ao buscar categorias: " + erro.message);
+        }
+        
+    }
+   useEffect(() => {
+        if (categoria.length > 0 || categoriasPiloto.length === 0) {
+            handleCategoriaPiloto();
+            categoriasPiloto.forEach((catPiloto) => {
+                categoria.forEach((cat, index) => {
+                    if (catPiloto._id === cat._id) {
+                        if (!linhasSelecionadas.includes(index)) {
+                            setLinhasSelecionada((prevSelected) => [...prevSelected, index]);
+                            setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                        }
+                        setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                    }
+                });
+            });
+           
+        }
+   }, [categoria, categoriasPiloto]);
+
+    async function handleCategoriaPiloto() {
+        try {
+            categoria.filter((cat) => {
+                categoriasPiloto.forEach((catPiloto) => {
+                    if (cat._id === catPiloto._id) {
+                        setLinhasSelecionada((prevSelected) => [...prevSelected, categoria.indexOf(cat)]);
+                        setCategoriasSelecionad((prevSelected) => [...prevSelected, cat._id]);
+                        //console.log("Categorias do Piloto: " + cat.nome);
+                    }
+                });
+            });
+           
+        } catch (erro: any) {
+            console.error("Erro ao associar categoria ao piloto:", erro);
+            alert("Erro ao associar categoria ao piloto: " + erro.message);
+        }
+    }
     async function buscatPiloto() {
         // Aqui você pode fazer uma chamada à API para buscar os dados do piloto
         // Exemplo de chamada fictícia: 
@@ -64,38 +236,60 @@ const Piloto = () => {
             }
             const data = await response.json();
             setPiloto(data);
-           
+            //pilotoSelecionado(data as Piloto[]);
+
         } catch (erro: any) {
-            console.error("Erro ao buscar pilotos:", erro);
-            alert("Erro ao buscar pilotos: " + erro.message);
+            console.error("Erro ao buscar pilotos: ttt", erro);
+            alert("Erro ao buscar pilotos: ttt" + erro.message);
         }
     }
-    function carregarDadosPiloto(id: number) {
-        piloto.forEach((Piloto) => {
-            if (Piloto._id === id) {
-                setIdPiloto(Piloto._id);
-                setNmPiloto(Piloto.nome);
-                setNumeroPiloto(Piloto.numero_piloto);
-                setCPFPiloto(Piloto.cpf);
-                setTag1Piloto(Piloto.tag_rfid_1);
-                setTag2Piloto(Piloto.tag_rfid_2 || '');
-                setTag3Piloto(Piloto.tag_rfid_3 || '');
-                setTag4Piloto(Piloto.tag_rfid_4 || '');
+    async function buscaTags() {
+        try {
+            const response = await fetch("/api/tag");
+            if (!response.ok) {
+                throw new Error('Erro ao buscar tags');
             }
-        });
+            const data = await response.json();
+            setTags(data);
+           
+        } catch (erro: any) {
+            console.error("Erro ao buscar tags:", erro);
+            alert("Erro ao buscar tags: " + erro.message);
+        }
     }
+
+    
+    
+    function pilotoSelecionado() {
+        if (!Array.isArray(Piloto)) {
+            console.error("Erro: 'piloto' não é um array válido!", Piloto);
+            return;
+        }
+        const piloto = Piloto.find((p) => p._id === _id);
+        if (piloto) {
+            setIdPiloto(piloto._id);
+            setNmPiloto(piloto.nome);
+            setNumeroPiloto(piloto.numero_piloto);
+            setCPFPiloto(piloto.cpf);
+            setTelefone(piloto.telefone);
+            setNomeEquipe(piloto.nome_equipe);
+            setFiliacao(piloto.filiacao);
+            setPatrocinadores(piloto.patrocinador);
+            const datnasc = new Date(piloto.dataNascimento);
+            setdtNascimento(datnasc.toISOString().split('T')[0]);
+            setResponsavelPiloto(piloto.responsavel);
+            settpSanguineo(piloto.tipoSanguineo);
+            setCategoriasPiloto(piloto.categoria || []);
+            setTagSelecionada(piloto.tag || []);
+        }       
+    }    
     function limparCanpos(){
-        
-        setIdPiloto(null);
+        setIdPiloto('');
         setNmPiloto('');    
         setNumeroPiloto('');
         setCPFPiloto('');
-        setTag1Piloto('');
-        setTag2Piloto('');
-        setTag3Piloto('');
-        setTag4Piloto('');
     }
-    async function excluirPiloto(id: number) {
+    async function excluirPiloto(id: string) {
         // Aqui você pode fazer uma chamada à API para excluir o piloto
         // Exemplo de chamada fictícia: 
         // await api.delete(`/pilotos/${id}`); 
@@ -113,32 +307,39 @@ const Piloto = () => {
             alert("Erro ao excluir piloto: " + erro.message);
         }
     }
-
+    
 
     async function handleFormSubmit(data: any) {
        
         // Aqui você pode fazer uma chamada à API para salvar os dados do piloto
         // Exemplo de chamada fictícia: 
         // await api.post('/pilotos', { nome, npiloto, cpf });
-                
+       
         try{
             
-        if(piloto.map(p=> p._id === idPiloto).includes(true)){
+        if(Piloto.map(p=> p._id === idPiloto).includes(true)){
             const nome = nmPiloto;
             const numero_piloto = numeroPiloto;
             const cpf = CPFPiloto;
-            const tag_rfid_1 = tag1Piloto;
-            const tag_rfid_2 = tag2Piloto || null;
-            const tag_rfid_3 = tag3Piloto || null;
-            const tag_rfid_4 = tag4Piloto || null;
-            console.log("Dados do piloto para envio:", data);
+            const nome_equipe = nomeEquipe;
+            const filiacao = filiacaod;
+            const dataNascimento = dtNascimento;
+            const patrocinador = patrocinadores;
+            const responsavel = responsavelPiloto;
+            const tipoSanguineo = tpSanguineo;
+            const categorias = categoriasSelecionadas;
+            const tag = tagSelecionada;
+
+        
+        alert("Categorias Selecionadas: " + linhasSelecionadas);
            
         const response = await fetch(`/api/piloto/${idPiloto}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ nome, numero_piloto, cpf, tag_rfid_1, tag_rfid_2, tag_rfid_3, tag_rfid_4 }),
+            
+            body: JSON.stringify({ nome, numero_piloto, cpf, telefone, nome_equipe, filiacao, dataNascimento, patrocinador, responsavel, tipoSanguineo, categorias,  tag }),
         });
 
         if (!response.ok) {
@@ -177,13 +378,25 @@ const Piloto = () => {
         <div className="is-flex">
         <div className="content-form-form  w-50">
             <form  className="w-100" onSubmit={handleSubmit(handleFormSubmit)} >
-                    <div className="w-100 is-flex fix">
+                    <div className="w-100 is-flex fix gap20">
                         <div className="w-100 ">
                             <label htmlFor="nome" >Nome:</label>
-                            <input {...register('nome')} className="ka-input w-100" value={nmPiloto ?? ''} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required />
-                        </div>                        
+                            <input {...register('nome')} className="ka-input w-100" value={nmPiloto ?? ''} onChange={handleChangeNmPiloto}  type="text" id="nome" placeholder="Nome" name="nome" required ={true} />
+                        </div> 
+                        <div className="w-100">
+                            <label htmlFor="tag">Tag:</label>
+                            <SelectSearchable
+                                value={tagSelecionada[0] || ''} // Exibe a primeira tag selecionada ou uma string vazia se não houver
+                                placeholder="Selecione uma Tag"
+                                options={tags.map((tag) => ({
+                                    value: tag.num,
+                                    label: tag.num > 9 ? '00' + tag.num : '000' + tag.num,
+                                }))}
+                                onSelect={setTagSelecionada}
+                            />
+                        </div>                      
                     </div>
-                    <div className="w-100 is-flex fix">
+                    <div className="w-100 is-flex fix gap20">
                         <div className="w-100 ">
                             <label htmlFor="numero_piloto">Número Piloto:</label>
                             <input {...register('numero_piloto')} className="ka-input w-100" value={numeroPiloto ?? ''} onChange={handleChangeNumeroPiloto} type="text" id="numero_piloto" placeholder="Numero do piloto" name="numero_piloto" required />
@@ -192,28 +405,42 @@ const Piloto = () => {
                             <label htmlFor="cpf">CPF:</label>
                             <input {...register('cpf')} className="ka-input w-100"  type="text" value={CPFPiloto ?? ''} onChange={handleChangeCPFPiloto} id="cpf" placeholder="CPF" name="cpf" required />
                         </div>
+                        <div className="w-100 ">
+                            <label htmlFor="telefone">Telefone:</label>
+                            <input {...register('telefone')} className="ka-input w-100"  type="text" value={telefone ?? ''} onChange={handleChangeTelefone} id="telefone" placeholder="Telefone" name="telefone" required />
+                        </div>
                     </div>
-                     <div className="w-100 is-flex fix">
-                        <div className="w-100 ">
-                            <label htmlFor="tag_rfid_1">TAG 1:</label>
-                            <input {...register('tag_rfid_1')} className="ka-input w-100"  type="text" value={tag1Piloto ?? ''} onChange={handleChangeTag1Piloto} id="tag_rfid_1" placeholder="tag_rfid_1" name="tag_rfid_1" required />
+                     <div className="w-100 is-flex fix gap20">
+                         <div className="w-100 ">
+                            <label htmlFor="nome_equipe">Nome da Equipe:</label>
+                            <input {...register('nome_equipe')} className="ka-input w-100"  type="text" value={nomeEquipe ?? ''} onChange={handleChangeNomeEquipe} id="nome_equipe" placeholder="Nome da Equipe" name="nome_equipe" required />
                         </div>
                         <div className="w-100 ">
-                            <label htmlFor="tag_rfid_2">TAG 2:</label>
-                            <input {...register('tag_rfid_2')} className="ka-input w-100"  type="text" value={tag2Piloto ?? ''} onChange={handleChangeTag2Piloto} id="tag_rfid_2" placeholder="tag_rfid_2" name="tag_rfid_2" />
+                            <label htmlFor="filiacao">Filiação:</label>
+                            <input {...register('filiacao')} className="ka-input w-100"  type="text" value={filiacaod ?? ''} onChange={handleChangeFiliacao} id="filiacao" placeholder="Filiação" name="filiacao" required />
                         </div>
+                         <div className="w-100 ">
+                            <label htmlFor="patrocinador">Patrocinador:</label>
+                            <input {...register('patrocinador')} className="ka-input w-100"  type="text" value={patrocinadores ?? ''} onChange={handleChangePatrocinador} id="patrocinador" placeholder="Patrocinador" name="patrocinador" required />
+                        </div>
+                        
                      </div>
-                     <div className="w-100 is-flex fix">
-                        <div className="w-100 ">
-                            <label htmlFor="tag_rfid_3">TAG 3:</label>
-                            <input {...register('tag_rfid_3')} className="ka-input w-100"  type="text"value={tag3Piloto ?? ''} onChange={handleChangeTag3Piloto} id="tag_rfid_3" placeholder="tag_rfid_3" name="tag_rfid_3" />
+                     <div className="w-100 is-flex fix gap20">
+                         <div className="w-100 ">
+                            <label htmlFor="datanascimento">Data de Nascimento:</label>
+                            <input {...register('datanascimento')} className="ka-input w-100"  type="date" value={dtNascimento ?? ''} onChange={handleChangeDataNascimento} id="datanascimento" placeholder="Data de Nascimento" name="datanascimento" required />
                         </div>
                         <div className="w-100 ">
-                            <label htmlFor="tag_rfid_4">TAG 4:</label>
-                            <input {...register('tag_rfid_4')} className="ka-input w-100"  type="text" value={tag4Piloto ?? ''} onChange={handleChangeTag4Piloto} id="tag_rfid_4" placeholder="tag_rfid_4" name="tag_rfid_4" />
+                            <label htmlFor="responsavel">Responsavel:</label>
+                            <input {...register('responsavel')} className="ka-input w-100"  type="text" value={responsavelPiloto ?? ''} onChange={handleChangeResponsavel} id="responsavel" placeholder="Responsavel" name="responsavel" required />
                         </div>
+                         <div className="w-100 ">
+                            <label htmlFor="tiposanguineo">Tipo Sanguíneo:</label>
+                            <input {...register('tiposanguineo')} className="ka-input w-100"  type="text" value={tpSanguineo ?? ''} onChange={handleChangeTipoSanguineo} id="tiposanguineo" placeholder="Tipo Sanguíneo" name="tiposanguineo" required />
+                        </div>
+                        
                      </div>
-                <div className=" ka-modal-footer">
+                <div className=" ka-modal-footer gap20">
                     <Button className="btn btn-green" onClick={handleSubmit(handleFormSubmit)}>Salvar</Button>
                     <Button className="btn btn-corrida-reset"  onClick={()=>limparCanpos()}>Cancelar</Button>                       
                  
@@ -224,23 +451,27 @@ const Piloto = () => {
                 <div className="scrollbar">                
                     <table border={1} className="ka-table">
                         <thead>
-                            <tr><th colSpan={4} className="ka-table-title" >Tabela Piloto</th></tr>
+                            <tr><th colSpan={4} className="ka-table-title" >Tabela Categoria</th></tr>
                                 <tr>
+                                    <th>Flag</th>
                                     <th>Nome</th>
-                                    <th>Número Piloto</th>
-                                    <th colSpan={2}>Editar/Excluir</th>
                                 </tr>
                         </thead>
                         <tbody>
-                            {piloto.map((piloto, index) => (
-                                <tr key={index}>    
-                                <td>{piloto.nome}</td>
-                                <td>{piloto.numero_piloto}</td>
-                                <td><button className="component-button-black" onClick={()=>carregarDadosPiloto(piloto._id)}  ><FaEdit /></button></td>
-                                <td><button className="component-button-black" onClick={()=>excluirPiloto(piloto._id)} ><FaTrash /></button></td>
+                            {categoria.map((cat, index) => (
+                                <tr key={cat._id}>  
+                                
+                                <td>
+                                {cat._id === _id ? (
+                                    <input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={true} />)  : (
+                                    <input type="checkbox" onChange={() => handleCheckboxChange(index)} checked={linhasSelecionadas.includes(index) } />
+                                        
+                                    )}
+                                
+                                </td>
+                                <td>{cat.nome}</td>
                                 </tr>
-                            ))}        
-                            
+                            ))}                           
                         </tbody>    
                     </table>
                 </div>

@@ -1,3 +1,4 @@
+
 :root {
   --background: 200 16% 18%; /* Dark Gray */
   --foreground: 0 0% 90%; /* Light Gray for text */
@@ -11,6 +12,14 @@
     justify-content: flex-start;
     align-items: start;
 }   
+.continerdashboard-all{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 90%;
+    min-height: 10vh;
+    padding: 10px;
+}
 .continerdashboard-title{
     font-size: 2rem;
     font-weight: bold;
@@ -21,6 +30,7 @@
     display: flex;
     justify-content: center;
     min-height: 10px;
+    max-height: 10%;
     width: 100%;
     padding: 10px;
 }
@@ -48,27 +58,48 @@
     margin-top: 3px;
     width: 20%;
     font-size: small;
-    border-right: 1px solid rgb(255, 0, 0);
+    /*border-right: 1px solid rgb(255, 0, 0);*/
     min-height: 100%;
     padding: 10px;
     height: 85vh;
 }
-.continerdashboard-right{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top: 3px;
-    justify-content: space-between;
+.continerdashboard-left-img{
     width: 80%;
     height: 80vh;
-    padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(25, 27, 24);
+    padding: 3px;
     background-image: url('../../public/FPMX-logo.png');
     background-size: calc(50% - 10px) calc(50% - 10px);
     background-repeat: no-repeat;
     background-position: bottom ;
     background-color: rgb(3, 3, 3);
+}   
+.continerdashboard-right{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 3px;
+    /*justify-content: space-between;*/
+    width: 80%;
+    /*height: 80vh;*/
+    padding: 10px;
     gap: 20;
 }
+.continerdashboard-config-evento{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: 3px;
+    align-items: top;
+    width: 80%;
+    height: 80vh;
+    padding: 10px;
+    background-color: rgb(3, 3, 3);
+    gap: 20;
+    overflow: hidden;
+}
+
 .continerdashboard-prova{
     display: flex;
     flex-direction: row;
@@ -141,9 +172,14 @@
     background-color: rgb(252, 0, 0);
     color: rgb(208, 212, 206);
 }
+
 .continerdashboard-border{
     border: 1px solid rgb(252, 0, 0);
     border-radius: 10px;
+}
+.active{
+    background-color: rgb(252, 0, 0);
+    color: rgb(208, 212, 206);
 }
 .font-color-red{
     color: rgb(252, 0, 0);
@@ -157,3 +193,9 @@
 .bg-tranparente-80{
     background-color: rgba(3, 3, 3, 0.8);
 }
+
+.card-size-heigth{
+    height: max-content;
+    padding: 5px;
+}
+

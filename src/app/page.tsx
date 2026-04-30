@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { AuthContext } from '@/contexts/AuthContext';
 import '@/componets/styles.css';
 import '@/componets/stylescorrida.css';
+import '@/app/globals.css';
 
 interface UserType {
   idUser: number;
@@ -11,7 +12,7 @@ interface UserType {
   emailUser: string;
   passworUser: string;
   nivelUser: string;
-  avatarUser: Blob | null;
+  avatarUser: string | null;
   // Adicione outros campos conforme necessário
 }
 
@@ -28,8 +29,9 @@ export default function Home() {
 
   return (
     <>
-     <div className="content-center content-gap-20 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="box-sign-in p-20 ">
+     {/*<div className="content-center content-gap-20 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">*/}
+      <div className="justify-center items-center flex h-screen min-h-full flex-1 flex-col px-6 bg-black py-12 lg:px-8">  
+        <div className="w-80 border border-red-500 p-10 rounded-lg sm:mx-auto sm:w-full sm:max-w-sm">
           
         <div className="sm:mx-auto sm:w-full flex-col flex sm:max-w-sm img-center">
           <img
@@ -45,7 +47,7 @@ export default function Home() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form action="#" method='POST'  className="space-y-6" onSubmit={handleSubmit(handleSingIn)} >
             <div>
-              <label htmlFor="emailUser" className="block text-sm/6 font-medium text-white">
+              <label htmlFor="emailUser" className="block text-sm/6 w-full font-medium text-white">
                 Email:
               </label>
               <div className="mt-2">
@@ -56,7 +58,7 @@ export default function Home() {
                   type="email"
                   required
                   autoComplete="email"
-                  className="block w-full rounded-md bg-white p-10 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  className="block w-full rounded-md bg-white p-10 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
               </div>
             </div>

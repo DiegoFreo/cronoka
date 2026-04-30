@@ -10,22 +10,22 @@ export type StatusPiloto = "NORMAL" | "PASSOU" | "ALERTA" | "SAIU" | "BURLOU";
 export interface Bateria{
     _id: string;
     nome: string;
-    pilotos: Piloto[];
+    categorias: Categoria[];
 };
 export interface Categoria{
     _id: string;
     nome: string;
-    baterias: Bateria[];
+    pilotos: Piloto[];
 };
 export interface Evento{
     _id: string;
-    nome: string;
-    descricao: string;
+    nome_evento: string;
+    descricao_evento: string;
     data_inicio: string;
     data_fim: string;
-    local: string;
-    hora: string;
-    categorias: Categoria[];
+    local_evento: string;
+    hora_evento: string;
+    baterias: Bateria[];
 };
 
 export interface Piloto{
@@ -34,7 +34,9 @@ export interface Piloto{
     numero_piloto: number;
     status: StatusPiloto;
     voltas: voltas[];
-    steutusUltamaVolta: number; //status da ultama alteração da volta
+    categorias: string[]; //array de categorias que o piloto participa
+    statusUltimaVolta: number; //status da ultama alteração da volta
+    largada: number | null; //tempo de largada em milesegundos
     melhorVolta: number | null; //melhor volta em milesegundos
     ultimaVolta: number | null; //ultima volta em milesegundos
     tempoTotal: number ; //tempo total em milesegundos

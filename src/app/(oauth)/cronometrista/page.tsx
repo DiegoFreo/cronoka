@@ -2,7 +2,7 @@
 
 import React, {useState} from "react";
 import ModalCadastro from "@/componets/Modal";
-import Piloto from "@/componets/cadastro/Piloto";
+import Piloto from "@/componets/cadastro/Piloto_2";
 import GerenciamentoProva from "@/componets/config/prova";
 
 

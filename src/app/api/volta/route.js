@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import conectDb from '../../../lib/mongodb';
+import conectDB from '../../../lib/mongodb';
 import Volta from '../../model/volta';
 import { criarVolta, listarVoltas, atualizarVolta, deletarVolta } from  '../../controller/voltaController';
 
 export async function POST(request) {
     try{
-    await conectDb();
+    await conectDB();
     const dados = await request.json();
     const result = await criarVolta(dados);
     return NextResponse.json(result.data || { error: result.error }, { status: result.status });
@@ -17,7 +17,7 @@ export async function POST(request) {
 
 export async function GET() {
   try {
-    await conectDb();
+    await conectDB();
     const voltas = await Volta.find();
     return NextResponse.json(voltas); // ✅ retorno obrigatório
   } catch (error) {
@@ -26,7 +26,7 @@ export async function GET() {
 }  
 export async function PUT(request) {
     try{
-    await conectDb();
+    await conectDB();
     const req = await request.json();
     req.params = { id: req.id };    
     const res = {
@@ -42,7 +42,7 @@ export async function PUT(request) {
 }
 export async function DELETE(request) {
     try{
-    await conectDb();
+    await conectDB();
     const req = await request.json();  
     req.params = { id: req.id };
     const res = {

@@ -5,7 +5,7 @@ import type { Piloto } from '@/lib/type';
 import { formatMilliseconds } from '@/lib/utils';
 import { TableCell, TableRow } from '@/componets/ui/table';
 import { Badge } from '@/componets/ui/badge';
-import { TrendingUp, AlertTriangle, CheckCircle2, Trophy } from 'lucide-react';
+import { TrendingUp, AlertTriangle, CheckCircle2, Trophy, Pen } from 'lucide-react';
 
 
 interface PilotRowProps {
@@ -47,7 +47,8 @@ export function PilotoRow({ piloto, rank }: PilotRowProps) {
   return (
     <TableRow className={`transition-colors border-red-500 duration-500 ${rowClass}`} aria-live="polite">
       <TableCell className="font-medium text-lg md:text-xl py-3 px-2 md:px-4 text-center">{rank}</TableCell>
-      <TableCell className="font-semibold text-lg md:text-xl py-3 px-2 md:px-4 flex items-center">
+      <TableCell className="font-mono text-lg md:text-xl py-3 px-2 md:px-4 text-center">{piloto.numero_piloto}</TableCell>
+      <TableCell className="font-semibold text-lg md:text-xl py-3 px-2 md:px-4 flex items-center gap-2">
         <span style={{color: piloto.cor}} className="font-bold mr-2 text-2xl">•</span>
         {piloto.nome}
       </TableCell>
@@ -67,6 +68,9 @@ export function PilotoRow({ piloto, rank }: PilotRowProps) {
         {piloto.status === 'ALERTA' && <AlertTriangle className="h-6 w-6 text-yellow-400 mx-auto" />}
         {piloto.status === 'PASSOU' && <CheckCircle2 className="h-6 w-6 text-green-400 mx-auto" />}
         {piloto.status === 'NORMAL' && piloto.voltas.length > 0 && <TrendingUp className="h-6 w-6 text-blue-400 mx-auto" />}
+      </TableCell>
+      <TableCell className="py-3 px-2 md:px-4 justify-center cursor-pointer">
+        <Pen className="h-4 w-4 text-gray-400 mx-auto" onClick={() => console.log(piloto._id)} />
       </TableCell>
     </TableRow>
   );

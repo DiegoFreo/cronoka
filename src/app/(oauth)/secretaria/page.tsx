@@ -2,8 +2,8 @@
 import React,{useState, useEffect, useContext} from "react";
 import { AuthContext } from "@/contexts/AuthContext";
 import Modal from "@/componets/Modal";
-import Piloto from "@/componets/cadastro/Piloto";
-import Evento from "@/componets/cadastro/evento";
+import Piloto from "@/componets/cadastro/Piloto_2";
+import Evento from "@/componets/cadastro/evento_1";
 import Categoria from "@/componets/cadastro/categoria";
 import Bateria from "@/componets/cadastro/Bateria";
 import Usuario from "@/componets/cadastro/Usuario";

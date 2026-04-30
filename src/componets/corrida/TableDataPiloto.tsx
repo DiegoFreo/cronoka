@@ -21,12 +21,14 @@ export function PilotDataTable({ pilots }: PilotDataTableProps) {
         <TableHeader className="sticky top-0 bg-card z-10">
           <TableRow>
             <TableHead className="w-[80px] text-center text-base md:text-lg">Pos</TableHead>
+            <TableHead className="w-[120px] text-center text-base md:text-lg">Nº</TableHead>
             <TableHead className="text-base md:text-lg">Piloto</TableHead>
             <TableHead className="w-[100px] text-center text-base md:text-lg">Voltas</TableHead>
             <TableHead className="w-[180px] text-center text-base md:text-lg">ultima Volta</TableHead>
             <TableHead className="w-[180px] text-center text-base md:text-lg">Melhor Volta</TableHead>
             <TableHead className="w-[200px] text-center text-base md:text-lg">Tempo Total</TableHead>
             <TableHead className="w-[100px] text-center text-base md:text-lg">Status</TableHead>
+            <TableHead className="w-[90px] text-center text-base md:text-lg">Editar</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
