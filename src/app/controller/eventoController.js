@@ -1,5 +1,9 @@
 import conectDB from '../../lib/mongodb';
+<<<<<<< HEAD
 import Evento from '../model/evento-1.js';
+=======
+import Evento from '../model/evento.js';
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 
 // Criar um novo evento
 export async function criarEvento(request) {

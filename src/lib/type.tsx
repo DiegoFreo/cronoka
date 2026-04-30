@@ -10,17 +10,31 @@ export type StatusPiloto = "NORMAL" | "PASSOU" | "ALERTA" | "SAIU" | "BURLOU";
 export interface Bateria{
     _id: string;
     nome: string;
+<<<<<<< HEAD
     categorias: Categoria[];
+=======
+    categoria: Categoria[];
+    hora_bateria: string;
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 };
 export interface Categoria{
     _id: string;
     nome: string;
+<<<<<<< HEAD
     pilotos: Piloto[];
+=======
+    pilotos: Piloto;
+   // baterias: Bateria[];
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 };
 export interface Evento{
     _id: string;
     nome_evento: string;
+<<<<<<< HEAD
     descricao_evento: string;
+=======
+    descricao: string;
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
     data_inicio: string;
     data_fim: string;
     local_evento: string;
@@ -43,5 +57,4 @@ export interface Piloto{
     ultimaVoltaCompleta: number | null; //ultima volta completa em milesegundos
     posicao: number; //posição do piloto na corrida
     cor: string; //cor do piloto
-
 }

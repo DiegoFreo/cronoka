@@ -3,7 +3,11 @@ import React,{useState, useEffect, useContext} from "react";
 import { AuthContext } from "@/contexts/AuthContext";
 import Modal from "@/componets/Modal";
 import Piloto from "@/componets/cadastro/Piloto";
+<<<<<<< HEAD
 import Evento from "@/componets/cadastro/evento_1";
+=======
+import Evento from "@/componets/cadastro/evento";
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 import ConfigEventos from "@/componets/cadastro/configEventos";
 import Categoria from "@/componets/cadastro/categoria";
 import Bateria from "@/componets/cadastro/Bateria";
@@ -268,7 +272,11 @@ export default function AdminPage() {
               <li onClick={()=>{router.push("../admin/categoria")}} className="flex flex-row items-center btn"><Tag className="pr-2"/>Categoria</li>
               <li onClick={()=>{router.push("../admin/bateria")}} className="flex flex-row items-center btn"><SquareCheckBig className="pr-2" />Bateria</li>
               <li onClick={()=>{router.push("../admin/evento")}} className="flex flex-row items-center btn"><ChartSpline className="pr-2" />Eventos</li>
+<<<<<<< HEAD
               <li onClick={()=>{router.push("../admin/chip")}} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
+=======
+              <li onClick={handleImportChip} className="flex flex-row items-center btn"><Flag className="pr-2" />TAGs</li>
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
               <li onClick={()=>{router.push("../admin/relatorio")}} className="flex flex-row items-center btn"><ChartNoAxesColumnIncreasing className="pr-2" />Relatório</li>
               <li onClick={()=>{}} className="flex flex-row items-center btn"><ClipboardList className="pr-2" />Licenças</li>
               <li onClick={()=>{router.push("../admin/prova")}} className="flex flex-row items-center btn"><Settings className="pr-2" />Configurações</li>
@@ -287,7 +295,11 @@ export default function AdminPage() {
           </div>
         </div>
         
+<<<<<<< HEAD
         <div className="continerdashboard-right gap-4 flex-wrap justify-between">
+=======
+        <div className="continerdashboard-right gap-4 flex-wrap justify-start">
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
           <Card className=" mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
             <CardContent className="flex flex-col items-center justify-center">  
               <h2 className="text-2xl  font-bold mb-4">Administrador</h2>

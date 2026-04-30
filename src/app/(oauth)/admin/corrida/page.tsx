@@ -9,7 +9,11 @@ import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from '@/componets/ui/card';
 import {Header} from "@/componets/Header-KAInformatica";
 import Button from "@/componets/ui/Buttom";
+<<<<<<< HEAD
 import {PlayCircle, RotateCcwIcon, PauseCircle, Pi} from "lucide-react";
+=======
+import {PlayCircle, RotateCcwIcon, PauseCircle} from "lucide-react";
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 import { Select, SelectItem } from '@/componets/ui/select';
 import { set } from 'mongoose';
 
@@ -40,14 +44,22 @@ export default function corrida(){
     const [selectedBateria, setSelectedBateria] = useState<string>('');
     const [idBateriaSelect, setIdBateriaSelect] = useState<string>('');
     const [selectedNomeBateria, setSelectedNomeBateria] = useState<string>('');
+<<<<<<< HEAD
     const [selectedNomeCategoria, setSelectedNomeCategoria] = useState<string[]>([]);
+=======
+    const [selectedNomeCategoria, setSelectedNomeCategoria] = useState<string>('');
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
     const synthRef = useRef<Tone.Synth | null>(null);
 
      useEffect(() => {
       // Carregar pilotos do servidor quando o componente for montado
       loadCategoria();
       loadBateria();
+<<<<<<< HEAD
       //loadPiloto();
+=======
+      loadPiloto();
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
       
     }, []);
 
@@ -80,7 +92,11 @@ export default function corrida(){
         }));
         
         setPilots(formattedPilots);
+<<<<<<< HEAD
         //console.log("Pilotos formatados para o estado:", pilotos);
+=======
+        console.log("Pilotos formatados para o estado:", pilotos);
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
         //setPilotos(formattedPilots);
       }catch (error) {
         console.error("Falha ao carregar o piloto:", error);
@@ -97,6 +113,7 @@ export default function corrida(){
         }
         const data = await response.json();
         setBaterias(data);
+       
       }catch (error) {
         console.error("Falha ao carregar a bateria:", error);
         toast({ title: "Error", description: "Failed to load bateria from the server.", variant: "destructive" });
@@ -245,6 +262,11 @@ export default function corrida(){
 
       const updatedPilots = prevPilots.map((pilot, index) => {
         if (index === targetPilotIndex) {
+<<<<<<< HEAD
+=======
+          //const rawLapTime = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; // 60s to 120s
+          //const rawLapTime = Math.floor((raceTime)); // 30s to 90s
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
           const rawLapTime = raceTimeRef.current - (pilot.ultimaVoltaCompleta ? pilot.ultimaVoltaCompleta : 0);
           const ultimaVolta = rawLapTime;
 
@@ -342,11 +364,14 @@ export default function corrida(){
       if(index._id === value){
         setSelectedNomeBateria(index.nome);
         setIdBateriaSelect(index._id);
+<<<<<<< HEAD
         listaPilotos(index._id);
         setSelectedNomeCategoria(index.categorias.map((cat) => {
           const categoriaEncontrada = categoria.find((c) => c._id === cat._id);
           return categoriaEncontrada ? categoriaEncontrada.nome : '';
         }));
+=======
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
       }
     })
      loadPiloto();

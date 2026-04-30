@@ -101,13 +101,22 @@ export default function CompetidorAll() {
         }
     }
 
+<<<<<<< HEAD
+=======
+    
+
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
     return (
         <div className="continerdashboard-all gap-4">
             <Modal isOpen={isOpen} Titulo={titleModal} setOpenModal={()=>setIsOpen(!isOpen)}>
                  {handleFormModal() }
             </Modal>
 
+<<<<<<< HEAD
             <div className="content-top w-full gap-4 p-10">
+=======
+            <div className="content-top w-100 gap-4 p-10">
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
                  <Card className=" mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
                     <CardContent className="flex flex-col items-center justify-center">  
                     <h2 className="text-2xl  font-bold mb-4 p-10">Competidores</h2>

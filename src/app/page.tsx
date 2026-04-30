@@ -29,9 +29,14 @@ export default function Home() {
 
   return (
     <>
+<<<<<<< HEAD
      {/*<div className="content-center content-gap-20 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">*/}
       <div className="justify-center items-center flex h-screen min-h-full flex-1 flex-col px-6 bg-black py-12 lg:px-8">  
         <div className="w-80 border border-red-500 p-10 rounded-lg sm:mx-auto sm:w-full sm:max-w-sm">
+=======
+     <div className="content-center content-gap-20 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="box-sign-in p-20 sm:mx-auto sm:w-full sm:max-w-sm">
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
           
         <div className="sm:mx-auto sm:w-full flex-col flex sm:max-w-sm img-center">
           <img

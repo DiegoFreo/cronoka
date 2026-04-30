@@ -666,6 +666,7 @@
 .bgWrite{
     background-color: #fff;
 }
+<<<<<<< HEAD
 .bgdark{
     background-color: #000;
 }
@@ -682,6 +683,8 @@
     border: 1px solid rgb(252, 0, 0);
     cursor: pointer;
 }
+=======
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 .borderRadius-5{
     border-radius: 5px;
 }

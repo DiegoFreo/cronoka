@@ -2,6 +2,12 @@ import React, {use, useEffect, useState} from "react";
 import Button from "../ui/Buttom";
 import { useForm } from "react-hook-form";
 import { FaEdit, FaTrash } from "react-icons/fa";
+<<<<<<< HEAD
+=======
+import '@/componets/styles.css';
+import '@/componets/stylescorrida.css';
+import '@/componets/dashboard.css';
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 import { Card, CardContent } from "../ui/card";
 import SelectSearchable from "../ui/SelectSearchable";
 import { set } from "mongoose";

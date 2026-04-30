@@ -5,7 +5,7 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 
 
 interface EventoProps {
-  id_evento: number;
+  _id: string;
   nome_evento: string;
   descricao_evento: string;
   data_inicio: string;
@@ -18,7 +18,7 @@ interface EventoProps {
 const Evento = () => {
   const { register, handleSubmit, reset} = useForm();
   const [eventos, setEventos] = useState<EventoProps[]>([]);
-  const [idEvento, setIdEvento] = useState<number | null >(0);
+  const [idEvento, setIdEvento] = useState<string | null >('0');
   const [nomeEvento, setNomeEvento] = useState<string>("");
   const [descricaoEvento, setDescricaoEvento] = useState<string>("");
   const [dataInicio, setDataInicio] = useState<string>("");
@@ -61,10 +61,11 @@ const Evento = () => {
   
 
   //Functionalidade de listar eventos
-   function carregaDadosEventos(id: number){
+   function carregaDadosEventos(id: string){
+    
     eventos.map((evento) => {
-      if(evento.id_evento === id){
-        setIdEvento(evento.id_evento);
+      if(evento._id === id){
+        setIdEvento(evento._id);
         setNomeEvento(evento.nome_evento);
         setDescricaoEvento(evento.descricao_evento);        
         const datiniFormatada = new Date(evento.data_inicio);
@@ -77,7 +78,7 @@ const Evento = () => {
     })
   }
   //Funcionalidade de Excluir evento
-  const deleteEvento = async (id: number) => {
+  const deleteEvento = async (id: string) => {
     try {
       const response = await fetch(`/api/evento/${id}`, {
         method: "DELETE",
@@ -109,24 +110,68 @@ const Evento = () => {
       alert("Erro ao buscar eventos: " + error.message);
     }
   }
+  
+  // Função para lidar com o envio do formulário
+    
+   async function onSubmit(data: any){    
+    try {
+      if(eventos.map(evento => evento._id === idEvento).includes(true)){
+        const Evt = {
+          _id: idEvento,
+          nome_evento: nomeEvento,
+          descricao_evento: descricaoEvento,
+          data_inicio: dataInicio,
+          data_fim: dataFim,
+          local_evento: localEvento,
+          hora_evento: horaEvento
+        }
+        
+          updateEvento (idEvento!, Evt);
+      }else{
+        
+      const response = await fetch('/api/evento', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+        if (!response.ok) {
+          throw new Error("Erro ao cadastrar evento");
+        }else{
+        alert("Evento cadastrado com sucesso!");
+        fetchEventos(); // Atualiza a lista de eventos após o cadastro
+        reset(); // Limpa o formulário após o envio
+        clearForm();
+      } 
+    }
+  }catch (error:any) {
+      console.error("Erro ao cadastrar evento:", error);
+      alert("Erro ao cadastrar evento: " + error.message);
+    }
+  };
+
   //funcção assíncrona para atualizar evento
-  const updateEvento = async (id: number, updatedData: Partial<EventoProps>) => {
+  const updateEvento = async (id: string, data: any) => {
+    console.log(data);
     try {
       const response = await fetch(`/api/evento/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedData),
-      });
+        body: JSON.stringify(data),
+      }     
+    );
 
       if (!response.ok) {
         throw new Error("Erro ao atualizar evento");
+      }else{
+        alert("Evento atualizado com sucesso!");
+        fetchEventos(); // Atualiza a lista de eventos após a atualização
+        clearForm();
       }
-
-      alert("Evento atualizado com sucesso!");
-      fetchEventos(); // Atualiza a lista de eventos após a atualização
-      clearForm();
+      
     } catch (error:any) {
       console.error("Erro ao atualizar evento:", error);
       alert("Erro ao atualizar evento: " + error.message);
@@ -177,7 +222,7 @@ const Evento = () => {
         {/* Formulário de cadastro de evento */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="w-100">
-            <label htmlFor="nome_evento">Nome do Evento:</label>
+            <label htmlFor="nome_evento">Nome do Prova:</label>
             <input className="ka-input w-100" type="text" id="nome_evento" {...register("nome_evento")} value={nomeEvento} onChange={handleChangeNomeEvento} required />
           </div>
           <div className="w-100">
@@ -228,12 +273,12 @@ const Evento = () => {
                   <td>{new Date(evento.data_inicio).toISOString().split('T')[0]}</td>
                   <td>{evento.local_evento}</td>
                   <td>
-                    <Button className="btn btn-edit" onClick={() => carregaDadosEventos(evento.id_evento)}>
+                    <Button className="btn btn-edit" onClick={() => carregaDadosEventos(evento._id)}>
                       <FaEdit />
                     </Button>
                   </td>
                   <td>
-                    <Button className="btn btn-delete" onClick={() => deleteEvento(evento.id_evento)}>
+                    <Button className="btn btn-delete" onClick={() => deleteEvento(evento._id)}>
                       <FaTrash />
                     </Button>
                   </td>

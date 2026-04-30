@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../ui/Buttom";
 import Modal from "../Modal";
+<<<<<<< HEAD
 import Evento from "./evento_1";
+=======
+import Evento from "./evento";
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 import '@/componets/styles.css';
 import '@/componets/stylescorrida.css';
 import '@/componets/dashboard.css';

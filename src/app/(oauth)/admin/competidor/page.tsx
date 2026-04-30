@@ -4,8 +4,13 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { Card, CardContent } from "@/componets/ui/card";
 import CompetidorAll from "@/componets/cadastro/competidorAll";
 import Modal from "@/componets/Modal";
+<<<<<<< HEAD
 import Piloto from "@/componets/cadastro/Piloto_2";
 import Evento from "@/componets/cadastro/evento_1";
+=======
+import Piloto from "@/componets/cadastro/Piloto";
+import Evento from "@/componets/cadastro/evento";
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 import Categoria from "@/componets/cadastro/categoria";
 import Bateria from "@/componets/cadastro/Bateria";
 import Usuario from "@/componets/cadastro/Usuario";

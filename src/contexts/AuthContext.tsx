@@ -73,6 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
      
       setUser(usuario);
+      
      
       if (usuario.nivelUser === "A") router.push("/admin");
       else if (usuario.nivelUser === "C") router.push("/cronometrista");
@@ -104,7 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-
+ 
   function logout() {
     destroyCookie(null, "cronometro-token", { path: "/" });
     setUser(null);

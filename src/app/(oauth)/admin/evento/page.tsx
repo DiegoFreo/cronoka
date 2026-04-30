@@ -1,4 +1,5 @@
 'use client';
+<<<<<<< HEAD
 import React, { useState, useEffect, useContext, use } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/componets/ui/Buttom";
@@ -96,6 +97,30 @@ const EventoPage = () => {
     return(
         <div className="continerdashboard">
            
+=======
+import React, { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/navigation";
+import Modal from "@/componets/Modal";;
+import Button from "@/componets/ui/Buttom";
+import {Home, User, UserPen, Tag, SquareCheckBig, ChartSpline, Flag, ChartNoAxesColumnIncreasing, ClipboardList, Settings, Medal} from "lucide-react";
+import { AuthContext } from "@/contexts/AuthContext";
+
+import '@/componets/styles.css';
+//import '@/componets/stylescorrida.css';
+import '@/componets/dashboard.css';
+import { Card, CardContent } from "@/componets/ui/card";
+
+
+
+const EventoPage = () => {
+    const router = useRouter();
+     const logout = useContext(AuthContext).logout;
+     const [imgUsuario, setImgUsuario] = useState<string>('');
+
+
+    return(
+        <div className="continerdashboard">
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
             <div className="continerdashboard-left">
             <div className="continerdashboard-logo">
                 <img
@@ -131,6 +156,7 @@ const EventoPage = () => {
                 </div>
             </div>
             </div>
+<<<<<<< HEAD
             <div className="flex-1 p-10 flex flex-col gap-4">
                 <Card className=" mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
                         <CardContent className="items-center justify-center p">  
@@ -181,6 +207,17 @@ const EventoPage = () => {
             </div>
                
             </div>
+=======
+            <div className="continerdashboard-right gap-4 flex-wrap justify-starth">
+                 <Card className=" mt-2 p-10 continerdashboard-border continerdashboard-title bg-tranparente-30" >
+                    <CardContent className="flex flex-col items-center justify-center">  
+                        <h2 className="text-2xl  font-bold mb-4">Eventos</h2>
+                    </CardContent>
+                </Card>
+
+            </div>
+        </div>
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 
         
     )

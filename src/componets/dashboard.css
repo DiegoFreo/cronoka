@@ -64,6 +64,7 @@
     height: 85vh;
 }
 .continerdashboard-left-img{
+<<<<<<< HEAD
     width: 80%;
     height: 80vh;
     margin-bottom: 10px;
@@ -99,6 +100,31 @@
     gap: 20;
     overflow: hidden;
 }
+=======
+    width: 80%;
+    height: 80vh;
+    margin-bottom: 10px;
+    background-color: rgb(25, 27, 24);
+    padding: 3px;
+    background-image: url('../../public/FPMX-logo.png');
+    background-size: calc(50% - 10px) calc(50% - 10px);
+    background-repeat: no-repeat;
+    background-position: bottom ;
+    background-color: rgb(3, 3, 3);
+}   
+.continerdashboard-right{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 3px;
+    justify-content: space-between;
+    width: 80%;
+    /*height: 80vh;*/
+    padding: 10px;
+    
+    gap: 20;
+}
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 
 .continerdashboard-prova{
     display: flex;

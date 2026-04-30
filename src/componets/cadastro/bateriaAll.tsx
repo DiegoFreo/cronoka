@@ -4,7 +4,15 @@ import{useForm} from "react-hook-form";
 import Button from "../ui/Buttom";
 import Modal from "../Modal";
 import Bateria from "./Bateria";
+<<<<<<< HEAD
 import { useEffect } from "react";
+=======
+import '@/componets/styles.css';
+import { useEffect } from "react";
+import '@/componets/stylescorrida.css';
+import '@/componets/dashboard.css';
+import '@/componets/styles.css';
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
 import { Card, CardContent } from "../ui/card";
 import SelectSearchable from "../ui/SelectSearchable";
 import { FaEdit, FaTrash } from "react-icons/fa";
@@ -15,7 +23,10 @@ const BateriaAll = () => {
         const [titleModal, setTitleModal] = React.useState<string>('');
         const [nmBateria, setNmBateria] = React.useState<string>('');
         const [baterias, setBaterias] = React.useState<Array<any>>([]);
+<<<<<<< HEAD
         const [categorias, setCategorias] = React.useState<Array<any>>([]);
+=======
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
         const [idBateriaSelect, setIdBateriaSelect] = React.useState<string>('');
 
      useEffect(() => {
@@ -35,7 +46,14 @@ const BateriaAll = () => {
             alert("Erro ao buscar baterias: " + erro.message);
         }
     };
+<<<<<<< HEAD
     
+=======
+
+   
+
+
+>>>>>>> ee9061d718d7003358dff4b156bbd5e7f07b5640
     const hendleAdicionarBateria = () => {
         setTitleModal('Adicionar Bateria');
         setIsOpen(true);
